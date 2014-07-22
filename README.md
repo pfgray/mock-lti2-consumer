@@ -14,4 +14,12 @@ mvn clean install
 deploy the war file located in:
 `mock-lti2-consumer/target/mock-lti2-consumer-*.war`
 
- 
+Making requests against the server:
+----
+endpoints:
+`/register`
+`/launch`
+`/tc_profile/{profile_id}`
+`/tc_registration/{profile_id}`
+`/Result/{sourcedid}`
+`/Settings`

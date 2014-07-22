@@ -20,7 +20,7 @@ WORKDIR /root/mock-lti2-consumer
 RUN mvn clean install
 
 #configure mock-rest to be the root of its virtual host
-#WORKDIR /opt/tomcat
+WORKDIR /opt/tomcat
 ADD ./config/server.xml /opt/tomcat/conf/server.xml
 RUN rm -rf webapps/*
 
