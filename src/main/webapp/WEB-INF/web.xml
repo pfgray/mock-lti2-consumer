@@ -6,14 +6,4 @@
 
     <display-name>Mock LTI2 Server</display-name>
 
-    <servlet>
-        <servlet-name>LTI2Servlet</servlet-name>
-        <servlet-class>org.imsglobal.lti2.LTI2Servlet</servlet-class>
-    </servlet>
-
-    <servlet-mapping>
-        <servlet-name>LTI2Servlet</servlet-name>
-        <url-pattern>/*</url-pattern>
-    </servlet-mapping>
-
 </web-app>

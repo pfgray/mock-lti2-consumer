@@ -16,10 +16,33 @@ deploy the war file located in:
 
 Making requests against the server:
 ----
-endpoints:
-`/register`
-`/launch`
-`/tc_profile/{profile_id}`
-`/tc_registration/{profile_id}`
-`/Result/{sourcedid}`
-`/Settings`
+
+
+    /register
+
+*Register your LTI tool with the tool consumer*
+
+----
+
+    /launch
+*Launch your LTI tool*
+
+----
+
+    /tc_profile/{profile_id}
+*Get the tool consumer's profile*
+
+----
+
+    /tc_registration/{profile_id}
+    
+*Register your LTI tool's profile*
+
+----
+    /Result/{sourcedid}
+?*Result request*
+
+----
+
+    /Settings
+?*Settings request*
