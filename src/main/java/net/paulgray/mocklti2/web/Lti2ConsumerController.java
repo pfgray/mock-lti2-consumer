@@ -19,7 +19,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 public class Lti2ConsumerController {
     
     @RequestMapping(value = "/")
-    public String getCurrentUser() {
+    public String getWelcome() {
         return "welcome";
     }
     
