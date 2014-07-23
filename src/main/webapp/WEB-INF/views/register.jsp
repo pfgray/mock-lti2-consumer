@@ -12,6 +12,17 @@
         <title>MockLti2Consumer</title>
     </head>
     <body>
-        <h1>Register your tool</h1>
+        <h1>Register your tool:</h1>
+        <form>
+            <label>
+                Lti launch url:
+                <input type="text" name="launch_url"/>
+            </label>
+            <label>
+                Tool name:
+                <input type="text" name="id"/>
+            </label>
+            <input type="submit" value="Submit"/>
+        </form>
     </body>
 </html>
