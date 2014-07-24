@@ -1,6 +1,15 @@
 .view {
     margin:1em; 
 }
-.btn.action{
-    float:right;
+.center-vert{
+    height:100%;
+    display:table;
+}
+.center-vert .center-vert-content{
+    display: table-cell;
+    vertical-align: middle;
+    text-align: center;
+}
+.tool{
+    height:2.5em;
 }

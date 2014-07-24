@@ -2,15 +2,20 @@
     <h1>Tools</h1>
     <i class="fa-li fa fa-circle-o-notch fa-spin"></i>
     <ul class="list-group" ng-if="!loading">
-        <li class="list-group-item" ng-repeat="tool in tools" ng-class="getLiClassForState(tool.state)">
-            <div ng-if="tool.state === 'added'">
-                <ng-include src="'assets/templates/partial-tool-added.html'" />
-            </div>
-            <div ng-if="tool.state === 'failed'">
-                <ng-include src="'assets/templates/partial-tool-failed.html'" />
-            </div>
-            <div ng-if="tool.state === 'registered'">
-                <ng-include src="'assets/templates/partial-tool-registered.html'"/>
+        <li class="list-group-item" ng-repeat="tool in tools" ng-class="tool.liClass">
+            <div class="clearfix tool">
+                <div class="center-vert pull-left">
+                    <div class="center-vert-content">
+                        <span class="added"><i class="fa fa-cog"></i> {{tool.label}}</span>
+                    </div>
+                </div>
+                <div class="center-vert pull-right">
+                    <div class="center-vert-content">
+                        <button type="button" class="btn btn-default action" ng-click="tool.button.onClick()">
+                            <i class="fa" ng-class="tool.button.icon"></i> {{tool.button.label}}
+                        </button>
+                    </div>
+                </div>
             </div>
         </li>
     </ul>
