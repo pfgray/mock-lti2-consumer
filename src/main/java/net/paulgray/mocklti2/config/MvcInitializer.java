@@ -4,7 +4,7 @@
  * and open the template in the editor.
  */
 
-package net.paulgray.mocklti2;
+package net.paulgray.mocklti2.config;
 
 import org.springframework.web.servlet.support.AbstractAnnotationConfigDispatcherServletInitializer;
 

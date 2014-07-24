@@ -4,12 +4,18 @@
  * and open the template in the editor.
  */
 
-package net.paulgray.mocklti2;
+package net.paulgray.mocklti2.tools;
+
+import java.util.List;
 
 /**
  *
  * @author paul
  */
-public interface ToolProfileService {
+public interface LtiToolService {
+    
+    public LtiTool getToolForId(String id);
+
+    public List<LtiTool> getAll();
     
 }

@@ -4,12 +4,12 @@
  * and open the template in the editor.
  */
 
-package net.paulgray.mocklti2.consumer;
+package net.paulgray.mocklti2.config;
 
 /**
  *
  * @author paul
  */
-public class LtiConsumerProfile {
+public interface ToolProfileService {
     
 }
