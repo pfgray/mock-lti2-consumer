@@ -1,3 +1,9 @@
-<div class="view">
+<div class="view" ng-controller="ToolsController">
     <h1>Tools</h1>
+    <i class="fa-li fa fa-circle-o-notch fa-spin"></i>
+    <ul class="list-group" ng-if="!loading">
+        <li class="list-group-item" ng-repeat="tool in tools">
+            <i class="fa fa-rocket"></i> {{tool.label}}
+        </li>
+    </ul>
 </div>
