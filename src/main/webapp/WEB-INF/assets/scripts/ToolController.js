@@ -15,4 +15,14 @@ app.controller('ToolsController', ['$scope', '$http', function($scope, $http) {
         $scope.error = true;
         $scope.loading = false;
     });
+    $scope.getLiClassForState = function(state){
+        if(state === 'registered'){
+            return 'list-group-item-success';
+        } else if (state === 'added'){
+            return 'list-group-item-warning';
+        } else if (state === 'failed'){
+            return 'list-group-item-danger';
+        }
+    }
+    
 }]);

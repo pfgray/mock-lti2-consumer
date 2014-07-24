@@ -2,8 +2,16 @@
     <h1>Tools</h1>
     <i class="fa-li fa fa-circle-o-notch fa-spin"></i>
     <ul class="list-group" ng-if="!loading">
-        <li class="list-group-item" ng-repeat="tool in tools">
-            <i class="fa fa-rocket"></i> {{tool.label}}
+        <li class="list-group-item" ng-repeat="tool in tools" ng-class="getLiClassForState(tool.state)">
+            <div ng-if="tool.state === 'added'">
+                <ng-include src="'assets/templates/partial-tool-added.html'" />
+            </div>
+            <div ng-if="tool.state === 'failed'">
+                <ng-include src="'assets/templates/partial-tool-failed.html'" />
+            </div>
+            <div ng-if="tool.state === 'registered'">
+                <ng-include src="'assets/templates/partial-tool-registered.html'"/>
+            </div>
         </li>
     </ul>
 </div>
