@@ -24,6 +24,7 @@ public class LtiToolServiceHibernate implements LtiToolService {
     @Autowired
     SessionFactory sessionFactory;
 
+    @Override
     @Transactional
     public LtiTool getToolForId(String id) {
         Criteria crit = sessionFactory.getCurrentSession().createCriteria(LtiTool.class);
@@ -31,10 +32,17 @@ public class LtiToolServiceHibernate implements LtiToolService {
         return (LtiTool) crit.uniqueResult();
     }
 
+    @Override
     @Transactional
     public List<LtiTool> getAll() {
         Criteria crit = sessionFactory.getCurrentSession().createCriteria(LtiTool.class);
         return crit.list();
+    }
+
+    @Override
+    @Transactional
+    public LtiTool addTool(LtiTool ltiTool) {
+        return (LtiTool) sessionFactory.getCurrentSession().save(ltiTool);
     }
     
 }

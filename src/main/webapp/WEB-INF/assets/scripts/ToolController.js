@@ -40,8 +40,6 @@ app.controller('ToolsController', ['$scope', '$http', function($scope, $http) {
         return tool;
     }
         
-        
-        
     $scope.loading = true;
     $http({method: 'GET', url: 'api/tools'})
     .success(function(data, status, headers, config) {
@@ -61,5 +59,19 @@ app.controller('ToolsController', ['$scope', '$http', function($scope, $http) {
         $scope.error = true;
         $scope.loading = false;
     });
+    
+    $scope.addTool = function(name, registrationUrl){
+        $http.post('api/tools', {
+            label:name,
+            registerUrl:registrationUrl
+        })
+        .success(function(data, status, headers, config) {
+            alert('got back:', data);
+        })
+        .error(function(data, status, headers, config) {
+            alert('ERROR!' + data);
+            console.error('ERROR!', data);
+        });
+    };
     
 }]);

@@ -18,4 +18,6 @@ public interface LtiToolService {
 
     public List<LtiTool> getAll();
     
+    public LtiTool addTool(LtiTool ltiTool);
+    
 }

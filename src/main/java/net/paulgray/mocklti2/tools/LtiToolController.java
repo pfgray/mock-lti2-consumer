@@ -12,6 +12,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 
 /**
  *
@@ -23,14 +24,19 @@ public class LtiToolController {
     @Autowired
     LtiToolService ltiToolService;
     
-    @RequestMapping("/api/tools")
+    @RequestMapping(value = "/api/tools", method = RequestMethod.GET)
     public ResponseEntity getTools(){
         return new ResponseEntity(ltiToolService.getAll(), HttpStatus.OK);
     }
     
-    @RequestMapping("/api/tools/{toolId}")
+    @RequestMapping(value = "/api/tools/{toolId}", method = RequestMethod.GET)
     public ResponseEntity getToolForId(@PathVariable("toolId") String toolId){
         return new ResponseEntity(ltiToolService.getToolForId(toolId), HttpStatus.OK);
+    }
+    
+    @RequestMapping(value = "/api/tools", method = RequestMethod.POST)
+    public ResponseEntity addTool(@PathVariable("toolId") LtiTool tool){
+        return new ResponseEntity(ltiToolService.addTool(tool), HttpStatus.CREATED);
     }
     
 }
