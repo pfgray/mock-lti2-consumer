@@ -11,9 +11,11 @@ app.config(function($stateProvider, $urlRouterProvider) {
         url: "/intro",
         templateUrl: "assets/templates/partial-intro.html"
     })
-    .state('register', {
-        url: "/register",
-        templateUrl: "assets/templates/partial-register.html"
+    .state('tools', {
+        url: "/tools",
+        templateUrl: "assets/templates/partial-tools.html"
     });
 
+}).run(function($rootScope, $state) {
+    $rootScope.$state = $state;
 });

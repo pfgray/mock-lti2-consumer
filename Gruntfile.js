@@ -16,7 +16,7 @@ module.exports = function(grunt) {
 
     grunt.event.on('watch', function(action, filepath, target) {
         if(target === 'statics'){
-            var destFilePath = TOMCAT_DIR + 'webapps/ROOT/' + filepath.replace('src/main/webapp/', '');
+            var destFilePath = TOMCAT_DIR + 'webapps/mock-lti2-consumer-1.0.0/' + filepath.replace('src/main/webapp/', '');
             grunt.log.writeln(target + ': ' + filepath + ' has ' + action + ' ... and is being copied to: ' + destFilePath);
             shell.exec('cp ' + filepath + ' ' + destFilePath);
         }
