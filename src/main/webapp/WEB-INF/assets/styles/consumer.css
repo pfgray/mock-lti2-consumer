@@ -13,3 +13,9 @@
 .tool{
     height:2.5em;
 }
+li .row [class*='col-'] {
+    height:100%;
+}
+.add-tool{
+    margin-bottom:1em;
+}

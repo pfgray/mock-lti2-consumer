@@ -1,7 +1,7 @@
 <div class="view" ng-controller="ToolsController">
     <h1>Tools</h1>
     <i class="fa-li fa fa-circle-o-notch fa-spin"></i>
-    <div class="row">
+    <div class="row add-tool">
         <div class="col-md-5">
             <input class="form-control" type="text" placeholder="Name" ng-model="tool_name"/>
         </div>
@@ -9,7 +9,7 @@
             <input class="form-control" type="text" placeholder="Registration url" ng-model="registration_url"/>
         </div>
         <div class="col-md-2">
-            <button type="button" class="btn btn-default action" ng-click="addTool(tool_name, registration_url);">
+            <button type="button" class="btn btn-default btn-block action" ng-click="addTool(tool_name, registration_url);">
                 <i class="fa fa-plus"></i> Add tool
             </button>
         </div>

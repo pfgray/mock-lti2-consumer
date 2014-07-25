@@ -9,8 +9,12 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import org.codehaus.jackson.annotate.JsonIgnore;
+import org.codehaus.jackson.annotate.JsonProperty;
 
 /**
  *
@@ -26,7 +30,8 @@ public class LtiTool {
 
     @Id
     @Column(name = "id")
-    private String id;
+    @GeneratedValue(strategy=GenerationType.IDENTITY)
+    private Integer id;
     @Column(name = "label")
     private String label;
     @Column(name = "launch_url")
@@ -36,15 +41,18 @@ public class LtiTool {
     @Column(name = "tool_state")
     @Enumerated(EnumType.STRING)
     private State state;
-
-    public String getId() {
+    
+    @JsonProperty
+    public Integer getId() {
         return id;
     }
-
-    public void setId(String id) {
+    
+    @JsonIgnore
+    public void setId(Integer id) {
         this.id = id;
     }
-
+    
+    @JsonProperty
     public String getLabel() {
         return label;
     }
@@ -53,22 +61,27 @@ public class LtiTool {
         this.label = label;
     }
 
+    @JsonProperty
     public String getLaunchUrl() {
         return launchUrl;
     }
 
+    @JsonIgnore
     public void setLaunchUrl(String launchUrl) {
         this.launchUrl = launchUrl;
     }
 
+    @JsonProperty
     public State getState() {
         return state;
     }
 
+    @JsonIgnore
     public void setState(State state) {
         this.state = state;
     }
 
+    @JsonProperty
     public String getRegisterUrl() {
         return registerUrl;
     }
