@@ -14,6 +14,7 @@
         <script src="//cdnjs.cloudflare.com/ajax/libs/angular-ui-router/0.2.10/angular-ui-router.min.js"></script>
         <script src="assets/scripts/mock-consumer.js"></script>
         <script src="assets/scripts/ToolController.js"></script>
+        <script src="assets/scripts/tools/AddedTool.js"></script>
         
         <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css"/>
         <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/font-awesome/4.1.0/css/font-awesome.min.css"/>
