@@ -41,35 +41,40 @@ app.controller('ToolsController', ['$scope', '$http', function($scope, $http) {
     }
         
     $scope.loading = true;
-    $http({method: 'GET', url: 'api/tools'})
-    .success(function(data, status, headers, config) {
-        $scope.tools = [];
-        for(var i=0; i<data.length; i++){
-            if(data[i].state === 'registered'){
-                $scope.tools.push(new RegisteredTool(data[i]));
-            } else if (data[i].state === 'added'){
-                $scope.tools.push(new AddedTool(data[i]));
-            } else if (data[i].state === 'failed'){
-                $scope.tools.push(new FailedTool(data[i]));
+    var refreshApps = function(){
+        $http({method: 'GET', url: 'api/tools'})
+        .success(function(data, status, headers, config) {
+            $scope.tools = [];
+            for(var i=0; i<data.length; i++){
+                if(data[i].state === 'registered'){
+                    $scope.tools.push(new RegisteredTool(data[i]));
+                } else if (data[i].state === 'added'){
+                    $scope.tools.push(new AddedTool(data[i]));
+                } else if (data[i].state === 'failed'){
+                    $scope.tools.push(new FailedTool(data[i]));
+                }
             }
-        }
-        $scope.loading = false;
-    })
-    .error(function(data, status, headers, config) {
-        $scope.error = true;
-        $scope.loading = false;
-    });
+            $scope.loading = false;
+            $scope.addingTool = false;
+        })
+        .error(function(data, status, headers, config) {
+            $scope.error = true;
+            $scope.loading = false;
+        });
+    }
     
+    refreshApps();
+    $scope.addingTool = false;
     $scope.addTool = function(name, registrationUrl){
+        $scope.addingTool = true;
         $http.post('api/tools', {
             label:name,
             registerUrl:registrationUrl
         })
         .success(function(data, status, headers, config) {
-            alert('got back:', data);
+            refreshApps();
         })
         .error(function(data, status, headers, config) {
-            alert('ERROR!' + data);
             console.error('ERROR!', data);
         });
     };

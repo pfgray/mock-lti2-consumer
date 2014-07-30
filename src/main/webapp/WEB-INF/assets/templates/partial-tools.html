@@ -10,7 +10,8 @@
         </div>
         <div class="col-md-2">
             <button type="button" class="btn btn-default btn-block action" ng-click="addTool(tool_name, registration_url);">
-                <i class="fa fa-plus"></i> Add tool
+                <span ng-if="addingTool"><i class="fa fa-circle-o-notch fa-spin"></i></span>
+                <span ng-if="!addingTool"><i class="fa fa-plus"></i> Add tool</span>
             </button>
         </div>
     </div>
