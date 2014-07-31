@@ -39,7 +39,7 @@
     
     <!-- Derby setup: -->
     <jdbc:embedded-database id="dataSource" type="DERBY" >
-        <jdbc:script location="WEB-INF/sql/tools.sql"/>
+        <jdbc:script location="sql/tools.sql"/>
     </jdbc:embedded-database> 
     
 </beans>

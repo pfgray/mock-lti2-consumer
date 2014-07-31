@@ -21,7 +21,7 @@ import org.springframework.web.servlet.view.JstlView;
 @EnableWebMvc
 @Configuration
 @ComponentScan("net.paulgray.mocklti2.*")
-@ImportResource("WEB-INF/spring/applicationContext.xml")
+@ImportResource("spring/applicationContext.xml")
 public class ViewConfig {
 
     @Bean

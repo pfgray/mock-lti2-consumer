@@ -1,0 +1,110 @@
+{
+    "@context": "http://purl.imsglobal.org/ctx/lti/v2/ToolConsumerProfile",
+    "@type": "ToolConsumerProfile",
+    "lti_version": "LTI-2p0",
+    "guid": "tc_profile",
+    "product_instance": {
+        "guid": "QABXBH2NJP754H62L63A",
+        "product_info": {
+            "product_name": {
+                "default_value": "Mock Lti2 Consumer"
+            },
+            "product_version": "1.0.0",
+            "description": {
+                "default_value": "A Mock Implementation of the Lti2 Consumer Specification"
+            },
+            "product_family": {
+                "code": "mock-lti2-consumer",
+                "vendor": {
+                    "code": "lti2.paulgray.net",
+                    "vendor_name": {
+                        "default_value": "Test instance of Mock Lti2 Consumer"
+                    },
+                    "description": {
+                        "default_value": "A free instance of mock-lti2-consumer to test against."
+                    },
+                    "website": "http://paulgray.net",
+                    "contact": {
+                        "email": "pfbgray@gmail.com"
+                    }
+                }
+            }
+        },
+        "support": {
+            "email": "pfbgray@gmail.com"
+        },
+        "service_provider": {
+            "@id": "http://lti2.paulgray.net",
+            "service_provider_name": {
+                "default_value": "Hosting Service"
+            },
+            "description": {
+                "default_value": "Hosting service for mock-lti2-consumer."
+            }
+        },
+        "service_owner": {
+            "@id": "http://lti2.paulgray.net",
+            "service_owner_name": {
+                "default_value": "Paul Gray"
+            },
+            "description": {
+                "default_value": "The Ed. Tech Services Division of SchoolEdu",
+                "key": "product.vendor.description"
+            },
+            "support": {
+                "email": "edunext@school.edu"
+            }
+        }
+    },
+    "capability_offered": [
+        "basic-lti-launch-request", 
+        "User.id", 
+        "User.image",
+        "CourseSection.sourcedId", 
+        "Person.sourcedId", 
+        "Membership.role", 
+        "Person.email.primary", 
+        "User.username", 
+        "Person.name.fullname", 
+        "Person.name.given", 
+        "Person.name.family", 
+        "Person.name.full", 
+        "LtiLink.custom.url", 
+        "ToolProxy.custom.url", 
+        "ToolProxyBinding.custom.url", 
+        "Result.sourcedId", 
+        "Result.autocreate", 
+        "Result.url"
+    ],
+    "service_offered": [{
+            "@type": "RestService",
+            "@id": "tcp:ToolProxy.collection",
+            "endpoint": "http://localhost:5000/tc_registration/tc_profile",
+            "format": ["application/vnd.ims.lti.v2.toolproxy+json"],
+            "action": ["POST"]
+        }, {
+            "@type": "RestService",
+            "@id": "tcp:Result.item",
+            "endpoint": "http://localhost:5000/Result/{lis_result_sourcedid}",
+            "format": ["application/vnd.ims.lis.v2.result+json"],
+            "action": ["GET", "PUT"]
+        }, {
+            "@type": "RestService",
+            "@id": "tcp:LtiLinkSettings",
+            "endpoint": "http://localhost:5000/Settings/LtiLink/{resource_link_id}",
+            "format": ["application/vnd.ims.lti.v2.toolsettings+json", "application/vnd.ims.lti.v2.toolsettings.simple+json"],
+            "action": ["GET", "PUT"]
+        }, {
+            "@type": "RestService",
+            "@id": "tcp:ToolProxySettings",
+            "endpoint": "http://localhost:5000/Settings/ToolProxyBinding/{context_id}",
+            "format": ["application/vnd.ims.lti.v2.toolsettings+json", "application/vnd.ims.lti.v2.toolsettings.simple+json"],
+            "action": ["GET", "PUT"]
+        }, {
+            "@type": "RestService",
+            "@id": "tcp:ToolProxySettings",
+            "endpoint": "http://localhost:5000/Settings/ToolProxy/{tool_proxy_guid}",
+            "format": ["application/vnd.ims.lti.v2.toolsettings+json", "application/vnd.ims.lti.v2.toolsettings.simple+json"],
+            "action": ["GET", "PUT"]
+        }]
+}
