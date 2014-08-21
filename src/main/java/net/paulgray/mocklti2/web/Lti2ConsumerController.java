@@ -6,8 +6,14 @@
 
 package net.paulgray.mocklti2.web;
 
+import org.imsglobal.lti2.LTI2Config;
+import org.imsglobal.lti2.objects.ToolConsumer;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
+
+import javax.servlet.http.HttpServletRequest;
 
 /**
  *
@@ -17,8 +23,12 @@ import org.springframework.web.bind.annotation.RequestMapping;
 public class Lti2ConsumerController {
     
     @RequestMapping(value = "/")
-    public String getWelcome() {
+    public String getWelcome(HttpServletRequest request, ModelMap model) {
+        model.addAttribute("contextPath", request.getContextPath());
+        model.addAttribute("contextUrl", request.getRequestURL());
+        model.addAttribute("contextUri", request.getRequestURI());
         return "welcome";
     }
-    
+
+
 }

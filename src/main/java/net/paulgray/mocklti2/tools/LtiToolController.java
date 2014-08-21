@@ -6,6 +6,8 @@
 
 package net.paulgray.mocklti2.tools;
 
+import org.imsglobal.lti2.LTI2Config;
+import org.imsglobal.lti2.objects.ToolConsumer;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -15,12 +17,17 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
+import javax.servlet.http.HttpServletResponse;
+
 /**
  *
  * @author paul
  */
 @Controller
 public class LtiToolController {
+
+    @Autowired
+    LTI2Config config;
     
     @Autowired
     LtiToolService ltiToolService;
@@ -38,6 +45,12 @@ public class LtiToolController {
     @RequestMapping(value = "/api/tools", method = RequestMethod.POST)
     public ResponseEntity addTool(@RequestBody LtiTool tool){
         return new ResponseEntity(ltiToolService.addTool(tool), HttpStatus.CREATED);
+    }
+
+    @RequestMapping(value = "/api/profile")
+    public ResponseEntity getConsumerProfile(HttpServletResponse response) {
+        response.setHeader("Content-type","application/vnd.ims.lti.v2.ToolConsumerProfile+json");
+        return new ResponseEntity(new ToolConsumer("guid", "tcp", config), HttpStatus.OK);
     }
     
 }

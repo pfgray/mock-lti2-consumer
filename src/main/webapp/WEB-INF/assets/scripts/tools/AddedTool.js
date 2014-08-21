@@ -10,12 +10,12 @@ app.factory('AddedTool', [function () {
             label:"Register Tool",
             icon:"fa-wrench",
             onClick:function(){
-                
                 var params = {
                     reg_key:"reg_key",
                     reg_password:"reg_password",
-                    tc_profile_url:"tc_profile_url",
-                    launch_presentation_return_url:"launch_presentation_return_url"
+                    tc_profile_url:window.web_context_url + "profile",
+                    launch_presentation_return_url:window.web_context_url,
+                    lti_message_type:"lti-tool-proxy-registration-request"
                 }
                 
                 var form = document.createElement("form");
