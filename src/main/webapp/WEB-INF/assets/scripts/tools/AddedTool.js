@@ -13,7 +13,7 @@ app.factory('AddedTool', [function () {
                 var params = {
                     reg_key:"reg_key",
                     reg_password:"reg_password",
-                    tc_profile_url:window.web_context_url + "profile",
+                    tc_profile_url:window.web_context_url + "api/profile",
                     launch_presentation_return_url:window.web_context_url,
                     lti_message_type:"lti-tool-proxy-registration-request"
                 }
