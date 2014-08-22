@@ -6,8 +6,10 @@
 
 package net.paulgray.mocklti2.tools;
 
+import java.util.Arrays;
+import javax.servlet.http.HttpServletRequest;
 import org.imsglobal.lti2.LTI2Config;
-import org.imsglobal.lti2.objects.ToolConsumer;
+import org.imsglobal.lti2.objects.consumer.ToolConsumer;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -18,6 +20,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
 import javax.servlet.http.HttpServletResponse;
+import org.imsglobal.lti2.objects.consumer.ServiceOffered;
+import org.imsglobal.lti2.objects.consumer.ToolConsumer.LtiCapability;
+import org.imsglobal.lti2.objects.provider.ToolProxy;
 
 /**
  *
@@ -48,9 +53,13 @@ public class LtiToolController {
     }
 
     @RequestMapping(value = "/api/profile")
-    public ResponseEntity getConsumerProfile(HttpServletResponse response) {
+    public ResponseEntity getConsumerProfile(HttpServletRequest request, HttpServletResponse response) {
         response.setHeader("Content-type","application/vnd.ims.lti.v2.ToolConsumerProfile+json");
-        return new ResponseEntity(new ToolConsumer("guid", "tcp", config), HttpStatus.OK);
+        ToolConsumer me = new ToolConsumer("guid", "version", "tcp", config);
+        me.addCapabilites(Arrays.asList(LtiCapability.BASICLTI_LAUNCH, LtiCapability.USER_ID, LtiCapability.USER_IMAGE, LtiCapability.COURSE_SECTION_ID, LtiCapability.MEMBERSHIP_ROLE));
+        String endpoint = request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort() + "/tool_proxy_registration";
+        me.addServiceOffered(new ServiceOffered(endpoint, "tcp:ToolProxy.collection", "RestService", ToolProxy.CONTENT_TYPE, "POST"));
+        return new ResponseEntity(me, HttpStatus.OK);
     }
     
 }

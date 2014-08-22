@@ -7,7 +7,7 @@
 package net.paulgray.mocklti2.web;
 
 import org.imsglobal.lti2.LTI2Config;
-import org.imsglobal.lti2.objects.ToolConsumer;
+import org.imsglobal.lti2.objects.consumer.ToolConsumer;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
