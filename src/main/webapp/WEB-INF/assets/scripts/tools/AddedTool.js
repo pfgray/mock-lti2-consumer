@@ -30,7 +30,7 @@ app.factory('AddedTool', [function () {
                         hiddenField.setAttribute("value", params[key]);
 
                         form.appendChild(hiddenField);
-                     }
+                    }
                 }
 
                 document.body.appendChild(form);

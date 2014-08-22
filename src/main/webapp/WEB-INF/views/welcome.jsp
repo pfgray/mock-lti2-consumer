@@ -35,8 +35,8 @@
         <div class="container main">
             <div class="row">
                 <ul class="nav nav-tabs" role="tablist">
-                    <li ng-class="{active: $state.includes('intro')}"><a ui-sref="intro">Introduction</a></li>
                     <li ng-class="{active: $state.includes('tools')}"><a ui-sref="tools">LTI Tools</a></li>
+                    <li ng-class="{active: $state.includes('intro')}"><a ui-sref="intro">Introduction</a></li>
                 </ul>
                 <div ui-view></div>
             </div>

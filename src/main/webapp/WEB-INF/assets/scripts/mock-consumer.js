@@ -3,7 +3,7 @@ var app = angular.module('mock-consumer', ['ui.router']);
 app.config(function($stateProvider, $urlRouterProvider) {
     //
     // For any unmatched url, redirect to /state1
-    $urlRouterProvider.otherwise("/intro");
+    $urlRouterProvider.otherwise("/tools");
     //
     // Now set up the states
     $stateProvider

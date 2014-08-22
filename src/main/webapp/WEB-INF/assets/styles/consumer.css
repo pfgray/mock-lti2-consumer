@@ -22,3 +22,6 @@ li .row [class*='col-'] {
 body{
     background-color:#FFFFFF;
 }
+table.table tr td{
+    vertical-align:middle;
+}
