@@ -52,14 +52,23 @@ public class LtiToolController {
         return new ResponseEntity(ltiToolService.addTool(tool), HttpStatus.CREATED);
     }
 
-    @RequestMapping(value = "/api/profile")
+    @RequestMapping(value = "/api/profile", method = RequestMethod.GET)
     public ResponseEntity getConsumerProfile(HttpServletRequest request, HttpServletResponse response) {
         response.setHeader("Content-type","application/vnd.ims.lti.v2.ToolConsumerProfile+json");
         ToolConsumer me = new ToolConsumer("guid", "version", "tcp", config);
         me.addCapabilites(Arrays.asList(LtiCapability.BASICLTI_LAUNCH, LtiCapability.USER_ID, LtiCapability.USER_IMAGE, LtiCapability.COURSE_SECTION_ID, LtiCapability.MEMBERSHIP_ROLE));
-        String endpoint = request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort() + "/tool_proxy_registration";
+        String endpoint = request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort() + request.getContextPath() + "/api/tool_proxy_registration";
         me.addServiceOffered(new ServiceOffered(endpoint, "tcp:ToolProxy.collection", "RestService", ToolProxy.CONTENT_TYPE, "POST"));
         return new ResponseEntity(me, HttpStatus.OK);
+    }
+
+    @RequestMapping(value = "/api/tool_proxy_registration", method = RequestMethod.POST)
+    public ResponseEntity getConsumerProfile(@RequestBody ToolProxy toolProxy) {
+        //take the toolProxy, & set it up
+        System.out.println("Got a tool proxy!");
+        //change the tool's state to "registered"
+        //store the key & secret this app will use
+        return new ResponseEntity(HttpStatus.CREATED);
     }
     
 }

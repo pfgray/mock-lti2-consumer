@@ -47,5 +47,12 @@ public class LtiToolServiceHibernate implements LtiToolService {
         ltiTool.setId(id);
         return ltiTool;
     }
+
+    @Override
+    @Transactional
+    public LtiTool updateTool(LtiTool ltiTool) {
+        sessionFactory.getCurrentSession().saveOrUpdate(ltiTool);
+        return ltiTool;
+    }
     
 }
