@@ -66,6 +66,8 @@ public class LtiToolController {
     public ResponseEntity getConsumerProfile(@RequestBody ToolProxy toolProxy) {
         //take the toolProxy, & set it up
         System.out.println("Got a tool proxy!");
+        System.out.println("    now use consumer_key: " + toolProxy.getTool_proxy_guid());
+        System.out.println("    now use consumer_secret: " + toolProxy.getSecurity_contract().getShared_secret());
         //change the tool's state to "registered"
         //store the key & secret this app will use
         return new ResponseEntity(HttpStatus.CREATED);
