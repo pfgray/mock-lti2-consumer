@@ -5,16 +5,12 @@
  */
 package net.paulgray.mocklti2.tools;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
+
 import org.codehaus.jackson.annotate.JsonIgnore;
 import org.codehaus.jackson.annotate.JsonProperty;
+
+import java.util.List;
 
 /**
  *
@@ -41,7 +37,9 @@ public class LtiTool {
     @Column(name = "tool_state")
     @Enumerated(EnumType.STRING)
     private State state;
-    
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "tool")
+    List<LtiToolProxy> toolProxies;
+
     @JsonProperty
     public Integer getId() {
         return id;

@@ -27,6 +27,7 @@
         <property name="annotatedClasses">
             <list>
                 <value>net.paulgray.mocklti2.tools.LtiTool</value>
+                <value>net.paulgray.mocklti2.tools.LtiToolProxy</value>
             </list>
         </property>
     </bean>
