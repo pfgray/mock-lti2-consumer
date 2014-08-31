@@ -8,6 +8,9 @@ package net.paulgray.mocklti2.tools;
 
 import java.util.Arrays;
 import javax.servlet.http.HttpServletRequest;
+
+import org.imsglobal.aspect.Lti;
+import org.imsglobal.basiclti.LtiVerificationResult;
 import org.imsglobal.lti2.LTI2Config;
 import org.imsglobal.lti2.objects.consumer.ToolConsumer;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -62,15 +65,20 @@ public class LtiToolController {
         return new ResponseEntity(me, HttpStatus.OK);
     }
 
+    @Lti
     @RequestMapping(value = "/api/tool_proxy_registration", method = RequestMethod.POST)
-    public ResponseEntity getConsumerProfile(@RequestBody ToolProxy toolProxy) {
-        //take the toolProxy, & set it up
-        System.out.println("Got a tool proxy!");
-        System.out.println("    now use consumer_key: " + toolProxy.getTool_proxy_guid());
-        System.out.println("    now use consumer_secret: " + toolProxy.getSecurity_contract().getShared_secret());
-        //change the tool's state to "registered"
-        //store the key & secret this app will use
-        return new ResponseEntity(HttpStatus.CREATED);
+    public ResponseEntity getConsumerProfile(HttpServletRequest request, LtiVerificationResult result, @RequestBody ToolProxy toolProxy) {
+        if(!result.getSuccess()){
+            return new ResponseEntity(result.getError() + result.getMessage(), HttpStatus.BAD_REQUEST);
+        } else {
+            //take the toolProxy, & set it up
+            System.out.println("Got a tool proxy!");
+            System.out.println("    now use consumer_key: " + toolProxy.getTool_proxy_guid());
+            System.out.println("    now use consumer_secret: " + toolProxy.getSecurity_contract().getShared_secret());
+            //change the tool's state to "registered"
+            //store the key & secret this app will use
+            return new ResponseEntity(HttpStatus.CREATED);
+        }
     }
     
 }

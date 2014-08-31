@@ -40,6 +40,17 @@
     <!-- Derby setup: -->
     <jdbc:embedded-database id="dataSource" type="DERBY" >
         <jdbc:script location="sql/tools.sql"/>
-    </jdbc:embedded-database> 
+    </jdbc:embedded-database>
+
+    <!-- lti setup: -->
+    <aop:aspectj-autoproxy/>
+    <bean id="myAspect" class="org.imsglobal.aspect.LtiLaunchVerifier">
+        <constructor-arg>
+            <bean class="net.paulgray.mocklti2.tools.MockLti2ConsumerService"/>
+        </constructor-arg>
+        <constructor-arg>
+            <bean class="org.imsglobal.basiclti.LtiOauthVerifier"/>
+        </constructor-arg>
+    </bean>
     
 </beans>
