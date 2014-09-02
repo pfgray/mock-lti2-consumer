@@ -14,12 +14,14 @@ import java.util.List;
  */
 public interface LtiToolService {
     
-    public LtiTool getToolForId(String id);
+    public LtiTool getToolForId(Integer id);
 
     public List<LtiTool> getAll();
     
     public LtiTool addTool(LtiTool ltiTool);
 
     public LtiTool updateTool(LtiTool ltiTool);
+
+    public LtiToolProxy addToolProxy(LtiToolProxy toolProxy);
     
 }

@@ -14,6 +14,7 @@ public class LtiToolProxy {
     @GeneratedValue(strategy=GenerationType.IDENTITY)
     private Integer id;
 
+    @JoinColumn(name = "tool")
     @ManyToOne(fetch = FetchType.EAGER)
     private LtiTool tool;
 
@@ -23,7 +24,10 @@ public class LtiToolProxy {
     @Column(name = "default_url")
     private String defaultUrl;
 
-    @Column(name = "secret")
+    @Column(name = "lti_key")
+    private String key;
+
+    @Column(name = "lti_secret")
     private String secret;
 
     public Integer getId() {
@@ -58,6 +62,14 @@ public class LtiToolProxy {
         this.defaultUrl = defaultUrl;
     }
 
+    public String getKey() {
+        return key;
+    }
+
+    public void setKey(String key) {
+        this.key = key;
+    }
+
     public String getSecret() {
         return secret;
     }
@@ -65,4 +77,5 @@ public class LtiToolProxy {
     public void setSecret(String secret) {
         this.secret = secret;
     }
+
 }

@@ -37,7 +37,7 @@ public class LtiTool {
     @Column(name = "tool_state")
     @Enumerated(EnumType.STRING)
     private State state;
-    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "tool")
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER, mappedBy = "tool")
     List<LtiToolProxy> toolProxies;
 
     @JsonProperty
@@ -88,4 +88,12 @@ public class LtiTool {
         this.registerUrl = registerUrl;
     }
 
+    public List<LtiToolProxy> getToolProxies() {
+        return toolProxies;
+    }
+
+    public void setToolProxies(List<LtiToolProxy> toolProxies) {
+        this.toolProxies = toolProxies;
+    }
+    
 }

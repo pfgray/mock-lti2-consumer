@@ -14,11 +14,13 @@ insert into tools (label, register_url, tool_state) values ('sample-lti', 'http:
 
 create table tool_proxies (
     id               integer not null generated always as identity (start with 1, increment by 1),
-    tool             integer      NOT NULL,
+    tool             integer not null,
     secure_url       varchar(500) NOT NULL,
     default_url      varchar(500) NOT NULL,
-    secret           varchar(500) NOT NULL,
-    primary key (id)
+    lti_key          varchar(500) NOT NULL,
+    lti_secret       varchar(500) NOT NULL,
+    primary key (id),
+    foreign key (tool) references tools (id)
 );
 
-insert into tool_proxies (tool, secure_url, default_url, secret) values (2, 'http://lti-chat.paulgray.net/lti', 'http://lti-chat.paulgray.net/lti', 'secret');
+--insert into tool_proxies (tool, secure_url, default_url, lti_key, lti_secret) values (2, 'http://lti-chat.paulgray.net/lti', 'http://lti-chat.paulgray.net/lti', 'lti-example-key','secret');

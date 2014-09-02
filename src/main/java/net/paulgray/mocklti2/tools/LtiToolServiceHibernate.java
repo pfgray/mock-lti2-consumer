@@ -26,7 +26,7 @@ public class LtiToolServiceHibernate implements LtiToolService {
 
     @Override
     @Transactional
-    public LtiTool getToolForId(String id) {
+    public LtiTool getToolForId(Integer id) {
         Criteria crit = sessionFactory.getCurrentSession().createCriteria(LtiTool.class);
         crit.add(Restrictions.eq("id", id));
         return (LtiTool) crit.uniqueResult();
@@ -54,5 +54,10 @@ public class LtiToolServiceHibernate implements LtiToolService {
         sessionFactory.getCurrentSession().saveOrUpdate(ltiTool);
         return ltiTool;
     }
-    
+
+    @Override
+    @Transactional
+    public LtiToolProxy addToolProxy(LtiToolProxy toolProxy) {
+        return (LtiToolProxy) sessionFactory.getCurrentSession().save(toolProxy);
+    }
 }
