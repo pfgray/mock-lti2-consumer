@@ -10,11 +10,14 @@
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <title>MockLti2Consumer</title>
-        <script src="http://cdnjs.cloudflare.com/ajax/libs/angular.js/1.2.20/angular.min.js"></script>
+        <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+        <script src="//cdnjs.cloudflare.com/ajax/libs/angular.js/1.2.20/angular.min.js"></script>
         <script src="//cdnjs.cloudflare.com/ajax/libs/angular-ui-router/0.2.10/angular-ui-router.min.js"></script>
         <script src="assets/scripts/mock-consumer.js"></script>
         <script src="assets/scripts/ToolController.js"></script>
+        <script src="assets/scripts/services/LtiLaunchService.js"></script>
         <script src="assets/scripts/tools/AddedTool.js"></script>
+        <script src="assets/scripts/tools/RegisteredTool.js"></script>
 
         <script>
             window.web_context_path = "${contextPath}";

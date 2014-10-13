@@ -4,19 +4,7 @@
  * and open the template in the editor.
  */
 
-app.controller('ToolsController', ['$scope', '$http', 'AddedTool', function($scope, $http, AddedTool) {
-    
-    var RegisteredTool = function(tool){
-        tool.button = {
-            label:"Launch Tool",
-            icon:"fa-rocket",
-            onClick:function(){
-                alert('registered tool');
-            }
-        };
-        tool.liClass = 'list-group-item-success';
-        return tool;
-    };
+app.controller('ToolsController', ['$scope', '$http', 'AddedTool', 'RegisteredTool',  function($scope, $http, AddedTool, RegisteredTool) {
     var FailedTool = function(tool){
         tool.button = {
             label:"Re-Register Tool",

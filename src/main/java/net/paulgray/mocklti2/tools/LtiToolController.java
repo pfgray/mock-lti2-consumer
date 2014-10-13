@@ -10,12 +10,19 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import java.util.Arrays;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+
+import net.paulgray.mocklti2.web.LtiLaunchRequest;
 import org.apache.commons.lang3.StringUtils;
 import org.imsglobal.aspect.Lti;
+import org.imsglobal.basiclti.LtiSigner;
+import org.imsglobal.basiclti.LtiSigningException;
 import org.imsglobal.basiclti.LtiVerificationResult;
 import org.imsglobal.lti2.LTI2Config;
 import org.imsglobal.lti2.objects.consumer.ServiceOffered;
@@ -44,6 +51,9 @@ public class LtiToolController {
     
     @Autowired
     LtiToolService ltiToolService;
+
+    @Autowired
+    LtiSigner ltiSigner;
     
     private final static Logger logger = Logger.getLogger(LtiToolController.class.getName()); 
     
@@ -134,4 +144,30 @@ public class LtiToolController {
             return new ResponseEntity(HttpStatus.CREATED);
         }
     }
+
+    @RequestMapping(value = "/api/tools/{toolId}/launch", method = RequestMethod.GET)
+    public ResponseEntity getToolLaunchForId(@PathVariable("toolId") Integer toolId){
+        LtiTool tool = ltiToolService.getToolForId(toolId);
+        List<LtiToolProxy> tools = tool.getToolProxies();
+        if(tools.size() > 0) {
+            Map<String, String> params = new HashMap<>();
+            LtiToolProxy proxy = tools.get(tools.size() - 1);
+            String url = proxy.getSecureUrl();
+            String secret = proxy.getSecret();
+            String key = proxy.getKey();
+            String method = "POST";
+
+            Map<String, String> signedParameters = null;
+            try {
+                signedParameters = ltiSigner.signParameters(params, key, secret, url, method);
+            } catch (LtiSigningException e) {
+                e.printStackTrace();
+                return new ResponseEntity("LtiSigningException occurred: " + e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+            }
+            return new ResponseEntity(new LtiLaunchRequest(signedParameters, url, method) , HttpStatus.OK);
+        } else {
+            return new ResponseEntity(HttpStatus.NOT_FOUND);
+        }
+    }
+
 }

@@ -53,5 +53,8 @@
             <bean class="org.imsglobal.basiclti.LtiOauthVerifier"/>
         </constructor-arg>
     </bean>
+
+    <bean id="ltiSigner" class="org.imsglobal.basiclti.LtiOauthSigner">
+    </bean>
     
 </beans>
