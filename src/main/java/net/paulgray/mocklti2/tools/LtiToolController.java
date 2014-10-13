@@ -74,7 +74,7 @@ public class LtiToolController {
 
     @Lti
     @RequestMapping(value = "/api/tool_proxy_registration", method = RequestMethod.POST)
-    public ResponseEntity getConsumerProfile(HttpServletRequest request, LtiVerificationResult result, @RequestBody ToolProxy toolProxy, @RequestParam Integer toolId) throws JsonProcessingException {
+    public ResponseEntity registerConsumerProfile(HttpServletRequest request, LtiVerificationResult result, @RequestBody ToolProxy toolProxy, @RequestParam Integer toolId) throws JsonProcessingException {
         if(!result.getSuccess()){
             return new ResponseEntity(result.getError() + result.getMessage(), HttpStatus.BAD_REQUEST);
         } else {
@@ -103,6 +103,9 @@ public class LtiToolController {
                     }
                 }
             }
+            logger.info("Extracted base url: " + defaultBaseUrl);
+            logger.info("Extracted secure base url: " + secureBaseUrl);
+
 
             //find the basic-lti-launch-request.
             //This part I'm unsure of. Why is there a "message" attribute on the tool_profile itself, as well as one each resource_handler definition?
@@ -115,7 +118,6 @@ public class LtiToolController {
                             ltiToolProxy.setDefaultUrl(defaultBaseUrl + message.get("path").asText());
                             ltiToolProxy.setSecureUrl(secureBaseUrl + message.get("path").asText());
                         }
-                        
                     }
                 }
             }
@@ -126,10 +128,10 @@ public class LtiToolController {
             //change the tool's state to "registered"
             LtiTool ltiTool = ltiToolService.getToolForId(toolId);
             ltiTool.getToolProxies().add(ltiToolProxy);
+            ltiTool.setState(LtiTool.State.registered);
             ltiToolProxy.setTool(ltiTool);
             ltiToolService.updateTool(ltiTool);
             return new ResponseEntity(HttpStatus.CREATED);
         }
     }
-    
 }

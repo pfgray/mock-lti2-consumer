@@ -1,5 +1,7 @@
 package net.paulgray.mocklti2.tools;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import javax.persistence.*;
 
 /**
@@ -16,6 +18,7 @@ public class LtiToolProxy {
 
     @JoinColumn(name = "tool")
     @ManyToOne(fetch = FetchType.EAGER)
+    @JsonIgnore
     private LtiTool tool;
 
     @Column(name = "secure_url")
