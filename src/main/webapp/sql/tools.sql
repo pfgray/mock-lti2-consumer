@@ -7,10 +7,9 @@ create table tools (
     unique(label)
 );
 
-insert into tools (label, register_url) values ('campuspack', 'http://www.google.com');
-insert into tools (label, register_url, tool_state) values ('lti-chat', 'http://lti-chat.paulgray.net', 'registered');
+insert into tools (label, register_url, tool_state) values ('campuspack', 'http://www.google.com', 'registered');
+insert into tools (label, register_url) values ('lti-chat', 'http://lti-chat.paulgray.net');
 insert into tools (label, register_url, tool_state) values ('sample-lti', 'http://www.google.com', 'failed');
-
 
 create table tool_proxies (
     id               integer not null generated always as identity (start with 1, increment by 1),
@@ -23,4 +22,5 @@ create table tool_proxies (
     foreign key (tool) references tools (id)
 );
 
---insert into tool_proxies (tool, secure_url, default_url, lti_key, lti_secret) values (2, 'http://lti-chat.paulgray.net/lti', 'http://lti-chat.paulgray.net/lti', 'lti-example-key','secret');
+insert into tool_proxies (tool, secure_url, default_url, lti_key, lti_secret)
+       values (1, 'https://qa-paul.campuspack.net/control/lti', 'http://qa-paul.campuspack.net/control/lti', 'mock_lti2_consumer', 'wyxb-7tdsvjnk-c7zp');

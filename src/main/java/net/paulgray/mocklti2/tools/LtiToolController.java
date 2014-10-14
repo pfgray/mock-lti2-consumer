@@ -151,6 +151,16 @@ public class LtiToolController {
         List<LtiToolProxy> tools = tool.getToolProxies();
         if(tools.size() > 0) {
             Map<String, String> params = new HashMap<>();
+            params.put("user_id", "mockconsumeradmin");
+            params.put("lis_person_name_full", "Mock Consumer Admin");
+
+            //These are required for Campus Pack:
+            params.put("lti_message_type", "basic-lti-launch-request");
+            params.put("lti_version", "LTI-1p0");
+            params.put("resource_link_id", "1");
+            params.put("tool_consumer_instance_guid", "mock_lti2_consumer");
+            params.put("roles", "administrator");
+
             LtiToolProxy proxy = tools.get(tools.size() - 1);
             String url = proxy.getSecureUrl();
             String secret = proxy.getSecret();
