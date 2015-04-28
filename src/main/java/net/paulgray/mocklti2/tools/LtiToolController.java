@@ -9,21 +9,11 @@ package net.paulgray.mocklti2.tools;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-
 import net.paulgray.mocklti2.web.LtiLaunchRequest;
-import org.apache.commons.lang3.StringUtils;
 import org.imsglobal.aspect.Lti;
-import org.imsglobal.basiclti.LtiSigner;
-import org.imsglobal.basiclti.LtiSigningException;
-import org.imsglobal.basiclti.LtiVerificationResult;
+import org.imsglobal.lti.launch.LtiSigner;
+import org.imsglobal.lti.launch.LtiSigningException;
+import org.imsglobal.lti.launch.LtiVerificationResult;
 import org.imsglobal.lti2.LTI2Config;
 import org.imsglobal.lti2.objects.consumer.ServiceOffered;
 import org.imsglobal.lti2.objects.consumer.ToolConsumer;
@@ -33,11 +23,15 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.logging.Logger;
 
 /**
  *

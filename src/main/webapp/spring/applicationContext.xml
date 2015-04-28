@@ -50,11 +50,11 @@
             <bean class="net.paulgray.mocklti2.tools.MockLti2ConsumerService"/>
         </constructor-arg>
         <constructor-arg>
-            <bean class="org.imsglobal.basiclti.LtiOauthVerifier"/>
+            <bean class="org.imsglobal.lti.launch.LtiOauthVerifier"/>
         </constructor-arg>
     </bean>
 
-    <bean id="ltiSigner" class="org.imsglobal.basiclti.LtiOauthSigner">
+    <bean id="ltiSigner" class="org.imsglobal.lti.launch.LtiOauthSigner">
     </bean>
     
 </beans>
