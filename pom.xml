@@ -9,12 +9,12 @@
     <artifactId>mock-lti2-consumer</artifactId>
     <version>1.0.0</version>
     <packaging>war</packaging>
-    
+
     <properties>
         <springVersion>4.0.3.RELEASE</springVersion>
         <hibernateVersion>4.3.5.Final</hibernateVersion>
     </properties>
-  
+
     <dependencies>
         <dependency>
             <groupId>javax.servlet</groupId>
@@ -108,7 +108,7 @@
         <dependency>
             <groupId>org.imsglobal</groupId>
             <artifactId>basiclti-util</artifactId>
-            <version>1.0.1-SNAPSHOT</version>
+            <version>1.1.1</version>
         </dependency>
     </dependencies>
 

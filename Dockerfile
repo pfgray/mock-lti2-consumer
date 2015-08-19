@@ -1,18 +1,20 @@
-FROM dockerfile/ubuntu
+FROM library/ubuntu
 
 #install java
 RUN apt-get update
 RUN apt-get install -y openjdk-7-jdk
+RUN apt-get install -y wget
 
 #install tomcat
 WORKDIR /opt
-RUN wget http://mirror.cogentco.com/pub/apache/tomcat/tomcat-8/v8.0.11/bin/apache-tomcat-8.0.11.tar.gz
-RUN tar -zxvf apache-tomcat-8.0.11.tar.gz
-RUN mv apache-tomcat-8.0.11 tomcat
+RUN wget http://apache.mirrorcatalogs.com/tomcat/tomcat-8/v8.0.24/bin/apache-tomcat-8.0.24.tar.gz
+RUN tar -zxvf apache-tomcat-8.0.24.tar.gz
+RUN mv apache-tomcat-8.0.24 tomcat
 
 #install Maven
 RUN apt-get install -y maven
 
+RUN apt-get install -y git
 #Download and install the latest branch(jackson2) of basiclti-util-java
 #TODO: this will need to change when jackson2 becomes available
 WORKDIR /root
@@ -40,4 +42,3 @@ WORKDIR /opt/tomcat/bin
 ADD ./run.sh /usr/local/bin/run
 EXPOSE 8080
 CMD ["/bin/sh", "-e", "/usr/local/bin/run"]
-
