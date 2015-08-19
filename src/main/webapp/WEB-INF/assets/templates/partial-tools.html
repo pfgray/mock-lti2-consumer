@@ -31,11 +31,11 @@
                     </div>
                 </div>
             </div>
-            <div class="toolProxySubmission">
+            <div class="toolProxySubmission" ng-if="tool.latestToolProxySubmission">
                 <a ng-click="tool.tpRequestOpen = !tool.tpRequestOpen"><span ng-if="tool.tpRequestOpen">hide</span><span ng-if="!tool.tpRequestOpen">show latest tool proxy request</span></a>
-                <div class="toolProxyRequest" ng-if="tool.tpRequestOpen">
-                    {{tool.latestToolProxySubmission}}
-                </div>
+                <pre class="toolProxyRequest" ng-if="tool.tpRequestOpen">
+                    {{JSON.stringify(tool.latestToolProxySubmission, null, 2)}}
+                </pre>
             </div>
         </li>
     </ul>
