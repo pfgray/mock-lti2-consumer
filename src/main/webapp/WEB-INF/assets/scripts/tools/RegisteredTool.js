@@ -20,6 +20,7 @@ app.factory('RegisteredTool', ['LtiLaunchService', function (ltiLaunchService) {
             }
         };
         tool.liClass = 'list-group-item-success';
+        tool.latestToolProxySubmission = JSON.parse(tool.latestToolProxySubmission);
         return tool;
     };
 

@@ -38,7 +38,6 @@ app.factory('AddedTool', [function () {
             }
         };
         tool.liClass = 'list-group-item-warning';
-        tool.latestToolProxySubmission = JSON.parse(tool.latestToolProxySubmission);
         return tool;
     };
     
