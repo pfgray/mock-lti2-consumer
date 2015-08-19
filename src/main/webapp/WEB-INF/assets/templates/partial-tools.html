@@ -20,7 +20,7 @@
             <div class="clearfix tool">
                 <div class="center-vert pull-left">
                     <div class="center-vert-content">
-                        <span class="added"><i class="fa fa-cog"></i> {{tool.label}}</span>
+                        <span class="added"><i class="fa fa-cog"></i> <span>{{tool.label}}</span> <span>{{tool.launchUrl || tool.registerUrl}}</span></span>
                     </div>
                 </div>
                 <div class="center-vert pull-right">
@@ -29,6 +29,12 @@
                             <i class="fa" ng-class="tool.button.icon"></i> {{tool.button.label}}
                         </button>
                     </div>
+                </div>
+            </div>
+            <div class="toolProxySubmission">
+                <a ng-click="tool.tpRequestOpen = !tool.tpRequestOpen"><span ng-if="tool.tpRequestOpen">hide</span><span ng-if="!tool.tpRequestOpen">show latest tool proxy request</span></a>
+                <div class="toolProxyRequest" ng-if="tool.tpRequestOpen">
+                    {{tool.latestToolProxySubmission}}
                 </div>
             </div>
         </li>
