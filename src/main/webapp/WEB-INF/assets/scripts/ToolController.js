@@ -55,5 +55,9 @@ app.controller('ToolsController', ['$scope', '$http', 'AddedTool', 'RegisteredTo
             console.error('ERROR!', data);
         });
     };
+
+    $scope.formatJson = function(obj){
+        return JSON.stringify(obj, null, 2)
+    }
     
 }]);

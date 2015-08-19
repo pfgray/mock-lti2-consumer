@@ -34,7 +34,7 @@
             <div class="toolProxySubmission" ng-if="tool.latestToolProxySubmission">
                 <a ng-click="tool.tpRequestOpen = !tool.tpRequestOpen"><span ng-if="tool.tpRequestOpen">hide</span><span ng-if="!tool.tpRequestOpen">show latest tool proxy request</span></a>
                 <pre class="toolProxyRequest" ng-if="tool.tpRequestOpen">
-                    {{JSON.stringify(tool.latestToolProxySubmission, null, 2)}}
+                    {{formatJson(tool.latestToolProxySubmission)}}
                 </pre>
             </div>
         </li>
