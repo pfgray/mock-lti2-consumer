@@ -9,6 +9,7 @@ import javax.persistence.*;
 
 import org.codehaus.jackson.annotate.JsonIgnore;
 import org.codehaus.jackson.annotate.JsonProperty;
+import org.imsglobal.lti2.objects.provider.ToolProxy;
 
 import java.util.List;
 
@@ -39,6 +40,8 @@ public class LtiTool {
     private State state;
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER, mappedBy = "tool")
     List<LtiToolProxy> toolProxies;
+    @Column(name = "latest_tool_proxy_submission")
+    String latestToolProxySubmission;
 
     @JsonProperty
     public Integer getId() {
@@ -95,5 +98,13 @@ public class LtiTool {
     public void setToolProxies(List<LtiToolProxy> toolProxies) {
         this.toolProxies = toolProxies;
     }
-    
+
+    @JsonProperty
+    public String getLatestToolProxySubmission() {
+        return latestToolProxySubmission;
+    }
+
+    public void setLatestToolProxySubmission(String latestToolProxySubmission) {
+        this.latestToolProxySubmission = latestToolProxySubmission;
+    }
 }

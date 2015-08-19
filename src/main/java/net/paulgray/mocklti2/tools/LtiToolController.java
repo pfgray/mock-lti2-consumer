@@ -91,13 +91,16 @@ public class LtiToolController {
     @Lti
     @RequestMapping(value = "/api/tool_proxy_registration", method = RequestMethod.POST)
     public ResponseEntity registerConsumerProfile(HttpServletRequest request, LtiVerificationResult result, @RequestBody ToolProxy toolProxy, @RequestParam Integer toolId) throws JsonProcessingException {
+        ObjectMapper mapper = new ObjectMapper();
+        LtiTool ltiTool = ltiToolService.getToolForId(toolId);
+        ltiTool.setLatestToolProxySubmission(mapper.writeValueAsString(toolProxy));
         if(!result.getSuccess()){
+            ltiToolService.updateTool(ltiTool);
             return new ResponseEntity(result.getError() + result.getMessage(), HttpStatus.BAD_REQUEST);
         } else {
             LtiToolProxy ltiToolProxy = new LtiToolProxy();
             
             //TODO: refactor this whole block... there needs to be a better way!
-            ObjectMapper mapper = new ObjectMapper();
             
             //find the base url for lti launch messages
             String defaultBaseUrl = "";
@@ -142,7 +145,6 @@ public class LtiToolController {
             ltiToolProxy.setSecret(toolProxy.getSecurity_contract().getShared_secret());
             
             //change the tool's state to "registered"
-            LtiTool ltiTool = ltiToolService.getToolForId(toolId);
             ltiTool.getToolProxies().add(ltiToolProxy);
             ltiTool.setState(LtiTool.State.registered);
             ltiToolProxy.setTool(ltiTool);
