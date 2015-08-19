@@ -40,7 +40,8 @@ public class LtiTool {
     private State state;
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER, mappedBy = "tool")
     List<LtiToolProxy> toolProxies;
-    @Column(name = "latest_tool_proxy_submission")
+    @Column(name = "latest_tool_proxy_submission", columnDefinition = "clob")
+    @Lob
     String latestToolProxySubmission;
 
     @JsonProperty
