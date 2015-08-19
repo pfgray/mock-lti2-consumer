@@ -19,7 +19,7 @@ app.factory('AddedTool', [function () {
                 }
                 
                 var form = document.createElement("form");
-                form.setAttribute("method", "GET");
+                form.setAttribute("method", "POST");
                 form.setAttribute("action", tool.registerUrl);
 
                 for(var key in params) {
