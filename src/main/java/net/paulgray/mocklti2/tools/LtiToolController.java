@@ -70,7 +70,19 @@ public class LtiToolController {
     public ResponseEntity getConsumerProfile(HttpServletRequest request, HttpServletResponse response, @RequestParam String toolId) {
         response.setHeader("Content-type","application/vnd.ims.lti.v2.ToolConsumerProfile+json");
         ToolConsumer me = new ToolConsumer("guid", "version", "tcp", config);
-        me.addCapabilites(Arrays.asList(LtiCapability.BASICLTI_LAUNCH, LtiCapability.USER_ID, LtiCapability.USER_IMAGE, LtiCapability.COURSE_SECTION_ID, LtiCapability.MEMBERSHIP_ROLE));
+        me.addCapabilites(Arrays.asList(
+                LtiCapability.BASICLTI_LAUNCH,
+                LtiCapability.USER_ID,
+                LtiCapability.USER_IMAGE,
+                LtiCapability.COURSE_SECTION_ID,
+                LtiCapability.MEMBERSHIP_ROLE,
+                "Person.name.family",
+                "Person.name.given",
+                "Person.email.primary",
+                "ToolProxy.custom.url",
+                "ToolProxyBinding.custom.url",
+                "LtiLink.custom.url"
+        ));
         String endpoint = request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort() + request.getContextPath() + "/api/tool_proxy_registration?toolId=" + toolId;
         me.addServiceOffered(new ServiceOffered(endpoint, "tcp:ToolProxy.collection", "RestService", ToolProxy.CONTENT_TYPE, "POST"));
         return new ResponseEntity(me, HttpStatus.OK);
