@@ -85,6 +85,12 @@
             <groupId>org.imsglobal</groupId>
             <artifactId>basiclti-util</artifactId>
             <version>1.1.1</version>
+            <exclusions>
+                <exclusion>
+                    <groupId>javax.servlet</groupId>
+                    <artifactId>servlet-api</artifactId>
+                </exclusion>
+            </exclusions>
         </dependency>
         <dependency>
             <groupId>org.apache.tomcat.embed</groupId>
