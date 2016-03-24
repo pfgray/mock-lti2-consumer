@@ -6,6 +6,7 @@
 package net.paulgray.mocklti2.config;
 
 import org.springframework.context.annotation.Configuration;
+import org.springframework.web.servlet.config.annotation.DefaultServletHandlerConfigurer;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
 
@@ -23,4 +24,5 @@ public class WebConfig extends WebMvcConfigurerAdapter {
                     "WEB-INF/assets/");
         }
     }
+
 }

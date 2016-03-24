@@ -1,3 +1,4 @@
+
 create table tools (
     id               integer not null generated always as identity (start with 1, increment by 1),
     label            varchar(20) NOT NULL,
