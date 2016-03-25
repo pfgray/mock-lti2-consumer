@@ -1,0 +1,51 @@
+<div class="container">
+    <form>
+
+        <!-- Launch -->
+        <div class="step">
+            <h5>Launch</h5>
+            <div class="row">
+                <div class="col-md-6">
+                    <input ng-model="launch.url" placeholder="Url" class="form-control" />
+                </div>
+                <div class="col-md-6">
+                    <input ng-model="launch.key" placeholder="Key" class="form-control" />
+                    <input ng-model="launch.secret" placeholder="Secret" class="form-control" />
+                </div>
+            </div>
+        </div>
+
+        <!-- User -->
+        <div class="step">
+            <h5>User</h5>
+            <div class="row">
+                <div class="col-md-6">
+                    <input ng-model="launch.userId" placeholder="Id" class="form-control" />
+                    <input ng-model="launch.userFullName" placeholder="Full Name" class="form-control" />
+                    <input ng-model="launch.userRoles" placeholder="Roles" class="form-control" />
+                </div>
+                <div class="col-md-6">
+                    <input ng-model="launch.userEmailAddress" placeholder="Email" class="form-control" />
+                    <input ng-model="launch.userGivenName" placeholder="Given Name" class="form-control" />
+                    <input ng-model="launch.userFamilyName" placeholder="Family Name" class="form-control" />
+                </div>
+            </div>
+        </div>
+
+        <!-- Course -->
+        <div class="step">
+            <h5>Context</h5>
+            <div class="row">
+                <div class="col-md-6">
+                    <input ng-model="launch.contextId" placeholder="Id" class="form-control" />
+                    <input ng-model="launch.contextTitle" placeholder="Title" class="form-control" />
+                    <input ng-model="launch.contextLabel" placeholder="Label (short name)" class="form-control" />
+                </div>
+                <div class="col-md-6">
+                    <input ng-model="launch.resourceId" placeholder="Resource Id" class="form-control" />
+                    <input ng-model="launch.resourceTitle" placeholder="Resource Title" class="form-control" />
+                </div>
+            </div>
+        </div>
+    </form>
+</div>

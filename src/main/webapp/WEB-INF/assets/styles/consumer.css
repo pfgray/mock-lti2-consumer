@@ -1,5 +1,5 @@
 .view {
-    margin:1em; 
+    margin-top: 1em;
 }
 .center-vert{
     height:100%;
@@ -27,4 +27,22 @@ table.table tr td{
 }
 .toolProxySubmission a{
     cursor: pointer;
+}
+
+.step {
+    padding: 9px 14px;
+    margin-bottom: 14px;
+    background-color: #f7f7f9;
+    border: 1px solid #e1e1e8;
+    border-radius: 4px;
+}
+
+.step h5 {
+    margin: 0 0 0.5em 0;
+    font-weight: bold;
+}
+
+.step input {
+    padding: 3px 6px;
+    margin-bottom: 6px;
 }

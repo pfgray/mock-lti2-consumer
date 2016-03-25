@@ -11,9 +11,10 @@
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <title>MockLti2Consumer</title>
         <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
-        <script src="//cdnjs.cloudflare.com/ajax/libs/angular.js/1.2.20/angular.min.js"></script>
-        <script src="//cdnjs.cloudflare.com/ajax/libs/angular-ui-router/0.2.10/angular-ui-router.min.js"></script>
+        <script src="//cdnjs.cloudflare.com/ajax/libs/angular.js/1.5.2/angular.min.js"></script>
+        <script src="//cdnjs.cloudflare.com/ajax/libs/angular-ui-router/0.2.18/angular-ui-router.min.js"></script>
         <script src="assets/scripts/mock-consumer.js"></script>
+        <script src="assets/scripts/ltiLaunches/ltiLaunches.js"></script>
         <script src="assets/scripts/ToolController.js"></script>
         <script src="assets/scripts/services/LtiLaunchService.js"></script>
         <script src="assets/scripts/tools/AddedTool.js"></script>
@@ -38,8 +39,8 @@
         <div class="container main">
             <div class="row">
                 <ul class="nav nav-tabs" role="tablist">
-                    <li ng-class="{active: $state.includes('tools')}"><a ui-sref="tools">LTI Tools</a></li>
-                    <li ng-class="{active: $state.includes('intro')}"><a ui-sref="intro">Introduction</a></li>
+                    <li ng-class="{active: $state.includes('tools')}"><a ui-sref="tools">LTI Tool Registration</a></li>
+                    <li ng-class="{active: $state.includes('intro')}"><a ui-sref="intro">Manual Launches</a></li>
                 </ul>
                 <div ui-view></div>
             </div>

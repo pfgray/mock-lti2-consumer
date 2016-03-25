@@ -1,42 +1,44 @@
 <div class="view" ng-controller="ToolsController">
-    <h1>Tools</h1>
-    <i class="fa-li fa fa-circle-o-notch fa-spin"></i>
-    <div class="row add-tool">
-        <div class="col-md-5">
-            <input class="form-control" type="text" placeholder="Name" ng-model="tool_name"/>
+    <div class="container">
+        <h1>Tools</h1>
+        <i class="fa-li fa fa-circle-o-notch fa-spin"></i>
+        <div class="row add-tool">
+            <div class="col-md-5">
+                <input class="form-control" type="text" placeholder="Name" ng-model="tool_name"/>
+            </div>
+            <div class="col-md-5">
+                <input class="form-control" type="text" placeholder="Registration url" ng-model="registration_url"/>
+            </div>
+            <div class="col-md-2">
+                <button type="button" class="btn btn-default btn-block action" ng-click="addTool(tool_name, registration_url);">
+                    <span ng-if="addingTool"><i class="fa fa-circle-o-notch fa-spin"></i></span>
+                    <span ng-if="!addingTool"><i class="fa fa-plus"></i> Add tool</span>
+                </button>
+            </div>
         </div>
-        <div class="col-md-5">
-            <input class="form-control" type="text" placeholder="Registration url" ng-model="registration_url"/>
-        </div>
-        <div class="col-md-2">
-            <button type="button" class="btn btn-default btn-block action" ng-click="addTool(tool_name, registration_url);">
-                <span ng-if="addingTool"><i class="fa fa-circle-o-notch fa-spin"></i></span>
-                <span ng-if="!addingTool"><i class="fa fa-plus"></i> Add tool</span>
-            </button>
-        </div>
+        <ul class="list-group" ng-if="!loading">
+            <li class="list-group-item" ng-repeat="tool in tools" ng-class="tool.liClass">
+                <div class="clearfix tool">
+                    <div class="center-vert pull-left">
+                        <div class="center-vert-content">
+                            <span class="added"><i class="fa fa-cog"></i> <span>{{tool.label}}</span> <span>{{tool.launchUrl || tool.registerUrl}}</span></span>
+                        </div>
+                    </div>
+                    <div class="center-vert pull-right">
+                        <div class="center-vert-content">
+                            <button type="button" class="btn btn-default action" ng-click="tool.button.onClick()">
+                                <i class="fa" ng-class="tool.button.icon"></i> {{tool.button.label}}
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                <div class="toolProxySubmission" ng-if="tool.latestToolProxySubmission">
+                    <a ng-click="tool.tpRequestOpen = !tool.tpRequestOpen"><span ng-if="tool.tpRequestOpen">hide</span><span ng-if="!tool.tpRequestOpen">show latest tool proxy request</span></a>
+                    <pre class="toolProxyRequest" ng-if="tool.tpRequestOpen">
+                        {{formatJson(tool.latestToolProxySubmission)}}
+                    </pre>
+                </div>
+            </li>
+        </ul>
     </div>
-    <ul class="list-group" ng-if="!loading">
-        <li class="list-group-item" ng-repeat="tool in tools" ng-class="tool.liClass">
-            <div class="clearfix tool">
-                <div class="center-vert pull-left">
-                    <div class="center-vert-content">
-                        <span class="added"><i class="fa fa-cog"></i> <span>{{tool.label}}</span> <span>{{tool.launchUrl || tool.registerUrl}}</span></span>
-                    </div>
-                </div>
-                <div class="center-vert pull-right">
-                    <div class="center-vert-content">
-                        <button type="button" class="btn btn-default action" ng-click="tool.button.onClick()">
-                            <i class="fa" ng-class="tool.button.icon"></i> {{tool.button.label}}
-                        </button>
-                    </div>
-                </div>
-            </div>
-            <div class="toolProxySubmission" ng-if="tool.latestToolProxySubmission">
-                <a ng-click="tool.tpRequestOpen = !tool.tpRequestOpen"><span ng-if="tool.tpRequestOpen">hide</span><span ng-if="!tool.tpRequestOpen">show latest tool proxy request</span></a>
-                <pre class="toolProxyRequest" ng-if="tool.tpRequestOpen">
-                    {{formatJson(tool.latestToolProxySubmission)}}
-                </pre>
-            </div>
-        </li>
-    </ul>
 </div>
