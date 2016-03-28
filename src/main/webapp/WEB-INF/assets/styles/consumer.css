@@ -50,3 +50,22 @@ table.table tr td{
     padding: 3px 6px;
     margin-bottom: 6px;
 }
+
+
+.user-image-container * {
+    display: inline-block;
+}
+.user-image-container input {
+  width: calc(100% - 38px);
+}
+
+.user-image-container input:only-child {
+  width: 100%;
+}
+
+.user-image-container img {
+  height: 32px;
+  width: 32px;
+  margin-right: 6px;
+  border-radius: 100%;
+}

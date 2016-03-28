@@ -23,9 +23,13 @@
             </select><div class="clearfix"></div></h5>
             <div class="row">
                 <div class="col-md-6">
-                    <input ng-model="launch.user.user_id" placeholder="Id" class="form-control" />
+                    <div class="user-image-container">
+                        <img ng-if="launch.user.user_image" ng-src="{{launch.user.user_image}}"/><input
+                            ng-model="launch.user.user_image" placeholder="Image" class="form-control" />
+                    </div>
                     <input ng-model="launch.user.lis_person_name_full" placeholder="Full Name" class="form-control" />
                     <input ng-model="launch.user.roles" placeholder="Roles" class="form-control" />
+                    <input ng-model="launch.user.user_id" placeholder="Id" class="form-control" />
                 </div>
                 <div class="col-md-6">
                     <input ng-model="launch.user.lis_person_contact_email_primary" placeholder="Email" class="form-control" />
