@@ -8,8 +8,8 @@ app.config(function($stateProvider, $urlRouterProvider) {
     // Now set up the states
     $stateProvider
     .state('intro', {
-        url: "/intro",
-        templateUrl: "assets/templates/partial-intro.html"
+        url: "/manual",
+        templateUrl: "assets/templates/partial-manual.html"
     })
     .state('tools', {
         url: "/tools",
