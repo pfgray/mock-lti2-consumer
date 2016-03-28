@@ -9,10 +9,8 @@ To run on tomcat:
 ----
 ```
 cd mock-lti2-consumer
-mvn clean install
+mvn spring-boot:run
 ```
-deploy the war file located in:
-`mock-lti2-consumer/target/mock-lti2-consumer-*.war`
 
 Making requests against the server:
 ----
