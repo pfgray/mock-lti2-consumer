@@ -1,16 +1,16 @@
 <div class="container">
     <form>
 
-        <!-- Launch -->
+        <!-- Tool -->
         <div class="step">
-            <h5>Launch</h5>
+            <h5>Tool</h5>
             <div class="row">
                 <div class="col-md-6">
-                    <input ng-model="launch.url" placeholder="Url" class="form-control" />
+                    <input ng-model="launch.tool.url" placeholder="Url" class="form-control" />
                 </div>
                 <div class="col-md-6">
-                    <input ng-model="launch.key" placeholder="Key" class="form-control" />
-                    <input ng-model="launch.secret" placeholder="Secret" class="form-control" />
+                    <input ng-model="launch.tool.key" placeholder="Key" class="form-control" />
+                    <input ng-model="launch.tool.secret" placeholder="Secret" class="form-control" />
                 </div>
             </div>
         </div>
@@ -20,14 +20,14 @@
             <h5>User</h5>
             <div class="row">
                 <div class="col-md-6">
-                    <input ng-model="launch.userId" placeholder="Id" class="form-control" />
-                    <input ng-model="launch.userFullName" placeholder="Full Name" class="form-control" />
-                    <input ng-model="launch.userRoles" placeholder="Roles" class="form-control" />
+                    <input ng-model="launch.user.userId" placeholder="Id" class="form-control" />
+                    <input ng-model="launch.user.userFullName" placeholder="Full Name" class="form-control" />
+                    <input ng-model="launch.user.userRoles" placeholder="Roles" class="form-control" />
                 </div>
                 <div class="col-md-6">
-                    <input ng-model="launch.userEmailAddress" placeholder="Email" class="form-control" />
-                    <input ng-model="launch.userGivenName" placeholder="Given Name" class="form-control" />
-                    <input ng-model="launch.userFamilyName" placeholder="Family Name" class="form-control" />
+                    <input ng-model="launch.user.userEmailAddress" placeholder="Email" class="form-control" />
+                    <input ng-model="launch.user.userGivenName" placeholder="Given Name" class="form-control" />
+                    <input ng-model="launch.user.userFamilyName" placeholder="Family Name" class="form-control" />
                 </div>
             </div>
         </div>
@@ -37,13 +37,13 @@
             <h5>Context</h5>
             <div class="row">
                 <div class="col-md-6">
-                    <input ng-model="launch.contextId" placeholder="Id" class="form-control" />
-                    <input ng-model="launch.contextTitle" placeholder="Title" class="form-control" />
-                    <input ng-model="launch.contextLabel" placeholder="Label (short name)" class="form-control" />
+                    <input ng-model="launch.context.contextId" placeholder="Id" class="form-control" />
+                    <input ng-model="launch.context.contextTitle" placeholder="Title" class="form-control" />
+                    <input ng-model="launch.context.contextLabel" placeholder="Label (short name)" class="form-control" />
                 </div>
                 <div class="col-md-6">
-                    <input ng-model="launch.resourceId" placeholder="Resource Id" class="form-control" />
-                    <input ng-model="launch.resourceTitle" placeholder="Resource Title" class="form-control" />
+                    <input ng-model="launch.context.resourceId" placeholder="Resource Id" class="form-control" />
+                    <input ng-model="launch.context.resourceTitle" placeholder="Resource Title" class="form-control" />
                 </div>
             </div>
         </div>
