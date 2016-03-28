@@ -1,12 +1,15 @@
-app.directive('ltiLaunches', ['$http', 'LtiLaunchService', function($http, ltiLaunchService) {
+app.directive('ltiLaunches', ['$http', 'LtiLaunchService', 'SampleUsers', function($http, ltiLaunchService, SampleUsers) {
   return {
     templateUrl: 'assets/scripts/ltiLaunches/lti-launches.html',
+    replace: true,
     link: function(scope, element, attrs) {
       scope.launch = {};
 
       scope.launch.tool = {};
-      scope.launch.user = {};
+      scope.launch.user = SampleUsers[0];
       scope.launch.context = {};
+
+      scope.sampleUsers = SampleUsers;
 
       function postForm(url, form) {
         var form = document.createElement("form");

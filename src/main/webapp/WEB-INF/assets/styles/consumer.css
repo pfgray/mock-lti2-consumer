@@ -41,6 +41,10 @@ table.table tr td{
     margin: 0 0 0.5em 0;
     font-weight: bold;
 }
+.step h5 select {
+    float: right;
+    padding: 0.25em;
+}
 
 .step input {
     padding: 3px 6px;
