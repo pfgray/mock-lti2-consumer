@@ -3,7 +3,10 @@
 
         <!-- Tool -->
         <div class="step">
-            <h5>Tool</h5>
+            <h5>Tool <select
+                    ng-if="sampleTools.length > 1" ng-model="launch.tool"
+                    ng-options="tool as urlAndKey(tool) for tool in sampleTools">
+            </select><div class="clearfix"></div></h5>
             <div class="row">
                 <div class="col-md-6">
                     <input ng-model="launch.tool.url" placeholder="Url" class="form-control" />

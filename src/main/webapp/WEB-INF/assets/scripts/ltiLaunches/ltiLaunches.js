@@ -1,18 +1,25 @@
 app.directive('ltiLaunches',
-['$http', 'LtiLaunchService', 'SampleUsers', 'SampleCourses',
-function($http, ltiLaunchService, SampleUsers, SampleCourses) {
+['$http', 'LtiLaunchService', 'SampleUsers', 'SampleCourses', 'sampleToolsService',
+function($http, ltiLaunchService, SampleUsers, SampleCourses, sampleToolsService) {
   return {
     templateUrl: 'assets/scripts/ltiLaunches/lti-launches.html',
     replace: true,
     link: function(scope, element, attrs) {
       scope.launch = {};
 
-      scope.launch.tool = {};
+      scope.sampleTools = sampleToolsService.getTools();
+      scope.sampleUsers = SampleUsers;
+      scope.sampleContexts = SampleCourses;
+
+      console.log('got tools:', scope.sampleTools);
+
+      scope.launch.tool = scope.sampleTools.length > 0 ? scope.sampleTools[0] : {};
       scope.launch.user = SampleUsers[0];
       scope.launch.context = SampleCourses[0];
 
-      scope.sampleUsers = SampleUsers;
-      scope.sampleContexts = SampleCourses;
+      scope.urlAndKey = function(tool){
+        return tool.url + ' / ' + tool.key;
+      }
 
       function postForm(url, form) {
         var form = document.createElement("form");
@@ -28,7 +35,6 @@ function($http, ltiLaunchService, SampleUsers, SampleCourses) {
       }
 
       scope.getSignedParameters = function(){
-        console.log("###prepping launch....");
         var params = _.pickBy(_.assign({}, scope.launch.user, scope.launch.context));
 
         $http.post('/api/signedLaunch', {
@@ -39,6 +45,7 @@ function($http, ltiLaunchService, SampleUsers, SampleCourses) {
           secret: scope.launch.tool.secret
         }).then(function(resp){
           console.log("####got: ", resp);
+          sampleToolsService.addOrSetTool(scope.launch.tool);
           ltiLaunchService.postLaunch({
             url:scope.launch.tool.url,
             method: 'POST',

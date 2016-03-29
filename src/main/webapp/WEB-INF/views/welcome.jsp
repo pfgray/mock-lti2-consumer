@@ -18,6 +18,7 @@
         <script src="assets/scripts/ltiLaunches/ltiLaunches.js"></script>
         <script src="assets/scripts/sampleData/SampleUsers.js"></script>
         <script src="assets/scripts/sampleData/SampleCourses.js"></script>
+        <script src="assets/scripts/sampleData/sampleToolsService.js"></script>
         <script src="assets/scripts/ToolController.js"></script>
         <script src="assets/scripts/services/LtiLaunchService.js"></script>
         <script src="assets/scripts/tools/AddedTool.js"></script>
