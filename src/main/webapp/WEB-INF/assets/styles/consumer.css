@@ -69,3 +69,7 @@ table.table tr td{
   margin-right: 6px;
   border-radius: 100%;
 }
+
+form button:last-child {
+  margin-bottom: 2em;
+}
