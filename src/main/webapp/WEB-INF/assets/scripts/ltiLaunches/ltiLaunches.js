@@ -37,6 +37,9 @@ function($http, ltiLaunchService, SampleUsers, SampleCourses, sampleToolsService
       scope.getSignedParameters = function(){
         var params = _.pickBy(_.assign({}, scope.launch.user, scope.launch.context));
 
+        params['lti_message_type'] = 'basic-lti-launch-request';
+        params['lti_version'] = 'LTI-1p0';
+
         $http.post('/api/signedLaunch', {
           launchParameters: params,
           url: scope.launch.tool.url,
