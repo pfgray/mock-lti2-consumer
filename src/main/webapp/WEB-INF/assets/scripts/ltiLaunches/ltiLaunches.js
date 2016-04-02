@@ -21,19 +21,6 @@ function($http, ltiLaunchService, SampleUsers, SampleCourses, sampleToolsService
         return tool.url + ' / ' + tool.key;
       }
 
-      function postForm(url, form) {
-        var form = document.createElement("form");
-        form.setAttribute("method", "post");
-        form.setAttribute("action", "test.jsp");
-
-        var hiddenField = document.createElement("input");
-        hiddenField.setAttribute("name", "id");
-        hiddenField.setAttribute("value", "bob");
-        form.appendChild(hiddenField);
-        document.body.appendChild(form);    // Not entirely sure if this is necessary
-        form.submit();
-      }
-
       scope.getSignedParameters = function(){
         var params = _.pickBy(_.assign({}, scope.launch.user, scope.launch.context));
 
@@ -47,7 +34,7 @@ function($http, ltiLaunchService, SampleUsers, SampleCourses, sampleToolsService
           key: scope.launch.tool.key,
           secret: scope.launch.tool.secret
         }).then(function(resp){
-          console.log("####got: ", resp);
+          console.log("got signed request: ", resp);
           sampleToolsService.addOrSetTool(scope.launch.tool);
           ltiLaunchService.postLaunch({
             url:scope.launch.tool.url,
