@@ -16,7 +16,7 @@ app.controller('ToolsController', ['$scope', '$http', 'AddedTool', 'RegisteredTo
         tool.liClass = 'list-group-item-danger';
         return tool;
     }
-        
+
     $scope.loading = true;
     var refreshApps = function(){
         $http({method: 'GET', url: 'api/tools'})
