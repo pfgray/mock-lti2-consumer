@@ -40,7 +40,7 @@ function($http, ltiLaunchService, SampleUsers, SampleCourses, sampleToolsService
           ltiLaunchService.postLaunch({
             url:scope.launch.tool.url,
             method: 'POST',
-            launchParameters: resp.data
+            launchParameters: resp.data.launch
           })
         });
       };
