@@ -46,7 +46,12 @@ public class LtiController {
         // get or create cell
         GradebookCell cell = getCellForLineItem(lineItem, request);
 
-        log.info("Created gradebook info: " +  gb.getId() + " " + lineItem.getResourceLinkId() + " " + cell.getResultSourcedId());
+        final String lisResultSourcedId = gb.getContext() + ":~:" + lineItem.getResourceLinkId() + ":~:" + request.getLaunchParameters().get("user_id");
+
+        log.info("Created gradebook info: " + lisResultSourcedId);
+
+        //  get gradebook
+        request.getLaunchParameters().put("lis_result_sourcedid", lisResultSourcedId);
 
         Map<String, String> params = ltiSigner.signParameters(
             request.getLaunchParameters(),

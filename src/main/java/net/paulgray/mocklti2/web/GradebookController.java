@@ -1,5 +1,8 @@
 package net.paulgray.mocklti2.web;
 
+import net.paulgray.mocklti2.gradebook.Gradebook;
+import net.paulgray.mocklti2.gradebook.GradebookCell;
+import net.paulgray.mocklti2.gradebook.GradebookLineItem;
 import net.paulgray.mocklti2.gradebook.GradebookService;
 import org.apache.commons.io.IOUtils;
 import org.slf4j.Logger;
@@ -11,6 +14,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.w3c.dom.Document;
+import org.w3c.dom.Node;
+import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
 
 import javax.servlet.http.HttpServletRequest;
@@ -19,6 +24,8 @@ import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.Arrays;
+import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
@@ -36,41 +43,21 @@ public class GradebookController {
     @RequestMapping(value = "/outcomes/v1.1/gradebook", method = RequestMethod.POST)
     public ResponseEntity<String> handleOutcomes1(HttpServletRequest request) throws Exception {
 
-        //log.info("Got Lti Outcomes message: \n" + IOUtils.toString(request.getInputStream()));
+        //log.info("Got Lti Outcomes 1 message: \n" + IOUtils.toString(request.getInputStream()));
 
         Optional<Outcomes1Request> outcomes1Request = readOutcomes1Request(request.getInputStream());
 
         outcomes1Request.ifPresent(out -> {
-            System.out.println("Got Outcomes request: " + out.resultSourcedId + "::" + out.grade);
-            
-        });
+            System.out.println("Got Outcomes request: \n" +
+                    "  Student: " + out.studentId + "\n" +
+                    "  Course: " + out.contextId + "\n" +
+                    "  Resource: " + out.resourceId
+            );
 
-        /**
-         * <?xml version = "1.0" encoding = "UTF-8"?>
-         <imsx_POXEnvelopeRequest xmlns = "http://www.imsglobal.org/services/ltiv1p1/xsd/imsoms_v1p0">
-             <imsx_POXHeader>
-                 <imsx_POXRequestHeaderInfo>
-                     <imsx_version>V1.0</imsx_version>
-                     <imsx_messageIdentifier>580eb427c8299</imsx_messageIdentifier>
-                 </imsx_POXRequestHeaderInfo>
-             </imsx_POXHeader>
-             <imsx_POXBody>
-                 <replaceResultRequest>
-                     <resultRecord>
-                         <sourcedGUID>
-                            <sourcedId>12345</sourcedId>
-                         </sourcedGUID>
-                         <result>
-                             <resultScore>
-                                 <language>en-US</language>
-                                 <textString>1</textString>
-                             </resultScore>
-                         </result>
-                     </resultRecord>
-                 </replaceResultRequest>
-             </imsx_POXBody>
-         </imsx_POXEnvelopeRequest>
-         */
+            Gradebook gb = gradebookService.addGradebook(out.contextId);
+            GradebookLineItem lineItem = gradebookService.addLineItem(new GradebookLineItem(gb.getId(), out.resourceId));
+            gradebookService.addCell(new GradebookCell(lineItem.getId(), out.studentId, out.grade));
+        });
 
         return new ResponseEntity("", HttpStatus.ACCEPTED);
     }
@@ -82,10 +69,22 @@ public class GradebookController {
         try {
             DocumentBuilder builder = factory.newDocumentBuilder();
             Document doc = builder.parse(is);
-            String sourcedid = doc.getElementsByTagName("sourcedId").item(0).getNodeValue();
-            String grade = doc.getElementsByTagName("resultScore").item(0).getChildNodes().item(1).getNodeValue();
+            NodeList sourceList = doc.getElementsByTagName("sourcedId");
+            log.info("got: ", sourceList.getLength());
+            Node sourceNode = sourceList.item(0);
 
-            return Optional.of(new Outcomes1Request(grade, sourcedid));
+            log.info("sourceNode: " + sourceNode.getTextContent());
+
+            Optional<String> sourcedid = Optional.ofNullable(sourceNode.getTextContent());
+
+            return sourcedid
+                .map(s -> Arrays.asList(s.split(":~:")))
+                .flatMap(values -> {
+                    log.info("Found values: " + values.get(0));
+                    Optional<String> grade = Optional.ofNullable(doc.getElementsByTagName("resultScore").item(0)).map(res -> res.getChildNodes().item(1).getTextContent());
+
+                    return grade.map(g -> new Outcomes1Request(g, values.get(2), values.get(1), values.get(0)));
+                });
         } catch (ParserConfigurationException|SAXException|IOException e) {
             return Optional.empty();
         }

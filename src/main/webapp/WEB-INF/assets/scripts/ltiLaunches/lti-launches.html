@@ -69,17 +69,6 @@
                             ng-model="outcomesVersion"
                             ng-options="version as version for version in outcomesVersions">
                     </select><div class="clearfix"></div></h5>
-                    <div class="row">
-                        <div class="col-md-12">
-                            <div ng-if="outcomesVersion == '1.1'">
-                                <input ng-model="launch.outcomes.lis_outcome_service_url" placeholder="Service Url" class="form-control" />
-                                <input ng-model="launch.outcomes.lis_result_sourcedid" placeholder="Result sourcedId" class="form-control" />
-                            </div>
-                            <div ng-if="outcomesVersion === '2'">
-                                <em>(to come)</em>
-                            </div>
-                        </div>
-                    </div>
                 </div>
             </div>
         </div>

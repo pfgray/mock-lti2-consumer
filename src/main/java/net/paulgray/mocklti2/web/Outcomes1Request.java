@@ -6,10 +6,14 @@ package net.paulgray.mocklti2.web;
 public class Outcomes1Request {
 
     public String grade;
-    public String resultSourcedId;
+    public String studentId;
+    public String resourceId;
+    public String contextId;
 
-    public Outcomes1Request(String grade, String resultSourcedId) {
+    public Outcomes1Request(String grade, String studentId, String resourceId, String contextId) {
         this.grade = grade;
-        this.resultSourcedId = resultSourcedId;
+        this.studentId = studentId;
+        this.resourceId = resourceId;
+        this.contextId = contextId;
     }
 }
