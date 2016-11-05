@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.w3c.dom.Document;
+import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
@@ -42,14 +43,12 @@ public class GradebookController {
     @Autowired
     GradebookService gradebookService;
 
-
     @RequestMapping(value = "/outcomes/gradebooks/{gradebookId}", method = RequestMethod.GET)
     public ResponseEntity<GradebookInfo> getGradebook(@PathVariable String gradebookId) throws Exception {
         Optional<GradebookInfo> gbOp = gradebookService.getGradebook(gradebookId).flatMap(gb ->
             gradebookService.getGradebookLineItems(gb.getId()).map(columns -> {
-                List<Integer> columnIds = columns.stream().map(c -> c.getId()).collect(Collectors.toList());
+                List<Integer> columnIds = columns.stream().map(GradebookLineItem::getId).collect(Collectors.toList());
                 Map<Integer, List<GradebookCell>> cells = gradebookService.getGradebookCells(columnIds);
-
 
                 List<ColumnInfo> columnInfos = columns.stream().map(col -> new ColumnInfo(col, cells.get(col.getId()))).collect(Collectors.toList());
 
@@ -75,11 +74,18 @@ public class GradebookController {
                     "  Resource: " + out.resourceId
             );
 
-            Gradebook gb = gradebookService.getGradebook(out.contextId).orElseGet(
-                    () -> gradebookService.addGradebook(out.contextId)
-            );
-            GradebookLineItem lineItem = gradebookService.addLineItem(new GradebookLineItem(gb.getId(), out.resourceId));
-            gradebookService.addCell(new GradebookCell(lineItem.getId(), out.studentId, out.grade));
+            Gradebook gb = gradebookService.getOrCreateGradebook(out.contextId);
+
+            GradebookLineItem lineItem =
+                gradebookService.getOrCreateGradebookLineItemByResourceId(gb.getId(), out.resourceId);
+
+            GradebookCell cell =
+                gradebookService.getOrCreateGradebookCell(lineItem.getId(), out.studentId);
+
+            //update the student's grade
+            cell.setGrade(out.grade);
+            gradebookService.updateGradebookCell(cell);
+
         });
 
         return new ResponseEntity("", HttpStatus.ACCEPTED);
@@ -104,7 +110,9 @@ public class GradebookController {
                 .map(s -> Arrays.asList(s.split(":~:")))
                 .flatMap(values -> {
                     log.info("Found values: " + values.get(0));
-                    Optional<String> grade = Optional.ofNullable(doc.getElementsByTagName("resultScore").item(0)).map(res -> res.getChildNodes().item(1).getTextContent());
+                    Optional<String> grade =
+                        Optional.ofNullable(doc.getElementsByTagName("resultScore").item(0))
+                        .map(res -> ((Element) res).getElementsByTagName("textString").item(0).getTextContent());
 
                     return grade.map(g -> new Outcomes1Request(g, values.get(2), values.get(1), values.get(0)));
                 });

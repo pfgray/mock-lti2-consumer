@@ -66,7 +66,6 @@ function($http, ltiLaunchService, SampleUsers, SampleCourses, sampleToolsService
       scope.outcomesVersion = "1.1";
       scope.launch.outcomes = {};
       scope.launch.outcomes.lis_outcome_service_url = window.web_context_url + "outcomes/v1.1/gradebook";
-      scope.launch.outcomes.lis_result_sourcedid = "12345";
 
     }
   };

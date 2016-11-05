@@ -24,6 +24,17 @@ function($http) {
           }, function(){
             scope.loading = false;
           });
+
+        scope.getStudentGradeForColumn = function(studentId, columnId){
+            console.log('finding student grade: ', studentId, columnId);
+            var column = scope.gradebook.columns.find(c => c.id = columnId);
+            var cell = column.cells.find(c => c.resultSourcedId = studentId);
+            if(cell && cell.grade) {
+              return cell.grade;
+            } else {
+              return "(empty)"
+            }
+        }
     }
   }
 }]);
@@ -48,6 +59,17 @@ Object.defineProperty(Array.prototype, 'unique', {
         return map;
       }, {});
       return Object.keys(hashMap).map(key => hashMap[key]);
+    }
+});
+
+Object.defineProperty(Array.prototype, 'find', {
+    enumerable: false,
+    value: function(f) {
+      var found = null;
+      this.forEach(a => {
+        if(f(a)){ found = a; }
+      });
+      return found;
     }
 });
 

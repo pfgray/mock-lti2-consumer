@@ -11,16 +11,26 @@ public interface GradebookService {
 
     Optional<Gradebook> getGradebook(String contextId);
 
+    Gradebook getOrCreateGradebook(String contextId);
+
     Gradebook addGradebook(String contextId);
 
     Optional<List<GradebookLineItem>> getGradebookLineItems(Integer contextId);
+
+    Optional<GradebookLineItem> getGradebookLineItemByResourceId(Integer gradebookId, String resourceId);
+
+    GradebookLineItem getOrCreateGradebookLineItemByResourceId(Integer gradebookId, String resourceId);
 
     GradebookLineItem addLineItem(GradebookLineItem lineItem);
 
     Map<Integer, List<GradebookCell>> getGradebookCells(List<Integer> columnIds);
 
+    Optional<GradebookCell> getGradebookCell(Integer lineItemId, String resultSourcedId);
+
+    GradebookCell getOrCreateGradebookCell(Integer lineItemId, String resultSourcedId);
+
     GradebookCell addCell(GradebookCell cell);
 
-    Gradebook updateGradebookCell(Integer contextId, String resultSourcedId, String grade);
+    GradebookCell updateGradebookCell(GradebookCell gradebookCell);
 
 }

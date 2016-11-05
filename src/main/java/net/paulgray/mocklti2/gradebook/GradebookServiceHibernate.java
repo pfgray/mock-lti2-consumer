@@ -32,6 +32,12 @@ public class GradebookServiceHibernate implements GradebookService {
 
     @Override
     @Transactional
+    public Gradebook getOrCreateGradebook(String contextId) {
+        return getGradebook(contextId).orElseGet(() -> addGradebook(contextId));
+    }
+
+    @Override
+    @Transactional
     public Gradebook addGradebook(String contextId) {
         sessionFactory.getCurrentSession().saveOrUpdate(new Gradebook(contextId));
         return this.getGradebook(contextId).get();
@@ -43,6 +49,23 @@ public class GradebookServiceHibernate implements GradebookService {
         Criteria crit = sessionFactory.getCurrentSession().createCriteria(GradebookLineItem.class);
         crit.add(Restrictions.eq("gradebookId", gradebookId));
         return Optional.of(crit.list());
+    }
+
+    @Override
+    @Transactional
+    public Optional<GradebookLineItem> getGradebookLineItemByResourceId(Integer gradebookId, String resourceId) {
+        Criteria crit = sessionFactory.getCurrentSession().createCriteria(GradebookLineItem.class);
+
+        crit.add(Restrictions.eq("gradebookId", gradebookId));
+        crit.add(Restrictions.eq("resourceLinkId", resourceId));
+        return Optional.ofNullable((GradebookLineItem) crit.uniqueResult());
+    }
+
+    @Override
+    @Transactional
+    public GradebookLineItem getOrCreateGradebookLineItemByResourceId(Integer gradebookId, String resourceId) {
+        return getGradebookLineItemByResourceId(gradebookId, resourceId)
+                .orElseGet(() -> addLineItem(new GradebookLineItem(gradebookId, resourceId)));
     }
 
     @Override
@@ -70,6 +93,21 @@ public class GradebookServiceHibernate implements GradebookService {
 
     @Override
     @Transactional
+    public Optional<GradebookCell> getGradebookCell(Integer lineItemId, String resultSourcedId) {
+        Criteria crit = sessionFactory.getCurrentSession().createCriteria(GradebookCell.class);
+        crit.add(Restrictions.eq("gradebookLineItemId", lineItemId));
+        crit.add(Restrictions.eq("resultSourcedId", resultSourcedId));
+        return Optional.ofNullable((GradebookCell) crit.uniqueResult());
+    }
+
+    @Override
+    @Transactional
+    public GradebookCell getOrCreateGradebookCell(Integer lineItemId, String resultSourcedId) {
+        return getGradebookCell(lineItemId, resultSourcedId).orElseGet(() -> addCell(new GradebookCell(lineItemId, resultSourcedId, null)));
+    }
+
+    @Override
+    @Transactional
     public GradebookCell addCell(GradebookCell cell) {
         sessionFactory.getCurrentSession().saveOrUpdate(cell);
 
@@ -79,7 +117,13 @@ public class GradebookServiceHibernate implements GradebookService {
     }
 
     @Override
-    public Gradebook updateGradebookCell(Integer contextId, String resultSourcedId, String grade) {
-        return null;
+    @Transactional
+    public GradebookCell updateGradebookCell(GradebookCell cell) {
+        sessionFactory.getCurrentSession().saveOrUpdate(cell);
+
+        Criteria crit = sessionFactory.getCurrentSession().createCriteria(GradebookCell.class);
+        crit.add(Restrictions.eq("id", cell.getId()));
+        return (GradebookCell) crit.uniqueResult();
     }
+
 }

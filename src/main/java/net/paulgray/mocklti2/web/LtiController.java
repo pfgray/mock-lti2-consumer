@@ -65,22 +65,18 @@ public class LtiController {
     }
 
     private GradebookCell getCellForLineItem(GradebookLineItem lineItem, UnsignedLtiLaunchRequest request) {
-        GradebookCell cell = new GradebookCell(lineItem.getId(), request.getLaunchParameters().get("lis_result_sourcedid"), null);
-        return gradebookService.addCell(cell);
+        String studentId = request.getLaunchParameters().get("user_id");
+        return gradebookService.getOrCreateGradebookCell(lineItem.getId(), studentId);
     }
 
     private GradebookLineItem getLineItemForGradebook(Gradebook gb, UnsignedLtiLaunchRequest request) {
-        GradebookLineItem newLineItem = new GradebookLineItem(gb.getId(), request.getLaunchParameters().get("resource_link_id"));
-        return gradebookService.addLineItem(newLineItem);
+        String resourceId = request.getLaunchParameters().get("resource_link_id");
+        return gradebookService.getOrCreateGradebookLineItemByResourceId(gb.getId(), resourceId);
     }
 
     public Gradebook getGradebookForReq(UnsignedLtiLaunchRequest request){
         String contextId = request.getLaunchParameters().get("context_id");
-        // create this gradebook, if it doesn't exist, and
-        // map the result_sourcedid to the user for the request
-        Optional<Gradebook> gradebook = gradebookService.getGradebook(contextId);
-
-        return gradebook.orElseGet(() -> gradebookService.addGradebook(contextId));
+        return gradebookService.getOrCreateGradebook(contextId);
     }
 
 }

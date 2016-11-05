@@ -13,6 +13,9 @@
                 </tr>
                 <tr ng-repeat="studentId in students">
                     <td>{{studentId}}</td>
+                    <td ng-repeat="column in gradebook.columns">
+                        {{getStudentGradeForColumn(studentId, column.column.id)}}
+                    </td>
                 </tr>
             </table>
         </div>
