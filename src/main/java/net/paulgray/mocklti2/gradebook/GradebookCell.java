@@ -20,6 +20,9 @@ public class GradebookCell {
     @Column(name = "grade")
     private String grade;
 
+    public GradebookCell() {
+    }
+
     public GradebookCell(Integer gradebookLineItemId, String resultSourcedId, String grade) {
         this.gradebookLineItemId = gradebookLineItemId;
         this.resultSourcedId = resultSourcedId;

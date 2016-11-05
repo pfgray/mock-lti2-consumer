@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.w3c.dom.Document;
@@ -28,6 +29,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 /**
  * Created by paul on 10/24/16.
@@ -39,6 +41,25 @@ public class GradebookController {
 
     @Autowired
     GradebookService gradebookService;
+
+
+    @RequestMapping(value = "/outcomes/gradebooks/{gradebookId}", method = RequestMethod.GET)
+    public ResponseEntity<GradebookInfo> getGradebook(@PathVariable String gradebookId) throws Exception {
+        Optional<GradebookInfo> gbOp = gradebookService.getGradebook(gradebookId).flatMap(gb ->
+            gradebookService.getGradebookLineItems(gb.getId()).map(columns -> {
+                List<Integer> columnIds = columns.stream().map(c -> c.getId()).collect(Collectors.toList());
+                Map<Integer, List<GradebookCell>> cells = gradebookService.getGradebookCells(columnIds);
+
+
+                List<ColumnInfo> columnInfos = columns.stream().map(col -> new ColumnInfo(col, cells.get(col.getId()))).collect(Collectors.toList());
+
+                return new GradebookInfo(gb, columnInfos);
+            })
+        );
+        return gbOp
+            .map(gb -> new ResponseEntity<GradebookInfo>(gb, HttpStatus.ACCEPTED))
+            .orElseGet(() -> new ResponseEntity<GradebookInfo>(HttpStatus.NOT_FOUND));
+    }
 
     @RequestMapping(value = "/outcomes/v1.1/gradebook", method = RequestMethod.POST)
     public ResponseEntity<String> handleOutcomes1(HttpServletRequest request) throws Exception {
@@ -54,7 +75,9 @@ public class GradebookController {
                     "  Resource: " + out.resourceId
             );
 
-            Gradebook gb = gradebookService.addGradebook(out.contextId);
+            Gradebook gb = gradebookService.getGradebook(out.contextId).orElseGet(
+                    () -> gradebookService.addGradebook(out.contextId)
+            );
             GradebookLineItem lineItem = gradebookService.addLineItem(new GradebookLineItem(gb.getId(), out.resourceId));
             gradebookService.addCell(new GradebookCell(lineItem.getId(), out.studentId, out.grade));
         });

@@ -1,0 +1,25 @@
+<div>
+    <div ng-if="loading" class="focused-display">
+        <i class="fa fa-circle-o-notch fa-spin fa-3x fa-fw"></i>
+    </div>
+    <div ng-if="!loading">
+        <div ng-if="gradebook">
+            <table class="table">
+                <tr>
+                    <th>Student</th>
+                    <th ng-repeat="column in gradebook.columns">
+                        {{column.column.resourceLinkId}}
+                    </th>
+                </tr>
+                <tr ng-repeat="studentId in students">
+                    <td>{{studentId}}</td>
+                </tr>
+            </table>
+        </div>
+        <div ng-if="!gradebook" class="jumbotron focused-display">
+            <h1><i class="fa fa-calendar" aria-hidden="true"></i></h1>
+            <div>There isn't a gradebook for this context yet.</div>
+            <div>Launch with this course in order to initiate one.</div>
+        </div>
+    </div>
+</div>

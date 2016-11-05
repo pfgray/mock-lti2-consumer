@@ -73,3 +73,17 @@ table.table tr td{
 form button:last-child {
   margin-bottom: 2em;
 }
+
+@media (min-width: 768px) {
+    .modal-dialog {
+      width: 90%;
+    }
+}
+
+.muted {
+  color: #888;
+}
+
+.focused-display {
+  text-align: center;
+}

@@ -1,5 +1,7 @@
 package net.paulgray.mocklti2.gradebook;
 
+import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 /**
@@ -11,7 +13,11 @@ public interface GradebookService {
 
     Gradebook addGradebook(String contextId);
 
+    Optional<List<GradebookLineItem>> getGradebookLineItems(Integer contextId);
+
     GradebookLineItem addLineItem(GradebookLineItem lineItem);
+
+    Map<Integer, List<GradebookCell>> getGradebookCells(List<Integer> columnIds);
 
     GradebookCell addCell(GradebookCell cell);
 

@@ -8,7 +8,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
+import java.util.List;
+import java.util.Map;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 /**
  * Created by paul on 10/23/16.
@@ -36,12 +39,33 @@ public class GradebookServiceHibernate implements GradebookService {
 
     @Override
     @Transactional
+    public Optional<List<GradebookLineItem>> getGradebookLineItems(Integer gradebookId) {
+        Criteria crit = sessionFactory.getCurrentSession().createCriteria(GradebookLineItem.class);
+        crit.add(Restrictions.eq("gradebookId", gradebookId));
+        return Optional.of(crit.list());
+    }
+
+    @Override
+    @Transactional
     public GradebookLineItem addLineItem(GradebookLineItem lineItem) {
         sessionFactory.getCurrentSession().saveOrUpdate(lineItem);
 
         Criteria crit = sessionFactory.getCurrentSession().createCriteria(GradebookLineItem.class);
         crit.add(Restrictions.eq("id", lineItem.getId()));
         return (GradebookLineItem) crit.uniqueResult();
+    }
+
+    @Override
+    @Transactional
+    public Map<Integer, List<GradebookCell>> getGradebookCells(List<Integer> columnIds) {
+        Criteria crit = sessionFactory.getCurrentSession().createCriteria(GradebookCell.class);
+        crit.add(Restrictions.in("gradebookLineItemId", columnIds));
+        List<GradebookCell> cells = crit.list();
+
+        return columnIds.stream().collect(Collectors.toMap(
+                c -> c,
+                c -> cells.stream().filter(cell -> cell.getGradebookLineItemId() == c).collect(Collectors.toList())
+        ));
     }
 
     @Override

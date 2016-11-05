@@ -57,6 +57,7 @@
                 <div class="col-md-6">
                     <input ng-model="launch.context.resource_link_id" placeholder="Resource Id" class="form-control" />
                     <input ng-model="launch.context.resource_title" placeholder="Resource Title" class="form-control" />
+                    <button ng-click="showGradebook(launch.context.context_id)" class="btn btn-default">Gradebook <i class="fa fa-calendar"/></button>
                 </div>
             </div>
         </div>
@@ -76,4 +77,17 @@
         <button ng-click="getSignedParameters()" class="btn btn-default">Launch</button>
 
     </form>
+
+    <script type="text/ng-template" id="gradebookModal.html">
+        <div class="modal-header">
+            <h3 class="modal-title" id="modal-title">Gradebook</h3>
+            <span class="muted">({{gradebookId}})</span>
+        </div>
+        <div class="modal-body" id="modal-body">
+            <gradebook gradebook-id="gradebookId"/>
+        </div>
+        <div class="modal-footer">
+            <button class="btn btn-danger" type="button" ng-click="close()">Close</button>
+        </div>
+    </script>
 </div>

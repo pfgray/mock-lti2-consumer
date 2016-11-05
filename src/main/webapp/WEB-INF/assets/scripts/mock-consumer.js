@@ -1,4 +1,4 @@
-var app = angular.module('mock-consumer', ['ui.router']);
+var app = angular.module('mock-consumer', ['ui.router', 'ui.bootstrap']);
 
 app.config(function($stateProvider, $urlRouterProvider) {
     //

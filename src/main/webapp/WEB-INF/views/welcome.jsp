@@ -15,7 +15,9 @@
         <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
         <script src="//cdnjs.cloudflare.com/ajax/libs/angular.js/1.5.2/angular.min.js"></script>
         <script src="//cdnjs.cloudflare.com/ajax/libs/angular-ui-router/0.2.18/angular-ui-router.min.js"></script>
+        <script src="//cdnjs.cloudflare.com/ajax/libs/angular-ui-bootstrap/2.2.0/ui-bootstrap-tpls.min.js"></script>
         <script src="assets/scripts/mock-consumer.js"></script>
+        <script src="assets/scripts/gradebook/gradebook.js"></script>
         <script src="assets/scripts/ltiLaunches/ltiLaunches.js"></script>
         <script src="assets/scripts/sampleData/SampleUsers.js"></script>
         <script src="assets/scripts/sampleData/SampleCourses.js"></script>

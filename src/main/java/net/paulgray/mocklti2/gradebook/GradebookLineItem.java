@@ -20,6 +20,9 @@ public class GradebookLineItem {
     @Column(name = "resource_link_id")
     private String resourceLinkId;
 
+    public GradebookLineItem() {
+    }
+
     public GradebookLineItem(Integer gradebookId, String resourceLinkId) {
         this.gradebookId = gradebookId;
         this.resourceLinkId = resourceLinkId;

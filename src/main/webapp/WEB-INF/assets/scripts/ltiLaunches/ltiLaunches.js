@@ -1,6 +1,6 @@
 app.directive('ltiLaunches',
-['$http', 'LtiLaunchService', 'SampleUsers', 'SampleCourses', 'sampleToolsService',
-function($http, ltiLaunchService, SampleUsers, SampleCourses, sampleToolsService) {
+['$http', 'LtiLaunchService', 'SampleUsers', 'SampleCourses', 'sampleToolsService', '$uibModal',
+function($http, ltiLaunchService, SampleUsers, SampleCourses, sampleToolsService, $uibModal) {
   return {
     templateUrl: 'assets/scripts/ltiLaunches/lti-launches.html',
     replace: true,
@@ -45,8 +45,23 @@ function($http, ltiLaunchService, SampleUsers, SampleCourses, sampleToolsService
         });
       };
 
-      scope.outcomesVersions = ["1.1", "2"];
+      scope.showGradebook = function(gradebookId){
+        console.log("Showing gradebook for:", gradebookId);
+        var modalInstance = $uibModal.open({
+          animation: true,
+          templateUrl: 'gradebookModal.html',
+          size: 'lg',
+          controller: ['$scope', '$uibModalInstance', function($scope, $uibModalInstance){
+            $scope.gradebookId = gradebookId;
+            $scope.close = function() {
+              $uibModalInstance.dismiss();
+            }
+          }]
+        });
+        //gradebookModal.html
+      };
 
+      scope.outcomesVersions = ["1.1", "2"];
 
       scope.outcomesVersion = "1.1";
       scope.launch.outcomes = {};
