@@ -20,12 +20,27 @@ public class GradebookLineItem {
     @Column(name = "resource_link_id")
     private String resourceLinkId;
 
+    @Column(name = "title")
+    private String title;
+
+    @Column(name = "activity_id")
+    private String activityId;
+
     public GradebookLineItem() {
     }
 
     public GradebookLineItem(Integer gradebookId, String resourceLinkId) {
         this.gradebookId = gradebookId;
         this.resourceLinkId = resourceLinkId;
+        this.title = null;
+        this.activityId = null;
+    }
+
+    public GradebookLineItem(Integer gradebookId, String resourceLinkId, String title, String activityId) {
+        this.gradebookId = gradebookId;
+        this.resourceLinkId = resourceLinkId;
+        this.title = title;
+        this.activityId = activityId;
     }
 
     public String getResourceLinkId() {
@@ -50,5 +65,21 @@ public class GradebookLineItem {
 
     public void setId(Integer id) {
         this.id = id;
+    }
+
+    public String getTitle() {
+        return title;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
+    }
+
+    public String getActivityId() {
+        return activityId;
+    }
+
+    public void setActivityId(String activityId) {
+        this.activityId = activityId;
     }
 }

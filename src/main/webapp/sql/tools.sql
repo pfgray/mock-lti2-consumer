@@ -36,6 +36,8 @@ create table gradebook_lineitems (
     id               integer not null generated always as identity (start with 1, increment by 1),
     gradebook_id     integer not null,
     resource_link_id varchar(500) not null,
+    title varchar(500),
+    activity_id varchar(500),
     primary key (id),
     foreign key (gradebook_id) references gradebooks (id)
 );

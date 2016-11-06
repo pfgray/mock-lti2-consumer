@@ -1,5 +1,7 @@
 package net.paulgray.mocklti2.gradebook;
 
+import net.paulgray.mocklti2.web.LineItem;
+
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -20,6 +22,8 @@ public interface GradebookService {
     Optional<GradebookLineItem> getGradebookLineItemByResourceId(Integer gradebookId, String resourceId);
 
     GradebookLineItem getOrCreateGradebookLineItemByResourceId(Integer gradebookId, String resourceId);
+
+    GradebookLineItem updateLineItem(GradebookLineItem lineItem);
 
     GradebookLineItem addLineItem(GradebookLineItem lineItem);
 

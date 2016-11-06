@@ -87,3 +87,8 @@ form button:last-child {
 .focused-display {
   text-align: center;
 }
+
+.gradebook-container {
+  overflow-x: auto;
+  overflow-y: auto;
+}

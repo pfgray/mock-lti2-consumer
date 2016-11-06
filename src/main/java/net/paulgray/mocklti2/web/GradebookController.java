@@ -5,6 +5,7 @@ import net.paulgray.mocklti2.gradebook.GradebookCell;
 import net.paulgray.mocklti2.gradebook.GradebookLineItem;
 import net.paulgray.mocklti2.gradebook.GradebookService;
 import org.apache.commons.io.IOUtils;
+import org.apache.http.protocol.HTTP;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,6 +13,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.w3c.dom.Document;
@@ -26,10 +28,7 @@ import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
+import java.util.*;
 import java.util.stream.Collectors;
 
 /**
@@ -58,6 +57,30 @@ public class GradebookController {
         return gbOp
             .map(gb -> new ResponseEntity<GradebookInfo>(gb, HttpStatus.ACCEPTED))
             .orElseGet(() -> new ResponseEntity<GradebookInfo>(HttpStatus.NOT_FOUND));
+    }
+
+    @RequestMapping(value = "outcomes/v2.0/gradebook/{contextId}/lineitems")
+    public ResponseEntity<LineItem> createLineItems(@PathVariable String contextId, @RequestBody LineItem lineItem, HttpServletRequest req) {
+        Gradebook gb = gradebookService.getOrCreateGradebook(contextId);
+
+        String title = lineItem.getLabel().get("@value").textValue();
+        String activityId = lineItem.getActivity().get("@id").textValue();
+
+        GradebookLineItem newLineItem = gradebookService.getOrCreateGradebookLineItemByResourceId(gb.getId(), UUID.randomUUID().toString());
+
+        newLineItem.setTitle(title);
+        newLineItem.setActivityId(activityId);
+
+        gradebookService.updateLineItem(newLineItem);
+
+        String origin = HttpUtils.getOrigin(req).orElse("");
+        String resultsUrl = origin + "/outcomes/v2.0/gradebook/" + contextId + "/lineitems/" + newLineItem.getResourceLinkId();
+
+        lineItem.setResultsUrl(Optional.of(resultsUrl));
+
+        log.info("constructed results url: " + resultsUrl);
+
+        return new ResponseEntity<>(lineItem, HttpStatus.OK);
     }
 
     @RequestMapping(value = "/outcomes/v1.1/gradebook", method = RequestMethod.POST)

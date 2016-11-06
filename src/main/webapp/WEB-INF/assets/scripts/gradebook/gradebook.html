@@ -3,12 +3,12 @@
         <i class="fa fa-circle-o-notch fa-spin fa-3x fa-fw"></i>
     </div>
     <div ng-if="!loading">
-        <div ng-if="gradebook">
+        <div ng-if="gradebook" class="gradebook-container">
             <table class="table">
                 <tr>
                     <th>Student</th>
                     <th ng-repeat="column in gradebook.columns">
-                        {{column.column.resourceLinkId}}
+                        {{column.column.title}}
                     </th>
                 </tr>
                 <tr ng-repeat="studentId in students">

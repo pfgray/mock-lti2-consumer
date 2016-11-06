@@ -1,0 +1,44 @@
+{
+  "@id":"",
+  "@type":"http://purl.imsglobal.org/ctx/lis/v2/LineItem",
+  "http://purl.imsglobal.org/vocab/lis/v2/outcomes#assignedActivity":{
+    "@id":"37108352",
+    "http://purl.imsglobal.org/vocab/caliper/v1/core#activityId":{
+      "@type":"http://www.w3.org/2001/XMLSchema#normalizedString",
+      "@value":"37108358"
+    },
+    "https://www.learningobjects.com/vocab/lti/v2/lti#assetId":{
+      "@type":"http://www.w3.org/2001/XMLSchema#normalizedString",
+      "@value":"36611431"
+    },
+    "https://www.learningobjects.com/vocab/lti/v2/lti#assetType":{
+      "@type":"http://www.w3.org/2001/XMLSchema#normalizedString",
+      "@value":"finalProject"
+    }
+  },
+  "http://purl.imsglobal.org/vocab/lis/v2/outcomes#label":{
+    "@type":"http://www.w3.org/2001/XMLSchema#normalizedString",
+    "@value":"Assignment with tags Summative"
+  },
+  "http://purl.imsglobal.org/vocab/lis/v2/outcomes#lineItemOf":{
+    "http://purl.imsglobal.org/vocab/lti/v2/lti#contextId":{
+      "@type":"http://www.w3.org/2001/XMLSchema#normalizedString",
+      "@value":""
+    }
+  },
+  "http://purl.imsglobal.org/vocab/lis/v2/outcomes#scoreConstraints":{
+    "@type":"http://purl.imsglobal.org/vocab/lis/v2/outcomes#NumericLimits",
+    "http://purl.imsglobal.org/vocab/lis/v2/outcomes#totalMaximum":{
+      "@type":"http://www.w3.org/2001/XMLSchema#float",
+      "@value":100.0
+    },
+    "http://purl.imsglobal.org/vocab/lis/v2/outcomes#normalMaximum":null,
+    "http://purl.imsglobal.org/vocab/lis/v2/outcomes#extraCreditMaximum":null
+  },
+  "http://purl.imsglobal.org/vocab/lis/v2/outcomes#results":"",
+  "https://www.learningobjects.com/vocab/lis/v2/outcomes#evaluationType":{
+    "@type":"http://www.w3.org/2001/XMLSchema#normalizedString",
+    "@value":"summative"
+  },
+  "http://purl.imsglobal.org/vocab/lis/v2/outcomes#results":"http://cbl-int-gtorrico:8080/api/v2/mockOutcomes/it-24ik/lineItems/ntybof0g-chal7hui/results"
+}

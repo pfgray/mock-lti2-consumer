@@ -71,7 +71,10 @@ public class LtiController {
 
     private GradebookLineItem getLineItemForGradebook(Gradebook gb, UnsignedLtiLaunchRequest request) {
         String resourceId = request.getLaunchParameters().get("resource_link_id");
-        return gradebookService.getOrCreateGradebookLineItemByResourceId(gb.getId(), resourceId);
+        String resourceTitle = request.getLaunchParameters().get("resource_title");
+        GradebookLineItem lineItem = gradebookService.getOrCreateGradebookLineItemByResourceId(gb.getId(), resourceId);
+        lineItem.setTitle(resourceTitle);
+        return gradebookService.updateLineItem(lineItem);
     }
 
     public Gradebook getGradebookForReq(UnsignedLtiLaunchRequest request){

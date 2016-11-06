@@ -70,6 +70,16 @@ public class GradebookServiceHibernate implements GradebookService {
 
     @Override
     @Transactional
+    public GradebookLineItem updateLineItem(GradebookLineItem lineItem) {
+        sessionFactory.getCurrentSession().update(lineItem);
+
+        Criteria crit = sessionFactory.getCurrentSession().createCriteria(GradebookLineItem.class);
+        crit.add(Restrictions.eq("id", lineItem.getId()));
+        return (GradebookLineItem) crit.uniqueResult();
+    }
+
+    @Override
+    @Transactional
     public GradebookLineItem addLineItem(GradebookLineItem lineItem) {
         sessionFactory.getCurrentSession().saveOrUpdate(lineItem);
 
