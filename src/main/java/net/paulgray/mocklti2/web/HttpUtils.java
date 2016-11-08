@@ -13,14 +13,14 @@ public class HttpUtils {
     public static Optional<String> getOrigin(HttpServletRequest req) {
         try {
             URL url = new URL(req.getRequestURL().toString());
-            return Optional.of(url.getProtocol() + "//" + url.getHost() + getPort(req));
+            return Optional.of(url.getProtocol() + "://" + url.getHost() + getPort(req));
         } catch(MalformedURLException e) {
             return Optional.empty();
         }
     }
 
     private static String getPort(HttpServletRequest req) {
-        final int port = req.getRemotePort();
+        final int port = req.getServerPort();
         //don't include the port if http 80 or https 443
         if(req.isSecure() && port == 443 || !req.isSecure() && port == 80){
             return "";

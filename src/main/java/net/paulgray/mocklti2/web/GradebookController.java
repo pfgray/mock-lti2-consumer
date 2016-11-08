@@ -37,6 +37,8 @@ import java.util.stream.Collectors;
 @Controller
 public class GradebookController {
 
+    //TODO: make sure these requests are signed, lol
+
     private final Logger log = LoggerFactory.getLogger(this.getClass());
 
     @Autowired
@@ -81,6 +83,19 @@ public class GradebookController {
         log.info("constructed results url: " + resultsUrl);
 
         return new ResponseEntity<>(lineItem, HttpStatus.OK);
+    }
+
+    @RequestMapping(value = "outcomes/v2.0/gradebook/{contextId}/lineitems/{lineItemId}")
+    public ResponseEntity<Object> createLineItems(@PathVariable String contextId, @PathVariable String lineItemId, HttpServletRequest req) throws Exception {
+        Gradebook gb = gradebookService.getOrCreateGradebook(contextId);
+
+        GradebookLineItem lineItem = gradebookService.getOrCreateGradebookLineItemByResourceId(gb.getId(), lineItemId);
+
+        String resultBody = IOUtils.toString(req.getInputStream());
+
+        log.info("Got result: \n" + resultBody);
+
+        return new ResponseEntity<>("", HttpStatus.OK);
     }
 
     @RequestMapping(value = "/outcomes/v1.1/gradebook", method = RequestMethod.POST)

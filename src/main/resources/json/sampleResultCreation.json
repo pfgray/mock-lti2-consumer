@@ -1,0 +1,42 @@
+{
+  "@id" : "11085602",
+  "@type" : "http://purl.imsglobal.org/ctx/lis/v2p1/Result#LISResult",
+  "http://purl.imsglobal.org/vocab/lis/v2/outcomes#comment" : "",
+  "http://purl.imsglobal.org/vocab/lis/v2/outcomes#normalScore" : {
+    "@type" : "http://www.w3.org/2001/XMLSchema#decimal",
+    "@value" : 20.0
+  },
+  "http://purl.imsglobal.org/vocab/lis/v2/outcomes#extraCreditScore" : null,
+  "http://purl.imsglobal.org/vocab/lis/v2/outcomes#penaltyScore" : null,
+  "http://purl.imsglobal.org/vocab/lis/v2/outcomes#resultOf" : null,
+  "http://purl.imsglobal.org/vocab/lis/v2/outcomes#resultScore" : null,
+  "http://purl.imsglobal.org/vocab/lis/v2/outcomes#resultScoreConstraints" : {
+    "@type" : "http://purl.imsglobal.org/vocab/lis/v2/outcomes#NumericLimits",
+    "http://purl.imsglobal.org/vocab/lis/v2/outcomes#totalMaximum" : {
+      "@type" : "http://www.w3.org/2001/XMLSchema#float",
+      "@value" : 100.0
+    },
+    "http://purl.imsglobal.org/vocab/lis/v2/outcomes#normalMaximum" : null,
+    "http://purl.imsglobal.org/vocab/lis/v2/outcomes#extraCreditMaximum" : null
+  },
+  "http://purl.imsglobal.org/vocab/lis/v2/outcomes#resultStatus" : {
+    "@id" : "http://purl.imsglobal.org/vocab/lis/v2/outcomes#Completed"
+  },
+  "http://purl.imsglobal.org/vocab/lis/v2/outcomes#timestamp" : {
+    "@type" : "http://www.w3.org/2001/XMLSchema#dateTime",
+    "@value" : "2016-11-08T21:06:34.263Z"
+  },
+  "http://purl.imsglobal.org/vocab/lis/v2/outcomes#totalScore" : {
+    "@type" : "http://www.w3.org/2001/XMLSchema#decimal",
+    "@value" : 20.0
+  },
+  "http://purl.imsglobal.org/vocab/lis/v2/outcomes#resultAgent" : {
+    "@id" : "10851974",
+    "@type" : "Person",
+    "http://purl.imsglobal.org/vocab/lis/v2/pm#userId" : {
+      "@type" : "http://www.w3.org/2001/XMLSchema#normalizedString",
+      "@value" : "ccbd7af7-8777-412e-8844-7255fd3bbc7f"
+    }
+  },
+  "http://purl.imsglobal.org/vocab/lis/v2/outcomes#gradedBy" : null
+}

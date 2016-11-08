@@ -30,9 +30,6 @@ public class LineItem {
     @JsonProperty("http://purl.imsglobal.org/vocab/lis/v2/outcomes#scoreConstraints")
     JsonNode scoreConstraints;
 
-    @JsonProperty("http://purl.imsglobal.org/vocab/lis/v2/outcomes#results")
-    String results;
-
     @JsonProperty("https://www.learningobjects.com/vocab/lis/v2/outcomes#evaluationType")
     JsonNode evaluationType;
 
@@ -88,14 +85,6 @@ public class LineItem {
 
     public void setScoreConstraints(JsonNode scoreConstraints) {
         this.scoreConstraints = scoreConstraints;
-    }
-
-    public String getResults() {
-        return results;
-    }
-
-    public void setResults(String results) {
-        this.results = results;
     }
 
     public JsonNode getEvaluationType() {

@@ -31,7 +31,7 @@ function($http, ltiLaunchService, SampleUsers, SampleCourses, sampleToolsService
 
         if(scope.outcomesTwo) {
           params.custom_lineitems_url =
-            window.web_context_url + "outcomes/v2.0/gradebook/lineitems/" + params.context_id;
+            window.web_context_url + "outcomes/v2.0/gradebook/" + params.context_id + "/lineitems";
         }
 
         params['lti_message_type'] = 'basic-lti-launch-request';
