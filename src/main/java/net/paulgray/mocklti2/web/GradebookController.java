@@ -4,8 +4,9 @@ import net.paulgray.mocklti2.gradebook.Gradebook;
 import net.paulgray.mocklti2.gradebook.GradebookCell;
 import net.paulgray.mocklti2.gradebook.GradebookLineItem;
 import net.paulgray.mocklti2.gradebook.GradebookService;
+import net.paulgray.mocklti2.web.entities.LineItem;
+import net.paulgray.mocklti2.web.entities.Result;
 import org.apache.commons.io.IOUtils;
-import org.apache.http.protocol.HTTP;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -86,16 +87,20 @@ public class GradebookController {
     }
 
     @RequestMapping(value = "outcomes/v2.0/gradebook/{contextId}/lineitems/{lineItemId}")
-    public ResponseEntity<Object> createLineItems(@PathVariable String contextId, @PathVariable String lineItemId, HttpServletRequest req) throws Exception {
+    public ResponseEntity<Result> createLineItems(@PathVariable String contextId, @PathVariable String lineItemId, @RequestBody Result result) throws Exception {
         Gradebook gb = gradebookService.getOrCreateGradebook(contextId);
 
         GradebookLineItem lineItem = gradebookService.getOrCreateGradebookLineItemByResourceId(gb.getId(), lineItemId);
+        String userId = result.getStudent().getUserid().getValue();
 
-        String resultBody = IOUtils.toString(req.getInputStream());
+        log.info("Got result for student: <" + userId + "> and score: " + result.getTotalScore());
 
-        log.info("Got result: \n" + resultBody);
+        GradebookCell cell = gradebookService.getOrCreateGradebookCell(lineItem.getId(), userId);
 
-        return new ResponseEntity<>("", HttpStatus.OK);
+        cell.setGrade(result.getTotalScore().getValue());
+        gradebookService.updateGradebookCell(cell);
+
+        return new ResponseEntity<>(result, HttpStatus.OK);
     }
 
     @RequestMapping(value = "/outcomes/v1.1/gradebook", method = RequestMethod.POST)

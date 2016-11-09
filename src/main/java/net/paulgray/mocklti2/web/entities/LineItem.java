@@ -1,4 +1,4 @@
-package net.paulgray.mocklti2.web;
+package net.paulgray.mocklti2.web.entities;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;

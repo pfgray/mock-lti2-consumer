@@ -1,7 +1,5 @@
 package net.paulgray.mocklti2.gradebook;
 
-import net.paulgray.mocklti2.web.LineItem;
-
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
