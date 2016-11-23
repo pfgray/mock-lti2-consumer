@@ -17,7 +17,13 @@ app.config(function($stateProvider, $urlRouterProvider) {
     })
     .state('gradebooks', {
         url: "/gradebooks",
-        templateUrl: "assets/templates/partial-gradebooks.html"
+        templateUrl: "assets/templates/partial-gradebooks.html",
+        params: {
+            page: "0"
+        },
+        controller: ['$scope', '$stateParams', function($scope, $stateParams){
+            $scope.page = $stateParams.page
+        }]
     })
     .state('gradebook', {
         url: "/gradebooks/:gradebookId",

@@ -1,9 +1,11 @@
 
 create table tools (
-    id               integer not null generated always as identity (start with 1, increment by 1),
-    label            varchar(20) NOT NULL,
-    register_url     varchar(500) NOT NULL,
-    tool_state       varchar(10)  NOT NULL DEFAULT 'added',
+    id                            integer not null generated always as identity (start with 1, increment by 1),
+    label                         varchar(20) NOT NULL,
+    register_url                  varchar(500) NOT NULL,
+    tool_state                    varchar(10)  NOT NULL DEFAULT 'added',
+    latest_tool_proxy_submission  clob,
+    launch_url                    varchar(256),
     primary key (id),
     unique(label)
 );
@@ -31,6 +33,19 @@ create table gradebooks (
     context          varchar(500) not null,
     primary key (id)
 );
+
+-- todo: delete these inserts, they're only for testing pagination
+insert into gradebooks (context) values ('paul1');
+insert into gradebooks (context) values ('paul2');
+insert into gradebooks (context) values ('paul3');
+insert into gradebooks (context) values ('paul4');
+insert into gradebooks (context) values ('paul5');
+insert into gradebooks (context) values ('paul6');
+insert into gradebooks (context) values ('paul7');
+insert into gradebooks (context) values ('paul8');
+insert into gradebooks (context) values ('paul9');
+insert into gradebooks (context) values ('paul10');
+insert into gradebooks (context) values ('paul11');
 
 create table gradebook_lineitems (
     id               integer not null generated always as identity (start with 1, increment by 1),

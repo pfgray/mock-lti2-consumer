@@ -1,17 +1,23 @@
 <div>
     <div ng-if="loading">loading?</div>
     <div ng-if="!loading">
-        <table class="table">
-            <thead>
-                <tr>
-                    <th>Context</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr ng-repeat="gb in gradebooks">
-                    <td><a ui-sref="gradebook({gradebookId: gb.context})">{{gb.context}}</a></td>
-                </tr>
-            </tbody>
-        </table>
+        <div ng-if="gradebooks.length > 0">
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>Context</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr ng-repeat="gb in gradebooks">
+                        <td><a ui-sref="gradebook({gradebookId: gb.context})">{{gb.context}}</a></td>
+                    </tr>
+                </tbody>
+            </table>
+            <div class="footer">
+                <a class="btn btn-link" ng-disabled="!hasPrevPage" ui-sref="gradebooks({page: page - 1})">Previous</a>
+                <a class="btn btn-link" ng-disabled="!hasNextPage" ui-sref="gradebooks({page: page + 1})">Next</a>
+            </div>
+        </div>
     </div>
 </div>
