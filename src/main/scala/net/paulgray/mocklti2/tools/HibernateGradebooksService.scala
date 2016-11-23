@@ -3,8 +3,10 @@ package net.paulgray.mocklti2.tools
 import javax.transaction.Transactional
 
 import net.paulgray.mocklti2.gradebook.Gradebook
-import net.paulgray.mocklti2.tools.GradebooksService.{PagedResults, Page}
-import org.hibernate.SessionFactory
+import net.paulgray.mocklti2.tools.GradebooksService.{Page, PagedResults}
+import org.hibernate.criterion.Projections
+import org.hibernate.transform.{DistinctResultTransformer, ResultTransformer}
+import org.hibernate.{Criteria, SessionFactory}
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
 
@@ -20,10 +22,18 @@ class HibernateGradebooksService extends GradebooksService {
   var sessionFactory: SessionFactory = null
 
   @Transactional
-  override def getGradebooks(page: Page): PagedResults[Gradebook] = {
+  override def getPagedGradebooks(page: Page): PagedResults[Gradebook] = {
     val crit = sessionFactory.getCurrentSession.createCriteria(classOf[Gradebook])
     crit.setFirstResult(page.offset)
     crit.setMaxResults(page.limit)
-    PagedResults(page, crit.list().asInstanceOf[java.util.List[Gradebook]].asScala)
+    val gbs = crit.list().asInstanceOf[java.util.List[Gradebook]].asScala
+    PagedResults(page, crit.count(), gbs)
+  }
+
+  implicit class CriteriaOps(c: Criteria) {
+    def count(): Long = {
+      c.setProjection(Projections.rowCount)
+      c.uniqueResult().asInstanceOf[java.lang.Long]
+    }
   }
 }
