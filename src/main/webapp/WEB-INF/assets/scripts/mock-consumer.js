@@ -14,6 +14,18 @@ app.config(function($stateProvider, $urlRouterProvider) {
     .state('tools', {
         url: "/tools",
         templateUrl: "assets/templates/partial-tools.html"
+    })
+    .state('gradebooks', {
+        url: "/gradebooks",
+        templateUrl: "assets/templates/partial-gradebooks.html"
+    })
+    .state('gradebook', {
+        url: "/gradebooks/:gradebookId",
+        templateUrl: "assets/templates/partial-gradebook.html",
+        controller: ['$scope', '$stateParams', function($scope, $stateParams){
+            console.log('wut:', $scope, $stateParams)
+            $scope.gradebookId = $stateParams.gradebookId
+        }]
     });
 
 }).run(function($rootScope, $state) {

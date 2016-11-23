@@ -18,6 +18,7 @@
         <script src="//cdnjs.cloudflare.com/ajax/libs/angular-ui-bootstrap/2.2.0/ui-bootstrap-tpls.min.js"></script>
         <script src="assets/scripts/mock-consumer.js"></script>
         <script src="assets/scripts/gradebook/gradebook.js"></script>
+        <script src="assets/scripts/gradebooks/gradebooks.js"></script>
         <script src="assets/scripts/ltiLaunches/ltiLaunches.js"></script>
         <script src="assets/scripts/sampleData/SampleUsers.js"></script>
         <script src="assets/scripts/sampleData/SampleCourses.js"></script>
@@ -48,6 +49,7 @@
                 <ul class="nav nav-tabs" role="tablist">
                     <li ng-class="{active: $state.includes('manual')}"><a ui-sref="manual">Manual Launches</a></li>
                     <li ng-class="{active: $state.includes('tools')}"><a ui-sref="tools">LTI Tool Registration</a></li>
+                    <li ng-class="{active: $state.includes('gradebooks')}"><a ui-sref="gradebooks">Gradebooks</a></li>
                 </ul>
                 <div ui-view></div>
             </div>

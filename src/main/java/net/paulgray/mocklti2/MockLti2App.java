@@ -1,6 +1,8 @@
 package net.paulgray.mocklti2;
 
 import com.fasterxml.jackson.datatype.jdk8.Jdk8Module;
+import com.fasterxml.jackson.module.scala.DefaultScalaModule;
+import com.fasterxml.jackson.module.scala.DefaultScalaModule$;
 import org.springframework.boot.*;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -29,7 +31,7 @@ public class MockLti2App {
     @Bean
     public Jackson2ObjectMapperBuilderCustomizer addJdk8Module() {
         return (mapperBuilder) -> {
-            mapperBuilder.modules(new Jdk8Module());
+            mapperBuilder.modules(new Jdk8Module(), new DefaultScalaModule());
         };
     }
 }

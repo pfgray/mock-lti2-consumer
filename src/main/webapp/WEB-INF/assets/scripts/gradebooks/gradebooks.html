@@ -1,0 +1,17 @@
+<div>
+    <div ng-if="loading">loading?</div>
+    <div ng-if="!loading">
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Context</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr ng-repeat="gb in gradebooks">
+                    <td><a ui-sref="gradebook({gradebookId: gb.context})">{{gb.context}}</a></td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>

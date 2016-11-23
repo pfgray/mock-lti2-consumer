@@ -20,10 +20,10 @@ class HibernateGradebooksService extends GradebooksService {
   var sessionFactory: SessionFactory = null
 
   @Transactional
-  override def getGradebooks(page: Page): java.util.List[Gradebook] = {
+  override def getGradebooks(page: Page): PagedResults[Gradebook] = {
     val crit = sessionFactory.getCurrentSession.createCriteria(classOf[Gradebook])
     crit.setFirstResult(page.offset)
     crit.setMaxResults(page.limit)
-    crit.list().asInstanceOf[java.util.List[Gradebook]]
+    PagedResults(page, crit.list().asInstanceOf[java.util.List[Gradebook]].asScala)
   }
 }

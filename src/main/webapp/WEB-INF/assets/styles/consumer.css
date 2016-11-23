@@ -92,3 +92,7 @@ form button:last-child {
   overflow-x: auto;
   overflow-y: auto;
 }
+
+.view-header {
+  margin-bottom: 1em;
+}

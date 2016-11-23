@@ -8,11 +8,11 @@ import net.paulgray.mocklti2.tools.GradebooksService.{PagedResults, Page}
  */
 trait GradebooksService {
 
-  def getGradebooks(page: Page): java.util.List[Gradebook]
+  def getGradebooks(page: Page): PagedResults[Gradebook]
 
 }
 
 object GradebooksService {
   case class Page(offset: Int, limit: Int)
-  case class PagedResults[T](page: Page, results: java.util.List[T])
+  case class PagedResults[T](page: Page, results: Seq[T])
 }

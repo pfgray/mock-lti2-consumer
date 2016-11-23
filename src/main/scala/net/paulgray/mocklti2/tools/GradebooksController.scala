@@ -18,10 +18,9 @@ class GradebooksController {
 
   @RequestMapping(value = Array("/api/gradebooks"), method = Array(RequestMethod.GET))
   def getGradebooks(
-    @RequestParam(value = "limit") limit: Int,
-    @RequestParam(value = "offset") offset: Int
-  ): ResponseEntity[java.util.List[Gradebook]] = {
-    println("uhhhhhhh.....")
+    @RequestParam(value = "limit", defaultValue = "10") limit: Int,
+    @RequestParam(value = "offset", defaultValue = "0") offset: Int
+  ): ResponseEntity[PagedResults[Gradebook]] = {
     new ResponseEntity(gradebooksService.getGradebooks(Page(offset, limit)), HttpStatus.OK)
   }
 
