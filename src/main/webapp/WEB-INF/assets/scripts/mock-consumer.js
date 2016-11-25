@@ -16,10 +16,10 @@ app.config(function($stateProvider, $urlRouterProvider) {
         templateUrl: "assets/templates/partial-tools.html"
     })
     .state('gradebooks', {
-        url: "/gradebooks",
+        url: "/gradebooks?page",
         templateUrl: "assets/templates/partial-gradebooks.html",
         params: {
-            page: "0"
+            page: "1"
         },
         controller: ['$scope', '$stateParams', function($scope, $stateParams){
             $scope.page = $stateParams.page

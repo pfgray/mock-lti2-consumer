@@ -2,7 +2,7 @@
     <div ng-if="loading">loading?</div>
     <div ng-if="!loading">
         <div ng-if="gradebooks.length > 0">
-            <table class="table">
+            <table class="table gradebooks">
                 <thead>
                     <tr>
                         <th>Context</th>
@@ -15,9 +15,31 @@
                 </tbody>
             </table>
             <div class="footer">
-                <a class="btn btn-link" ng-disabled="!hasPrevPage" ui-sref="gradebooks({page: page - 1})">Previous</a>
-                <a class="btn btn-link" ng-disabled="!hasNextPage" ui-sref="gradebooks({page: page + 1})">Next</a>
+                <nav aria-label="Page navigation">
+                    <ul class="pagination">
+                        <li class="page-item" ng-class="{disabled: !hasPrevPage}">
+                            <a class="page-link" ui-sref="gradebooks({page: page - 1})" aria-label="Previous" ng-disabled="!hasPrevPage">
+                                <span aria-hidden="true">&laquo;</span>
+                                <span class="sr-only">Previous</span>
+                            </a>
+                        </li>
+                        <li class="page-item" ng-repeat="p in pages" ng-class="{active: p === page}">
+                            <a class="page-link" ui-sref="gradebooks({page: p})">{{p}}</a>
+                        </li>
+                        <li class="page-item" ng-class="{disabled: !hasNextPage}">
+                            <a class="page-link" aria-label="Next" ui-sref="gradebooks({page: page + 1})" ng-disabled="!hasNextPage" >
+                                <span aria-hidden="true">&raquo;</span>
+                                <span class="sr-only">Next</span>
+                            </a>
+                        </li>
+                    </ul>
+                </nav>
             </div>
+        </div>
+        <div ng-if="gradebooks.length === 0" class="jumbotron focused-display empty-gradebooks">
+            <h1><i class="fa fa-calendar" aria-hidden="true"></i></h1>
+            <div>There aren't any gradebooks yet.</div>
+            <div>Construct a <a ui-sref="manual">launch</a> with a course in order to initiate one.</div>
         </div>
     </div>
 </div>

@@ -41,7 +41,7 @@
     <body ng-app="mock-consumer">
         <div class="container main">
             <div class="row">
-                <h1>Mock Lti2 Consumer</h1>
+                <h1>Mock LTI 2.0 Consumer</h1>
             </div>
         </div>
         <div class="container main">

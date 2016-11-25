@@ -96,3 +96,11 @@ form button:last-child {
 .view-header {
   margin-bottom: 1em;
 }
+
+.footer {
+  text-align: center;
+}
+
+.gradebooks.table, .empty-gradebooks {
+  min-height: 420px;
+}

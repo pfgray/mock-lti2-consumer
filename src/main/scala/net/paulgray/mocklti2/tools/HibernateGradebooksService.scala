@@ -32,6 +32,8 @@ class HibernateGradebooksService extends GradebooksService {
 
   implicit class CriteriaOps(c: Criteria) {
     def count(): Long = {
+      c.setFirstResult(0)
+      c.setMaxResults(0)
       c.setProjection(Projections.rowCount)
       c.uniqueResult().asInstanceOf[java.lang.Long]
     }
