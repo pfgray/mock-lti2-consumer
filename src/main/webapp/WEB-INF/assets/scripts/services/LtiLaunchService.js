@@ -8,7 +8,7 @@ app.service('LtiLaunchService', ['$http', function($http){
 
     LtiLaunchService.postLaunch = function(data){
         var launchParameters = data.launchParameters;
-        var ltiForm = $('<form action="' + data.url + '" method=' + data.method + ' target="_blank" ></form>');
+        var ltiForm = $('<form action="' + data.url + '" method="POST" target="' + data.target + '" ></form>');
         for(var param in launchParameters){
             ltiForm.append($("<input>").attr("type", "hidden").attr("name", param).val(launchParameters[param]));
         }

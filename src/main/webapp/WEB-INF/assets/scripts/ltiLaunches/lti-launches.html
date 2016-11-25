@@ -1,5 +1,12 @@
-<div class="container">
-    <form>
+<div class="container launch-container">
+    <form class="launch-form" ng-class="{visible: !launched}">
+
+        <div class="row launch-btn-container">
+            <div class="col-md-12">
+                <button ng-click="getSignedParameters()" class="btn btn-default launch-btn">Launch</button>
+                <label><input type="checkbox" checked="checked" ng-model="newWindow" /> New Window</label>
+            </div>
+        </div>
 
         <!-- Tool -->
         <div class="step">
@@ -77,9 +84,14 @@
             </div>
         </div>
 
-        <button ng-click="getSignedParameters()" class="btn btn-default">Launch</button>
-
     </form>
+
+    <div class="launch-frame" ng-class="{visible: launched}">
+        <div class="row">
+            <button class="btn btn-default" ng-click="launched=false;"><</button>
+            <iframe id="launch_frame" name="launch_frame"></iframe>
+        </div>
+    </div>
 
     <script type="text/ng-template" id="gradebookModal.html">
         <div class="modal-header">

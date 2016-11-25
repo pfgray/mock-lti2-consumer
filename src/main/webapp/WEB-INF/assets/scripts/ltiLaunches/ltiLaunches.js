@@ -45,12 +45,16 @@ function($http, ltiLaunchService, SampleUsers, SampleCourses, sampleToolsService
           secret: scope.launch.tool.secret
         }).then(function(resp){
           console.log("got signed request: ", resp);
-          sampleToolsService.addOrSetTool(scope.launch.tool);
+          console.log('new window? ', scope.newWindow);
+          sampleToolsService.addOrSetTool(scope.newWindow);
           ltiLaunchService.postLaunch({
             url:scope.launch.tool.url,
-            method: 'POST',
+            target: scope.newWindow ? '_blank' : 'launch_frame',
             launchParameters: resp.data.launch
-          })
+          });
+          if(!scope.newWindow) {
+            scope.launched = true;
+          }
         });
       };
 
@@ -67,11 +71,16 @@ function($http, ltiLaunchService, SampleUsers, SampleCourses, sampleToolsService
             }
           }]
         });
-        //gradebookModal.html
       };
 
+      scope.unlaunch = function(){
+        document.getElementById('launch_frame').src = '';
+        scope.launched = false;
+      }
+
       scope.outcomesOnepOne = true;
-      scope.outcomesTwo = true
+      scope.outcomesTwo = true;
+      scope.newWindow = false;
 
     }
   };
