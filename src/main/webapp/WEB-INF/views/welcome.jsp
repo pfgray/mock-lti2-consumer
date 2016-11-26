@@ -10,6 +10,8 @@
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <base href="/">
+
         <title>MockLti2Consumer</title>
         <script src="assets/lib/lodash.js/4.6.1/lodash.min.js"></script>
         <script src="assets/lib/jquery/2.1.1/jquery.min.js"></script>

@@ -22,13 +22,12 @@ import javax.servlet.http.HttpServletRequest;
 @Controller
 public class Lti2ConsumerController {
     
-    @RequestMapping(value = "/")
+    @RequestMapping(value = {"/", "/tools/**", "/gradebooks/**"})
     public String getWelcome(HttpServletRequest request, ModelMap model) {
         model.addAttribute("contextPath", request.getContextPath());
         model.addAttribute("contextUrl", request.getRequestURL());
         model.addAttribute("contextUri", request.getRequestURI());
         return "welcome";
     }
-
 
 }

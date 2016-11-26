@@ -34,6 +34,10 @@ app.config(function($stateProvider, $urlRouterProvider) {
         }]
     });
 
-}).run(function($rootScope, $state) {
+})
+.run(function($rootScope, $state) {
     $rootScope.$state = $state;
-});
+})
+.config(["$locationProvider", function($locationProvider) {
+  $locationProvider.html5Mode(true);
+}]);

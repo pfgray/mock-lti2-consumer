@@ -101,7 +101,7 @@ form button:last-child {
   text-align: center;
 }
 
-.gradebooks.table, .empty-gradebooks {
+.gradebooks, .empty-gradebooks {
   min-height: 420px;
 }
 
