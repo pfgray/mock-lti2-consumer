@@ -154,12 +154,17 @@ label {
   transform: translate3d(0,0,0);
 }
 
-.launch-frame, .launch-container .row {
+
+.launch-frame {
   width: 100%;
   height: 100%;
 }
 
-.launch-frame > .row > * {
+.launch-frame iframe {
+  height: 100%;
+}
+
+.launch-frame > * {
   display: inline-block;
   vertical-align: top;
 }

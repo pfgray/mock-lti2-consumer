@@ -46,7 +46,12 @@ function($http, ltiLaunchService, SampleUsers, SampleCourses, sampleToolsService
         }).then(function(resp){
           console.log("got signed request: ", resp);
           console.log('new window? ', scope.newWindow);
-          sampleToolsService.addOrSetTool(scope.newWindow);
+
+          //console.log('####tool maybe? ', )
+          // wtf?
+          //sampleToolsService.addOrSetTool(scope.newWindow);
+          sampleToolsService.addOrSetTool(scope.launch.tool);
+
           ltiLaunchService.postLaunch({
             url:scope.launch.tool.url,
             target: scope.newWindow ? '_blank' : 'launch_frame',

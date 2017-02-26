@@ -35,7 +35,8 @@ app.service('sampleToolsService', function() {
       } else {
         tools[currentToolIndex] = tool;
       }
-      tools = tools;
+      //tools = tools;
+      console.log('setting tools: ', tools);
       setTools(tools);
     }
   };
