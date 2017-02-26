@@ -42,7 +42,6 @@ table.table tr td{
     font-weight: bold;
 }
 .step h5 select {
-    float: right;
     padding: 0.25em;
 }
 
@@ -154,7 +153,6 @@ label {
   transform: translate3d(0,0,0);
 }
 
-
 .launch-frame {
   width: 100%;
   height: 100%;
@@ -184,4 +182,49 @@ label {
 .launch-btn-container {
   margin-bottom: 1em;
   text-align: right;
+}
+
+.right {
+  float: right;
+}
+
+.tool-config-select > * {
+  vertical-align: middle;
+}
+
+.lbl {
+  font-weight: bold;
+  width: 15%;
+  text-align: right;
+  display:inline-block;
+  margin-right: 1em;
+}
+
+.tool-config {
+  padding: 1em 0;
+  border-bottom: 1px solid #ddd;
+}
+
+.tool-config > * {
+  display:inline-block;
+  vertical-align: middle;
+}
+
+.tool-config > :first-child {
+  width: 15%;
+  text-align: right;
+  padding-right: 1em;
+}
+
+.tool-config > :first-child i {
+  font-size: 1.5em;
+  cursor: pointer;
+}
+
+.tool-config > :last-child {
+  width: 70%;
+}
+
+.tool-config:last-child {
+  border-bottom: none;
 }

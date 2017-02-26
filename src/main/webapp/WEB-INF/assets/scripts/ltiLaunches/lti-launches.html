@@ -10,10 +10,18 @@
 
         <!-- Tool -->
         <div class="step">
-            <h5>Tool <select
-                    ng-if="sampleTools.length > 1" ng-model="launch.tool"
-                    ng-options="tool as urlAndKey(tool) for tool in sampleTools">
-            </select><div class="clearfix"></div></h5>
+            <h5>Tool
+                <div class="right tool-config-select">
+                    <button class="btn btn-default small" ng-if="sampleTools.length > 1"
+                            ng-click="configureTools()">
+                        <i class="fa fa-cog" />
+                    </button>
+                    <select ng-if="sampleTools.length > 1" ng-model="launch.tool"
+                            ng-options="tool as urlAndKey(tool) for tool in sampleTools">
+                    </select>
+                </div>
+                <div class="clearfix"></div>
+            </h5>
             <div class="row">
                 <div class="col-md-6">
                     <input ng-model="launch.tool.url" placeholder="Url" class="form-control" />
@@ -98,6 +106,29 @@
         </div>
         <div class="modal-body" id="modal-body">
             <gradebook gradebook-id="gradebookId"/>
+        </div>
+        <div class="modal-footer">
+            <button class="btn btn-danger" type="button" ng-click="close()">Close</button>
+        </div>
+    </script>
+    <script type="text/ng-template" id="configureLaunches.html">
+        <div class="modal-header">
+            <h3 class="modal-title">Saved Launches</h3>
+        </div>
+        <div class="modal-body">
+            <div ng-repeat="tool in tools" class="tool-config">
+                <div><i class="fa fa-trash-o" ng-click="remove(tool)"/></div><div class="">
+                    <div>
+                        <span class="lbl">url:</span>{{tool.url}}
+                    </div>
+                    <div>
+                        <span class="lbl">key:</span>{{tool.key}}
+                    </div>
+                    <div>
+                        <span class="lbl">secret:</span>{{tool.secret}}
+                    </div>
+                </div>
+            </div>
         </div>
         <div class="modal-footer">
             <button class="btn btn-danger" type="button" ng-click="close()">Close</button>

@@ -47,10 +47,8 @@ function($http, ltiLaunchService, SampleUsers, SampleCourses, sampleToolsService
           console.log("got signed request: ", resp);
           console.log('new window? ', scope.newWindow);
 
-          //console.log('####tool maybe? ', )
-          // wtf?
-          //sampleToolsService.addOrSetTool(scope.newWindow);
           sampleToolsService.addOrSetTool(scope.launch.tool);
+          scope.sampleTools = sampleToolsService.getTools();
 
           ltiLaunchService.postLaunch({
             url:scope.launch.tool.url,
@@ -86,6 +84,28 @@ function($http, ltiLaunchService, SampleUsers, SampleCourses, sampleToolsService
       scope.outcomesOnepOne = true;
       scope.outcomesTwo = true;
       scope.newWindow = false;
+
+      scope.configureTools = function(){
+        //show the modal
+        console.log("Showing configTools:", scope.sampleTools);
+        var modalInstance = $uibModal.open({
+          animation: true,
+          templateUrl: 'configureLaunches.html',
+          size: 'sm',
+          controller: ['$scope', '$uibModalInstance', function($scope, $uibModalInstance){
+            $scope.tools = scope.sampleTools;
+            $scope.remove = function(tool) {
+              sampleToolsService.removeTool(tool);
+              $scope.tools = sampleToolsService.getTools();
+              console.log('now showing: ', $scope.tools);
+              scope.sampleTools = $scope.tools;
+            };
+            $scope.close = function() {
+              $uibModalInstance.dismiss();
+            };
+          }]
+        });
+      }
 
     }
   };

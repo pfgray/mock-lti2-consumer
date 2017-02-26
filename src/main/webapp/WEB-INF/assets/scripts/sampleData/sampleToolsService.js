@@ -3,6 +3,8 @@ app.service('sampleToolsService', function() {
   function getTools(){
     if(window.localStorage) {
       var storedTools = JSON.parse(window.localStorage.getItem('ltiTools'));
+
+      console.log('fetching tools? ', storedTools);
       if(storedTools === null){
         storedTools = [];
         setTools(storedTools);
@@ -16,16 +18,17 @@ app.service('sampleToolsService', function() {
   }
   function setTools(tools){
     if(window.localStorage){
+      console.log('setting tools: ', tools);
       window.localStorage.setItem('ltiTools', angular.toJson(tools));
     }
   }
 
-  var tools = getTools();
   return {
     getTools: function(){
-      return _.cloneDeep(tools); //new array
+      return _.cloneDeep(getTools()); //new array
     },
     addOrSetTool: function(tool){
+      var tools = this.getTools();
       //match keys by url & key
       var currentToolIndex = _.findIndex(tools, function(t){
         return t.url === tool.url && t.key === tool.key;
@@ -36,8 +39,12 @@ app.service('sampleToolsService', function() {
         tools[currentToolIndex] = tool;
       }
       //tools = tools;
-      console.log('setting tools: ', tools);
       setTools(tools);
+    },
+    removeTool: function(tool) {
+      setTools(this.getTools().filter(function(t){
+        return !(t.url === tool.url && t.key === tool.key);
+      }));
     }
   };
 
