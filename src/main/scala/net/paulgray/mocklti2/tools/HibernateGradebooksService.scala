@@ -30,6 +30,12 @@ class HibernateGradebooksService extends GradebooksService {
     PagedResults(page, crit.count(), gbs)
   }
 
+  @Transactional
+  override def deleteGradebook(id: Integer): Unit = {
+    val sess = sessionFactory.getCurrentSession
+    sess.delete(new Gradebook(id))
+  }
+
   implicit class CriteriaOps(c: Criteria) {
     def count(): Long = {
       c.setFirstResult(0)

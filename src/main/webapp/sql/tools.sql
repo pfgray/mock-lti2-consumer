@@ -41,7 +41,7 @@ create table gradebook_lineitems (
     title varchar(500),
     activity_id varchar(500),
     primary key (id),
-    foreign key (gradebook_id) references gradebooks (id)
+    foreign key (gradebook_id) references gradebooks (id) on delete cascade
 );
 
 create table gradebook_cells (
@@ -50,5 +50,5 @@ create table gradebook_cells (
     result_sourcedid varchar(500) not null,
     grade            varchar(500),
     primary key (id),
-    foreign key (gradebook_lineitem_id) references gradebook_lineitems (id)
+    foreign key (gradebook_lineitem_id) references gradebook_lineitems (id) on delete cascade
 );

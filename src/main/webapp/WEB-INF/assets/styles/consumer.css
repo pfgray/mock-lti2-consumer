@@ -228,3 +228,7 @@ label {
 .tool-config:last-child {
   border-bottom: none;
 }
+
+.delete {
+  cursor: pointer;
+}

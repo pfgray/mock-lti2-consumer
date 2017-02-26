@@ -10,6 +10,8 @@ trait GradebooksService {
 
   def getPagedGradebooks(page: Page): PagedResults[Gradebook]
 
+  def deleteGradebook(id: Integer): Unit
+
 }
 
 object GradebooksService {

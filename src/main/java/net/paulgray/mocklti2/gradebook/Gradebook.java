@@ -32,6 +32,10 @@ public class Gradebook {
     public Gradebook() {
     }
 
+    public Gradebook(Integer id) {
+        this.id = id;
+    }
+
     public Gradebook(String context) {
         this.context = context;
     }

@@ -18,7 +18,15 @@ function($http) {
         console.log('page: ');
         var offset = (scope.page - 1) * PAGE_SIZE;
 
-        $http.get('/api/gradebooks?limit=' + limit + "&offset=" + offset)
+        scope.deleteGradebook = function(id) {
+          $http({
+            url: '/api/gradebooks/' + id,
+            method: 'DELETE'
+          }).then(refreshGradebooks);
+        };
+
+        function refreshGradebooks(){
+          $http.get('/api/gradebooks?limit=' + limit + "&offset=" + offset)
           .then(function(resp){
             var gradebooksQuery = resp.data;
 
@@ -42,6 +50,10 @@ function($http) {
           }, function(){
             scope.loading = false;
           });
+        }
+
+        refreshGradebooks();
+        refreshGradebooks();
     }
   }
 }]);
