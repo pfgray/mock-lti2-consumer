@@ -17,6 +17,10 @@ function($http, ltiLaunchService, SampleUsers, SampleCourses, sampleToolsService
       scope.launch.user = SampleUsers[0];
       scope.launch.context = SampleCourses[0];
 
+      scope.launch.config = {};
+      scope.launch.config.custom_params = '';
+      scope.launch.config.ext_params = '';
+
       scope.urlAndKey = function(tool){
         return tool.url + ' / ' + tool.key;
       }
@@ -24,6 +28,34 @@ function($http, ltiLaunchService, SampleUsers, SampleCourses, sampleToolsService
       scope.getSignedParameters = function(){
         var launch = scope.launch;
         var params = _.pickBy(_.assign({}, launch.user, launch.context, launch.outcomes));
+
+        function mergeParams(prefix) {
+          return function(params, param){
+            if(param !== ''){
+              var i = param.indexOf('=');
+              if(i === -1){
+                // just include params
+                params[prefix + param] = '';
+                return params;
+              } else {
+                var key = param.substr(0, i);
+                var value = param.substr(i + 1);
+                params[prefix + key] = value;
+                return params;
+              }
+            } else {
+              return params;
+            }
+          }
+        }
+
+        var params = scope.launch.config.custom_params
+          .split('\n')
+          .reduce(mergeParams('custom_'), params);
+
+        var params = scope.launch.config.ext_params
+          .split('\n')
+          .reduce(mergeParams('ext_'), params);
 
         if(scope.outcomesOnepOne) {
           params.lis_outcome_service_url = window.web_context_url + "outcomes/v1.1/gradebook";
@@ -87,7 +119,7 @@ function($http, ltiLaunchService, SampleUsers, SampleCourses, sampleToolsService
 
       scope.configureTools = function(){
         //show the modal
-        console.log("Showing configTools:", scope.sampleTools);
+        //show the modal
         var modalInstance = $uibModal.open({
           animation: true,
           templateUrl: 'configureLaunches.html',
