@@ -9,13 +9,17 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class Value {
 
+    @JsonProperty("@type")
+    private String type;
+
     @JsonProperty("@value")
     private String value;
 
     public Value() {
     }
 
-    public Value(String value) {
+    public Value(String type, String value) {
+        this.type = type;
         this.value = value;
     }
 
@@ -25,5 +29,13 @@ public class Value {
 
     public void setValue(String value) {
         this.value = value;
+    }
+
+    public String getType() {
+        return type;
+    }
+
+    public void setType(String type) {
+        this.type = type;
     }
 }
