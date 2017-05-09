@@ -62,7 +62,7 @@ public class GradebookController {
             .orElseGet(() -> new ResponseEntity<GradebookInfo>(HttpStatus.NOT_FOUND));
     }
 
-    @RequestMapping(value = "outcomes/v2.0/gradebook/{contextId}/lineitems")
+    @RequestMapping(value = "/outcomes/v2.0/gradebook/{contextId}/lineitems", method = RequestMethod.POST)
     public ResponseEntity<LineItem> createLineItems(@PathVariable String contextId, @RequestBody LineItem lineItem, HttpServletRequest req) {
         Gradebook gb = gradebookService.getOrCreateGradebook(contextId);
 
@@ -86,8 +86,8 @@ public class GradebookController {
         return new ResponseEntity<>(lineItem, HttpStatus.OK);
     }
 
-    @RequestMapping(value = "outcomes/v2.0/gradebook/{contextId}/lineitems/{lineItemId}")
-    public ResponseEntity<Result> createLineItems(@PathVariable String contextId, @PathVariable String lineItemId, @RequestBody Result result) throws Exception {
+    @RequestMapping(value = "outcomes/v2.0/gradebook/{contextId}/lineitems/{lineItemId}", method = {RequestMethod.POST})
+    public ResponseEntity<Result> createResults(@PathVariable String contextId, @PathVariable String lineItemId, @RequestBody Result result) throws Exception {
         Gradebook gb = gradebookService.getOrCreateGradebook(contextId);
 
         GradebookLineItem lineItem = gradebookService.getOrCreateGradebookLineItemByResourceId(gb.getId(), lineItemId);

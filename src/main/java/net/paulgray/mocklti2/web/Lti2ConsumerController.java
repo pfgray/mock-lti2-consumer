@@ -24,9 +24,7 @@ public class Lti2ConsumerController {
     
     @RequestMapping(value = {"/", "/tools/**", "/gradebooks/**"})
     public String getWelcome(HttpServletRequest request, ModelMap model) {
-        model.addAttribute("contextPath", request.getContextPath());
-        model.addAttribute("contextUrl", request.getRequestURL());
-        model.addAttribute("contextUri", request.getRequestURI());
+        model.addAttribute("origin", HttpUtils.getOrigin(request).orElse(""));
         return "welcome";
     }
 

@@ -31,9 +31,7 @@
         <script src="assets/scripts/tools/RegisteredTool.js"></script>
 
         <script>
-            window.web_context_path = "${contextPath}";
-            window.web_context_url = "${contextUrl}";
-            window.web_context_uri = "${contextUri}";
+            window.web_origin = "${origin}";
         </script>
 
         <link rel="stylesheet" href="assets/styles/lib/bootstrap/3.2.0/css/bootstrap.min.css"/>
