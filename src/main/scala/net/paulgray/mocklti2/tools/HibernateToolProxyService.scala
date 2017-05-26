@@ -6,6 +6,7 @@ import javax.transaction.Transactional
 import net.paulgray.mocklti2.gradebook.Gradebook
 import net.paulgray.mocklti2.tools.GradebooksService.PagedResults
 import net.paulgray.mocklti2.tools.entity.ToolProxy
+import net.paulgray.mocklti2.tools.utils.JacksonUtils
 import org.hibernate.SessionFactory
 import org.hibernate.criterion.{Criterion, Restrictions}
 import org.springframework.beans.factory.annotation.Autowired
@@ -21,8 +22,9 @@ class HibernateToolProxyService extends ToolProxyService {
   var sessionFactory: SessionFactory = null
 
   @Transactional
-  override def createToolRegistrationRequest(): ToolRegistrationRequest = {
+  override def createToolRegistrationRequest(registrationUrl: String): ToolRegistrationRequest = {
     val req = new ToolRegistrationRequest(rand, rand, rand)
+    req.setRegistrationUrl(registrationUrl)
     sess.save(req)
     req
   }
@@ -45,7 +47,8 @@ class HibernateToolProxyService extends ToolProxyService {
     defaultUrl: Option[String],
     secureUrl: Option[String],
     label: String,
-    toolProxy: ToolProxy
+    toolProxy: ToolProxy,
+    registrationRequest: ToolRegistrationRequest
   ): LtiToolProxy = {
 
     val tool = new LtiTool()
@@ -61,6 +64,8 @@ class HibernateToolProxyService extends ToolProxyService {
     defaultUrl foreach proxy.setDefaultUrl
     secureUrl foreach proxy.setSecureUrl
     proxy.setTool(tool)
+    proxy.setRegistrationRequest(registrationRequest)
+    proxy.setActive(false)
     sess.save(proxy)
 
     toolProxy.tool_profile.resource_handler.foreach(h => {
@@ -70,6 +75,7 @@ class HibernateToolProxyService extends ToolProxyService {
       handler.setIcon(h.icon_info.headOption.map(_.default_location.path).getOrElse(null))
       handler.setName(h.resource_name.default_value)
       handler.setToolProxy(proxy)
+      handler.updateMessages(h.message)
       sess.save(handler)
     })
 

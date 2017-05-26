@@ -3,7 +3,6 @@ package net.paulgray.mocklti2.tools;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import javax.persistence.*;
-import java.util.List;
 import java.util.Set;
 
 /**
@@ -18,6 +17,9 @@ public class LtiToolProxy {
     @GeneratedValue(strategy=GenerationType.IDENTITY)
     private Integer id;
 
+    @Column(name = "active")
+    private Boolean active;
+
     @JoinColumn(name = "tool")
     @ManyToOne(fetch = FetchType.EAGER)
     @JsonIgnore
@@ -25,6 +27,10 @@ public class LtiToolProxy {
 
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER, mappedBy = "toolProxy")
     Set<LtiToolResourceHandler> resourceHandlers;
+
+    @JoinColumn(name = "reg_request")
+    @OneToOne(fetch = FetchType.EAGER)
+    private ToolRegistrationRequest registrationRequest;
 
     @Column(name = "secure_url")
     private String secureUrl;
@@ -92,5 +98,21 @@ public class LtiToolProxy {
 
     public void setResourceHandlers(Set<LtiToolResourceHandler> resourceHandlers) {
         this.resourceHandlers = resourceHandlers;
+    }
+
+    public Boolean getActive() {
+        return active;
+    }
+
+    public void setActive(Boolean active) {
+        this.active = active;
+    }
+
+    public ToolRegistrationRequest getRegistrationRequest() {
+        return registrationRequest;
+    }
+
+    public void setRegistrationRequest(ToolRegistrationRequest registrationRequest) {
+        this.registrationRequest = registrationRequest;
     }
 }

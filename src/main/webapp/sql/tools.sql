@@ -14,15 +14,27 @@ create table tools (
 --insert into tools (label, register_url) values ('lti-chat', 'http://lti-chat.paulgray.net');
 --insert into tools (label, register_url, tool_state) values ('sample-lti', 'http://www.google.com', 'failed');
 
+create table tool_registration_requests (
+    id               integer not null generated always as identity (start with 1, increment by 1),
+    reg_key varchar(500) not null,
+    reg_secret varchar(500) not null,
+    guid varchar(500) not null,
+    registration_url varchar(500) not null,
+    primary key (id)
+);
+
 create table tool_proxies (
     id               integer not null generated always as identity (start with 1, increment by 1),
     tool             integer not null,
+    reg_request      integer not null,
     secure_url       varchar(500),
     default_url      varchar(500),
+    active           boolean NOT NULL DEFAULT false,
     lti_key          varchar(500) NOT NULL,
     lti_secret       varchar(500) NOT NULL,
     primary key (id),
-    foreign key (tool) references tools (id)
+    foreign key (tool) references tools (id),
+    foreign key (reg_request) references tool_registration_requests (id)
 );
 
 create table resource_handlers (
@@ -63,12 +75,4 @@ create table gradebook_cells (
     grade            varchar(500),
     primary key (id),
     foreign key (gradebook_lineitem_id) references gradebook_lineitems (id) on delete cascade
-);
-
-create table tool_registration_requests (
-    id               integer not null generated always as identity (start with 1, increment by 1),
-    reg_key varchar(500) not null,
-    reg_secret varchar(500) not null,
-    guid varchar(500) not null,
-    primary key (id)
 );

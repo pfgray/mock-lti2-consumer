@@ -67,15 +67,15 @@ class ToolProxyController {
     @RequestParam(value = "toolurl") toolUrl: String,
     request: HttpServletRequest, model: ModelMap
   ): String = {
-    val tp = toolProxyService.createToolRegistrationRequest()
+    val regRequest = toolProxyService.createToolRegistrationRequest(toolUrl)
     // lti_message_type, reg_key, reg_password, tc_profile_url, launch_presentation_return_url
     val origin = HttpUtils.getOrigin(request).orElse("")
     val params = Map(
       "lti_message_type" -> "ToolProxyRegistrationRequest",
-      "reg_key" -> tp.getKey,
-      "reg_password" -> tp.getSecret,
-      "tc_profile_url" -> s"$origin/api/tcp?registrationGuid=${tp.getGuid}",
-      "launch_presentation_return_url" -> s"$origin/toolProxyRegistrationReceipt?registrationGuid=${tp.getGuid}",
+      "reg_key" -> regRequest.getKey,
+      "reg_password" -> regRequest.getSecret,
+      "tc_profile_url" -> s"$origin/api/tcp?registrationGuid=${regRequest.getGuid}",
+      "launch_presentation_return_url" -> s"$origin/toolProxyRegistrationReceipt?registrationGuid=${regRequest.getGuid}",
       "lti_version" -> "LTI-2p0"
     )
 
@@ -118,6 +118,8 @@ class ToolProxyController {
   ): ResponseEntity[ToolProxyReceipt] = {
     try {
 
+      val registrationRequest = toolProxyService.getToolRegistrationRequest(registrationGuid)
+
       val proxyString = IOUtils.toString(req.getInputStream)
 
       val toolProxy = JacksonUtils.mapper.readValue[ToolProxy](proxyString)
@@ -140,7 +142,8 @@ class ToolProxyController {
         Option(baseUrlChoice.default_base_url),
         Option(baseUrlChoice.secure_base_url),
         toolProxy.tool_profile.product_instance.product_info.product_name.default_value,
-        toolProxy
+        toolProxy,
+        registrationRequest
       )
 
       val tpUrl = s"${HttpUtils.getOrigin(req)}/api/toolProxies/${tp.getId}"
@@ -153,8 +156,29 @@ class ToolProxyController {
     }
   }
 
-  @RequestMapping(value = Array("/api/toolProxies/{id}"), method = Array(RequestMethod.POST))
-  def createToolProxy(@PathVariable(value = "id") toolProxyId: String): ResponseEntity[ToolProxy] = {
+  @RequestMapping(value = Array("/toolProxyRegistrationReceipt"), method = Array(RequestMethod.GET))
+  def registrationReceipt(
+    @RequestParam(value = "registrationGuid") registrationGuid: String,
+    @RequestParam(value = "status", required = false) status: String,
+    request: HttpServletRequest, model: ModelMap
+  ): String = {
+    //get the registration request
+    // find the tool for this registration request?
+    val reg = toolProxyService.getToolRegistrationRequest(registrationGuid)
+    val proxy = reg.getToolProxy
+
+
+
+    model.put("proxy", JacksonUtils.mapper.writeValueAsString(proxy))
+    model.put("success", JacksonUtils.mapper.writeValueAsString(status == "success"))
+
+    "registrationReceipt"
+  }
+
+  @RequestMapping(value = Array("/api/toolProxies/{id}"), method = Array(RequestMethod.GET))
+  def getToolProxy(
+    @RequestParam(value = "registrationGuid") registrationGuid: String
+  ): ResponseEntity[ToolProxy] = {
     new ResponseEntity[ToolProxy](HttpStatus.OK)
   }
 
@@ -165,145 +189,4 @@ class ToolProxyController {
     }
   }
 
-
-
 }
-
-
-// capabilities that you can offer:
-
-//            "basic-lti-launch-request",
-//            "ContentItemSelectionRequest",
-//            "DashboardRequest",
-//            "ConfigureLaunchRequest",
-//            "Context.id",
-//            "Context.label",
-//            "Context.title",
-//            "Context.type",
-//            "CourseOffering.sourcedId",
-//            "CourseSection.label",
-//            "CourseSection.sourcedId",
-//            "CourseSection.title",
-//            "Membership.role",
-//            "Person.email.primary",
-//            "Person.name.family",
-//            "Person.name.full",
-//            "Person.name.given",
-//            "Person.sourcedId",
-//            "ResourceLink.description",
-//            "ResourceLink.id",
-//            "ResourceLink.title",
-//            "Result.sourcedId",
-//            "User.id",
-//            "User.image",
-//            "User.scope.mentor",
-//            "User.username",
-//            "Result.autocreate",
-//            "OAuth.hmac-sha256",
-//            "OAuth.splitSecret",
-//            "ToolConsumerProfile.url",
-//            "ToolProxy.custom.url",
-//            "ToolProxyBinding.custom.url",
-//            "LtiLink.custom.url",
-//            "LineItems.url",
-//            "LineItem.url",
-//            "Results.url",
-//            "Result.url",
-//            "ToolProxyBinding.memberships.url",
-//            "LtiLink.memberships.url"
-
-
-// service offered
-
-//         [    {
-//              "@type":"RestService",
-//              "@id" : "tcp:ToolConsumerProfile",
-//              "endpoint" : "http://ltiapps.net/test/tc-profile.php/39831275c72515da42d3da8b9d964032",
-//              "format" : ["application/vnd.ims.lti.v2.toolconsumerprofile+json"],
-//              "action" : ["GET"]
-//            },
-//            {
-//              "@type":"RestService",
-//              "@id" : "tcp:ToolProxy.collection",
-//              "endpoint" : "http://ltiapps.net/test/tc-toolproxy.php/39831275c72515da42d3da8b9d964032",
-//              "format" : ["application/vnd.ims.lti.v2.toolproxy+json"],
-//              "action" : ["POST"]
-//            },
-//            {
-//              "@type":"RestService",
-//              "@id" : "tcp:ToolProxySettings",
-//              "endpoint" : "http://ltiapps.net/test/tc-settings.php/system/{tool_proxy_guid}",
-//              "format" : ["application/vnd.ims.lti.v2.toolsettings+json", "application/vnd.ims.lti.v2.toolsettings.simple+json"],
-//              "action" : ["GET", "PUT"]
-//            },
-//            {
-//              "@type" : "RestService",
-//              "@id" : "tcp:ToolProxyBindingSettings",
-//              "endpoint" : "http://ltiapps.net/test/tc-settings.php/context/{context_id}",
-//              "format" : ["application/vnd.ims.lti.v2.toolsettings+json", "application/vnd.ims.lti.v2.toolsettings.simple+json"],
-//              "action" : ["GET", "PUT"]
-//            },
-//            {
-//              "@type" : "RestService",
-//              "@id" : "tcp:LtiLinkSettings",
-//              "endpoint" : "http://ltiapps.net/test/tc-settings.php/link/{link_id}",
-//              "format" : ["application/vnd.ims.lti.v2.toolsettings+json", "application/vnd.ims.lti.v2.toolsettings.simple+json"],
-//              "action" : ["GET", "PUT"]
-//            },
-//            {
-//              "@type":"RestService",
-//              "@id" : "tcp:Outcomes.LTI1",
-//              "endpoint" : "http://ltiapps.net/test/tc-outcomes.php",
-//              "format" : ["application/vnd.ims.lti.v1.outcome+xml"],
-//              "action" : ["POST"]
-//            },
-//            {
-//              "@type" : "RestService",
-//              "@id" : "tcp:LineItem.collection",
-//              "endpoint" : "http://ltiapps.net/test/tc-outcomes2.php/{context_id}/lineitems",
-//              "format" : ["application/vnd.ims.lis.v2.lineitemcontainer+json"],
-//              "action" : ["GET", "POST"]
-//            },
-//            {
-//              "@type" : "RestService",
-//              "@id" : "tcp:LineItem.item",
-//              "endpoint" : "http://ltiapps.net/test/tc-outcomes2.php/{context_id}/lineitems/{lineitem_id}",
-//              "format" : ["application/vnd.ims.lis.v2.lineitem+json"],
-//              "action" : ["GET", "PUT", "DELETE"]
-//            },
-//            {
-//              "@type" : "RestService",
-//              "@id" : "tcp:LineItem.results",
-//              "endpoint" : "http://ltiapps.net/test/tc-outcomes2.php/{context_id}/lineitems/{lineitem_id}",
-//              "format" : ["application/vnd.ims.lis.v2.lineitemresults+json"],
-//              "action" : ["GET", "PUT"]
-//            },
-//            {
-//              "@type" : "RestService",
-//              "@id" : "tcp:LISResult.collection",
-//              "endpoint" : "http://ltiapps.net/test/tc-outcomes2.php/{context_id}/lineitems/{lineitem_id}/results",
-//              "format" : ["aapplication/vnd.ims.lis.v2.resultcontainer+json"],
-//              "action" : ["GET", "POST"]
-//            },
-//            {
-//              "@type" : "RestService",
-//              "@id" : "tcp:LISResult.item",
-//              "endpoint" : "http://ltiapps.net/test/tc-outcomes2.php/{context_id}/lineitems/{lineitem_id}/results/{result_id}",
-//              "format" : ["application/vnd.ims.lis.v2p1.result+json"],
-//              "action" : ["GET", "PUT", "DELETE"]
-//            },
-//            {
-//              "@type" : "RestService",
-//              "@id" : "tcp:ToolProxyBindingMemberships.collection",
-//              "endpoint" : "http://ltiapps.net/test/tc-memberships.php/context/{context_id}",
-//              "format" : ["application/vnd.ims.lis.v2.membershipcontainer+json"],
-//              "action" : ["GET"]
-//            },
-//            {
-//              "@type" : "RestService",
-//              "@id" : "tcp:LtiLinkMemberships.collection",
-//              "endpoint" : "http://ltiapps.net/test/tc-memberships.php/link/{resource_link_id}",
-//              "format" : ["application/vnd.ims.lis.v2.membershipcontainer+json"],
-//              "action" : ["GET"]
-//            }
-//          ]

@@ -7,7 +7,7 @@ import net.paulgray.mocklti2.tools.entity.ToolProxy
   */
 trait ToolProxyService {
 
-  def createToolRegistrationRequest(): ToolRegistrationRequest
+  def createToolRegistrationRequest(registrationUrl: String): ToolRegistrationRequest
 
   def getToolRegistrationRequest(guid: String): ToolRegistrationRequest
 
@@ -17,7 +17,8 @@ trait ToolProxyService {
     defaultUrl: Option[String],
     secureUrl: Option[String],
     label: String,
-    toolProxy: ToolProxy
+    toolProxy: ToolProxy,
+    registrationRequest: ToolRegistrationRequest
   ): LtiToolProxy
 
 }

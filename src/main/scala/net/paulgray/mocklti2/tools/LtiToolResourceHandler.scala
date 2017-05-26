@@ -65,12 +65,18 @@ class LtiToolResourceHandler {
     this.icon = icon
   }
 
+  @JsonIgnore
   def getMessages: String = messages
 
+  @JsonProperty("messages")
   def deserializeMessages: Seq[Message] =
     JacksonUtils.mapper.readValue[Seq[Message]](messages)
 
   def setMessages(messages: String) {
     this.messages = messages
+  }
+
+  def updateMessages(messages: Seq[Message]): Unit = {
+    this.messages = JacksonUtils.mapper.writeValueAsString(messages)
   }
 }
