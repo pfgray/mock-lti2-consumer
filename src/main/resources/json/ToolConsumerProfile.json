@@ -77,34 +77,10 @@
         "Result.url"
     ],
     "service_offered": [{
-            "@type": "RestService",
-            "@id": "tcp:ToolProxy.collection",
-            "endpoint": "http://localhost:5000/tc_registration/tc_profile",
-            "format": ["application/vnd.ims.lti.v2.toolproxy+json"],
-            "action": ["POST"]
-        }, {
-            "@type": "RestService",
-            "@id": "tcp:Result.item",
-            "endpoint": "http://localhost:5000/Result/{lis_result_sourcedid}",
-            "format": ["application/vnd.ims.lis.v2.result+json"],
-            "action": ["GET", "PUT"]
-        }, {
-            "@type": "RestService",
-            "@id": "tcp:LtiLinkSettings",
-            "endpoint": "http://localhost:5000/Settings/LtiLink/{resource_link_id}",
-            "format": ["application/vnd.ims.lti.v2.toolsettings+json", "application/vnd.ims.lti.v2.toolsettings.simple+json"],
-            "action": ["GET", "PUT"]
-        }, {
-            "@type": "RestService",
-            "@id": "tcp:ToolProxySettings",
-            "endpoint": "http://localhost:5000/Settings/ToolProxyBinding/{context_id}",
-            "format": ["application/vnd.ims.lti.v2.toolsettings+json", "application/vnd.ims.lti.v2.toolsettings.simple+json"],
-            "action": ["GET", "PUT"]
-        }, {
-            "@type": "RestService",
-            "@id": "tcp:ToolProxySettings",
-            "endpoint": "http://localhost:5000/Settings/ToolProxy/{tool_proxy_guid}",
-            "format": ["application/vnd.ims.lti.v2.toolsettings+json", "application/vnd.ims.lti.v2.toolsettings.simple+json"],
-            "action": ["GET", "PUT"]
-        }]
+        "@type": "RestService",
+        "@id": "tcp:ToolProxy.collection",
+        "endpoint": "$origin$/api/toolProxies?registrationGuid=$registrationGuid$",
+        "format": ["application/vnd.ims.lti.v2.toolproxy+json"],
+        "action": ["POST"]
+    }]
 }

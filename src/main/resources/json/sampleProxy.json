@@ -1,0 +1,121 @@
+{
+  "@context" : [
+    "http://purl.imsglobal.org/ctx/lti/v2/ToolProxy",
+    {
+    }
+  ],
+  "@type" : "ToolProxy",
+  "@id" : "http://0640cfa0.ngrok.io/api/toolProxies?registrationGuid=43db730d-329b-40bf-8d33-09b2208986cf",
+  "lti_version" : "LTI-2p0",
+  "tool_consumer_profile" : "http://0640cfa0.ngrok.io/api/tcp?registrationGuid=43db730d-329b-40bf-8d33-09b2208986cf",
+  "tool_profile" : {
+    "lti_version" : "LTI-2p0",
+    "product_instance" : {
+      "guid" : "fd75124a-140e-470f-944c-114d2d92bb40",
+      "product_info" : {
+        "product_name" : {
+          "default_value" : "LTIApps test site",
+          "key" : "tool.name"
+        },
+        "description" : {
+          "default_value" : "The LTIApps site provides sample and test LTI apps.",
+          "key" : "tool.description"
+        },
+        "product_version" : "2017-05-16",
+        "technical_description" : {
+          "default_value" : "Fully supports LTI",
+          "key" : "tool.technical"
+        },
+        "product_family" : {
+          "@id" : "http://ltiapps.net/test/tp-register.php",
+          "code" : "tools",
+          "vendor" : {
+            "code" : "celtic-project.org",
+            "vendor_name" : {
+              "default_value" : "ceLTIc",
+              "key" : "tool.vendor.name"
+            },
+            "description" : {
+              "default_value" : "Creating Environments for Learning using Tightly Integrated Components",
+              "key" : "tool.vendor.description"
+            },
+            "website" : "http://celtic-project.org/",
+            "timestamp" : "2017-05-16T02:32:03+02:00",
+            "contact" : {
+              "email" : "stephen@spvsoftwareproducts.com"
+            }
+          }
+        }
+      },
+      "support" : {
+        "email" : "stephen@spvsoftwareproducts.com"
+      },
+      "service_provider" : {
+        "guid" : "18e7ea50-3d6d-4f6b-aff2-ed3ab577716c",
+        "service_provider_name" : {
+          "default_value" : "Runtime Revolution",
+          "key" : "service_provider.name"
+        },
+        "description" : {
+          "default_value" : "Runtime Revolution was founded in 1997 with the goal of empowering rapid creation of applications for enterprise, commercial, creative and academic environments.",
+          "key" : "service_provider.description"
+        },
+        "support" : {
+          "email" : "on-rev@runrev.com"
+        },
+        "timestamp" : "2017-05-16T02:32:03+02:00"
+      }
+    },
+    "base_url_choice" : [
+      {
+        "default_base_url" : "http://ltiapps.net"
+      }
+    ],
+    "resource_handler" : [
+      {
+        "resource_type" : {
+          "code" : "test"
+        },
+        "resource_name" : {
+          "default_value" : "Test tool provider",
+          "key" : "assessment.resource.name"
+        },
+        "description" : {
+          "default_value" : "A tool provider to test LTI connections.",
+          "key" : "assessment.resource.description"
+        },
+        "message" : [
+          {
+            "message_type" : "basic-lti-launch-request",
+            "path" : "/test/tp.php/9aef651d04ac4de8227cdd1fc434f2c3?type=basic-lti-launch-request",
+            "enabled_capability" : [
+            ],
+            "parameter" : [
+            ]
+          }
+        ],
+        "icon_info" : [
+          {
+            "default_location" : {
+              "path" : "/test/images/icon.png"
+            },
+            "key" : "iconStyle.default.path"
+          }
+        ]
+      }
+    ]
+  },
+  "custom" : {
+    "at" : "2017-05-16T02:32:03+02:00"
+  },
+  "security_contract" : {
+    "shared_secret" : "jxMrwJ8zoaSq",
+    "tool_service" : [
+      {
+        "@type" : "RestServiceProfile",
+        "service" : "tcp:ToolProxy.collection",
+        "action" : ["POST"]
+      }
+    ]
+  }
+}

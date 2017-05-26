@@ -45,8 +45,8 @@ app.controller('ToolsController', ['$scope', '$http', 'AddedTool', 'RegisteredTo
     $scope.addTool = function(name, registrationUrl){
         $scope.addingTool = true;
         $http.post('api/tools', {
-            label:name,
-            registerUrl:registrationUrl
+            label: name,
+            registerUrl: registrationUrl
         })
         .success(function(data, status, headers, config) {
             refreshApps();
@@ -55,6 +55,20 @@ app.controller('ToolsController', ['$scope', '$http', 'AddedTool', 'RegisteredTo
             console.error('ERROR!', data);
         });
     };
+
+    $scope.checkProxy = _.debounce(function(){
+        $scope.checkingProxy = true;
+        $http.get('api/toolProxyCheck?toolurl=' + $scope.tool_generic_url)
+          .then(function(resp){
+            $scope.checkingProxy = false;
+            $scope.doneCheckingProxy = true;
+            if(resp.data.success) {
+                $scope.proxy = resp.data.success
+            } else {
+                $scope.proxy = false;
+            }
+          });
+    }, 500);
 
     $scope.formatJson = function(obj){
         return JSON.stringify(obj, null, 2)

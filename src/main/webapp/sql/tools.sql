@@ -1,8 +1,8 @@
 
 create table tools (
     id                            integer not null generated always as identity (start with 1, increment by 1),
-    label                         varchar(20) NOT NULL,
-    register_url                  varchar(500) NOT NULL,
+    label                         varchar(20),
+    register_url                  varchar(500),
     tool_state                    varchar(10)  NOT NULL DEFAULT 'added',
     latest_tool_proxy_submission  clob,
     launch_url                    varchar(256),
@@ -10,23 +10,35 @@ create table tools (
     unique(label)
 );
 
-insert into tools (label, register_url, tool_state) values ('campuspack', 'http://www.google.com', 'registered');
-insert into tools (label, register_url) values ('lti-chat', 'http://lti-chat.paulgray.net');
-insert into tools (label, register_url, tool_state) values ('sample-lti', 'http://www.google.com', 'failed');
+--insert into tools (label, register_url, tool_state) values ('campuspack', 'http://www.google.com', 'registered');
+--insert into tools (label, register_url) values ('lti-chat', 'http://lti-chat.paulgray.net');
+--insert into tools (label, register_url, tool_state) values ('sample-lti', 'http://www.google.com', 'failed');
 
 create table tool_proxies (
     id               integer not null generated always as identity (start with 1, increment by 1),
     tool             integer not null,
-    secure_url       varchar(500) NOT NULL,
-    default_url      varchar(500) NOT NULL,
+    secure_url       varchar(500),
+    default_url      varchar(500),
     lti_key          varchar(500) NOT NULL,
     lti_secret       varchar(500) NOT NULL,
     primary key (id),
     foreign key (tool) references tools (id)
 );
 
-insert into tool_proxies (tool, secure_url, default_url, lti_key, lti_secret)
-       values (1, 'https://qa-paul.campuspack.net/control/lti', 'http://qa-paul.campuspack.net/control/lti', 'mock_lti2_consumer', 'wyxb-7tdsvjnk-c7zp');
+create table resource_handlers (
+    id               integer not null generated always as identity (start with 1, increment by 1),
+    tool_proxy       integer not null,
+    code             varchar(500),
+    name             varchar(500),
+    description      varchar(500),
+    icon             varchar(500),
+    messages         varchar(500),
+    primary key (id),
+    foreign key (tool_proxy) references tool_proxies (id)
+);
+
+--insert into tool_proxies (tool, secure_url, default_url, lti_key, lti_secret)
+--       values (1, 'https://qa-paul.campuspack.net/control/lti', 'http://qa-paul.campuspack.net/control/lti', 'mock_lti2_consumer', 'wyxb-7tdsvjnk-c7zp');
 
 create table gradebooks (
     id               integer not null generated always as identity (start with 1, increment by 1),
@@ -51,4 +63,12 @@ create table gradebook_cells (
     grade            varchar(500),
     primary key (id),
     foreign key (gradebook_lineitem_id) references gradebook_lineitems (id) on delete cascade
+);
+
+create table tool_registration_requests (
+    id               integer not null generated always as identity (start with 1, increment by 1),
+    reg_key varchar(500) not null,
+    reg_secret varchar(500) not null,
+    guid varchar(500) not null,
+    primary key (id)
 );

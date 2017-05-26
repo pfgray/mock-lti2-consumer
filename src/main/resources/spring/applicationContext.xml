@@ -29,6 +29,8 @@
             <list>
                 <value>net.paulgray.mocklti2.tools.LtiTool</value>
                 <value>net.paulgray.mocklti2.tools.LtiToolProxy</value>
+                <value>net.paulgray.mocklti2.tools.ToolRegistrationRequest</value>
+                <value>net.paulgray.mocklti2.tools.LtiToolResourceHandler</value>
                 <value>net.paulgray.mocklti2.gradebook.Gradebook</value>
                 <value>net.paulgray.mocklti2.gradebook.GradebookCell</value>
                 <value>net.paulgray.mocklti2.gradebook.GradebookLineItem</value>

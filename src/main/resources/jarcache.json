@@ -1,0 +1,7 @@
+[
+  {
+    "Content-Location": "http://purl.imsglobal.org/ctx/lti/v2/ToolProxy",
+    "X-Classpath": "ims/toolProxy.json",
+    "Content-Type": "application/ld+json"
+  }
+]

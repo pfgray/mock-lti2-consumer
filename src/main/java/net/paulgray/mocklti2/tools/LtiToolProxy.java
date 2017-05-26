@@ -3,6 +3,8 @@ package net.paulgray.mocklti2.tools;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import javax.persistence.*;
+import java.util.List;
+import java.util.Set;
 
 /**
  * Created by pgray on 8/31/14.
@@ -20,6 +22,9 @@ public class LtiToolProxy {
     @ManyToOne(fetch = FetchType.EAGER)
     @JsonIgnore
     private LtiTool tool;
+
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER, mappedBy = "toolProxy")
+    Set<LtiToolResourceHandler> resourceHandlers;
 
     @Column(name = "secure_url")
     private String secureUrl;
@@ -81,4 +86,11 @@ public class LtiToolProxy {
         this.secret = secret;
     }
 
+    public Set<LtiToolResourceHandler> getResourceHandlers() {
+        return resourceHandlers;
+    }
+
+    public void setResourceHandlers(Set<LtiToolResourceHandler> resourceHandlers) {
+        this.resourceHandlers = resourceHandlers;
+    }
 }

@@ -236,3 +236,17 @@ label {
 textarea.params {
   resize: none;
 }
+
+.registerModal .modal-dialog {
+  height: 100%;
+  margin: 0 auto;
+  padding: 1em 0;
+}
+
+.registerModal .modal-dialog iframe, .registerModal .modal-dialog .modal-content {
+  height: 100%;
+}
+.registerModal .modal-dialog iframe {
+  width: 100%;
+  border: none;
+}

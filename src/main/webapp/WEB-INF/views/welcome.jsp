@@ -21,6 +21,7 @@
         <script src="assets/scripts/mock-consumer.js"></script>
         <script src="assets/scripts/gradebook/gradebook.js"></script>
         <script src="assets/scripts/gradebooks/gradebooks.js"></script>
+        <script src="assets/scripts/toolRegistration/toolPreRegistration.js"></script>
         <script src="assets/scripts/ltiLaunches/ltiLaunches.js"></script>
         <script src="assets/scripts/sampleData/SampleUsers.js"></script>
         <script src="assets/scripts/sampleData/SampleCourses.js"></script>
