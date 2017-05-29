@@ -72,7 +72,7 @@ class HibernateToolProxyService extends ToolProxyService {
       val handler = new LtiToolResourceHandler()
       handler.setCode(h.resource_type.code)
       handler.setDescription(h.description.default_value)
-      handler.setIcon(h.icon_info.headOption.map(_.default_location.path).getOrElse(null))
+      handler.setIcon(h.icon_info.headOption.map(p => s"${defaultUrl.get}${p.default_location.path}").getOrElse(null))
       handler.setName(h.resource_name.default_value)
       handler.setToolProxy(proxy)
       handler.updateMessages(h.message)

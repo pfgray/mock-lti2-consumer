@@ -1,5 +1,6 @@
 package net.paulgray.mocklti2.tools
 
+import java.lang.Boolean
 import javax.servlet.http.{HttpServletRequest, HttpServletResponse}
 
 import com.github.jsonldjava.core.{JsonLdOptions, JsonLdProcessor}
@@ -167,10 +168,11 @@ class ToolProxyController {
     val reg = toolProxyService.getToolRegistrationRequest(registrationGuid)
     val proxy = reg.getToolProxy
 
+    val success = status == ""
 
-
-    model.put("proxy", JacksonUtils.mapper.writeValueAsString(proxy))
-    model.put("success", JacksonUtils.mapper.writeValueAsString(status == "success"))
+    model.put("proxyJson", JacksonUtils.mapper.writeValueAsString(proxy))
+    model.put("proxy", proxy)
+    model.put("success", new Boolean(success))
 
     "registrationReceipt"
   }
