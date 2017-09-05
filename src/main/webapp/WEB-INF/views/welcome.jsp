@@ -18,6 +18,7 @@
         <script src="assets/lib/angular.js/1.5.2/angular.min.js"></script>
         <script src="assets/lib/angular-ui-router/0.2.18/angular-ui-router.min.js"></script>
         <script src="assets/lib/angular-ui-bootstrap/2.2.0/ui-bootstrap-tpls.min.js"></script>
+        <script src="assets/lib/iframe-resizer/3.5.14/iframeResizer.js"></script>
         <script src="assets/scripts/mock-consumer.js"></script>
         <script src="assets/scripts/gradebook/gradebook.js"></script>
         <script src="assets/scripts/gradebooks/gradebooks.js"></script>
