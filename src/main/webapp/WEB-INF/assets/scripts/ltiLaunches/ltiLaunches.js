@@ -88,7 +88,11 @@ function($http, ltiLaunchService, SampleUsers, SampleCourses, sampleToolsService
           });
           if(!scope.newWindow) {
             scope.launched = true;
-            iFrameResize({log:true, checkOrigin:false}, '#launch_frame');
+            iFrameResize({
+                log:true,
+                checkOrigin:false,
+                scrolling: 'auto'
+            }, '#launch_frame');
           }
         });
       };
