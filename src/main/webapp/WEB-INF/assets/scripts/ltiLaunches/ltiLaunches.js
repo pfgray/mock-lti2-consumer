@@ -65,6 +65,16 @@ function($http, ltiLaunchService, SampleUsers, SampleCourses, sampleToolsService
           params.custom_lineitems_url = window.web_origin + "/outcomes/v2.0/gradebook/" + params.context_id + "/lineitems";
         }
 
+        if(scope.membershipServices){
+          params.custom_context_memberships_url = window.web_origin + "/contexts/" + params.context_id + "/memberships";
+        }
+        if(scope.contentItem){
+          // todo: 
+        }
+        if(scope.gradebookServices){
+          // todo: 
+        }
+
         params['lti_message_type'] = 'basic-lti-launch-request';
         params['lti_version'] = 'LTI-1p0';
 
@@ -118,7 +128,10 @@ function($http, ltiLaunchService, SampleUsers, SampleCourses, sampleToolsService
       }
 
       scope.outcomesOnepOne = true;
-      scope.outcomesTwo = true;
+      scope.outcomesTwo = false;
+      scope.membershipServices = true;
+      scope.contentItem = false;
+      scope.gradebookServices = false;
       scope.newWindow = false;
 
       scope.configureTools = function(){

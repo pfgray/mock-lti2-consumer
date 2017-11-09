@@ -97,10 +97,46 @@
                 <div class="step">
                     <h5>Outcomes</h5>
                     <div>
-                        <input type="checkbox" ng-model="outcomesOnepOne"/> 1.1
+                        <label class="inline">
+                          <input type="checkbox" ng-model="outcomesOnepOne"/>
+                          <span>1.1</span>
+                        </label>
                     </div>
                     <div>
-                        <input type="checkbox" ng-model="outcomesTwo"/> 2.0
+                        <label class="inline">
+                            <input type="checkbox" ng-model="outcomesTwo"/>
+                            <span>2.0</span>
+                            <span class='label label-danger'>deprecated</span>
+                            <span class='muted'>Use Gradebook Services instead</span>
+                        </label>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-6">
+                <div class="step">
+                    <h5>LTI Advantage</h5>
+                    <div>
+                        <label class="inline">
+                            <input type="checkbox" ng-model="membershipServices"/>
+                            <span>Names and Roles Provisioning Service</span>
+                            <span class="muted">(Membership Services)</span>
+                        </label>
+                    </div>
+                    <div>
+                        <label class="inline">
+                            <input type="checkbox" ng-model="contentItem" disabled/>
+                            <span>Deep Linking</span>
+                            <span class="muted">(Content-Item message)</span>
+                        </label>
+                    </div>
+                    <div>
+                        <label class="inline">
+                            <input type="checkbox" ng-model="gradebookServices" disabled/>
+                            <span>Assignment and Grade Services</span>
+                            <span class="muted">(Gradebook Services)</span>
+                            <span class='label label-warning'>beta</span>
+                        </label>
                     </div>
                 </div>
             </div>
@@ -109,7 +145,7 @@
     </form>
 
     <div class="launch-frame" ng-class="{visible: launched}">
-        <button class="btn btn-default" ng-click="launched=false;"><</button>
+        <button class="btn btn-default" ng-click="launched=false;"><i class="fa fa-chevron-left" aria-hidden="true"></i></button>
         <iframe id="launch_frame" name="launch_frame"></iframe>
     </div>
 

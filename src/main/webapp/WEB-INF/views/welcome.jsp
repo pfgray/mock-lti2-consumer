@@ -12,7 +12,7 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <base href="/">
 
-        <title>MockLti2Consumer</title>
+        <title>Lti Consumer</title>
         <script src="assets/lib/lodash.js/4.6.1/lodash.min.js"></script>
         <script src="assets/lib/jquery/2.1.1/jquery.min.js"></script>
         <script src="assets/lib/angular.js/1.5.2/angular.min.js"></script>
@@ -42,7 +42,7 @@
     <body ng-app="mock-consumer">
         <div class="container main">
             <div class="row">
-                <h1>Mock LTI 2.0 Consumer</h1>
+                <h1>LTI Consumer</h1>
             </div>
         </div>
         <div class="container main">

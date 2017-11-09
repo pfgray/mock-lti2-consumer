@@ -81,6 +81,7 @@ form button:last-child {
 
 .muted {
   color: #888;
+  font-style: oblique;
 }
 
 .focused-display {
@@ -238,4 +239,12 @@ label {
 
 textarea.params {
   resize: none;
+}
+
+input[type=checkbox] {
+  margin: 0;
+}
+
+label.inline > * {
+  vertical-align: middle;
 }
