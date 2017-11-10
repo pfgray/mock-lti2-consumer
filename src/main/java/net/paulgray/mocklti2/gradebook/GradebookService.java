@@ -19,7 +19,7 @@ public interface GradebookService {
 
     Optional<GradebookLineItem> getGradebookLineItemByResourceId(Integer gradebookId, String resourceId);
 
-    GradebookLineItem getOrCreateGradebookLineItemByResourceId(Integer gradebookId, String resourceId);
+    GradebookLineItem getOrCreateGradebookLineItemByResourceId(Integer gradebookId, String resourceId, String source);
 
     GradebookLineItem updateLineItem(GradebookLineItem lineItem);
 
@@ -29,7 +29,7 @@ public interface GradebookService {
 
     Optional<GradebookCell> getGradebookCell(Integer lineItemId, String resultSourcedId);
 
-    GradebookCell getOrCreateGradebookCell(Integer lineItemId, String resultSourcedId);
+    GradebookCell getOrCreateGradebookCell(Integer lineItemId, String resultSourcedId, String source);
 
     GradebookCell addCell(GradebookCell cell);
 

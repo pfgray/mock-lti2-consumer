@@ -23,24 +23,29 @@ public class GradebookLineItem {
     @Column(name = "title")
     private String title;
 
+    @Column(name = "source")
+    private String source;
+
     @Column(name = "activity_id")
     private String activityId;
 
     public GradebookLineItem() {
     }
 
-    public GradebookLineItem(Integer gradebookId, String resourceLinkId) {
+    public GradebookLineItem(Integer gradebookId, String resourceLinkId, String source) {
         this.gradebookId = gradebookId;
         this.resourceLinkId = resourceLinkId;
         this.title = null;
         this.activityId = null;
+        this.source = source;
     }
 
-    public GradebookLineItem(Integer gradebookId, String resourceLinkId, String title, String activityId) {
+    public GradebookLineItem(Integer gradebookId, String resourceLinkId, String title, String activityId, String source) {
         this.gradebookId = gradebookId;
         this.resourceLinkId = resourceLinkId;
         this.title = title;
         this.activityId = activityId;
+        this.source = source;
     }
 
     public String getResourceLinkId() {
@@ -81,5 +86,13 @@ public class GradebookLineItem {
 
     public void setActivityId(String activityId) {
         this.activityId = activityId;
+    }
+
+    public String getSource() {
+        return source;
+    }
+
+    public void setSource(String source) {
+        this.source = source;
     }
 }

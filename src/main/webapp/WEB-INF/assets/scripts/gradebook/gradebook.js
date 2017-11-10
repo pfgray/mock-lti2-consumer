@@ -1,6 +1,6 @@
 app.directive('gradebook',
-['$http',
-function($http) {
+['$http', '$uibModal',
+function($http, $uibModal) {
   return {
     templateUrl: 'assets/scripts/gradebook/gradebook.html',
     replace: true,
@@ -12,7 +12,7 @@ function($http) {
         $http.get('/outcomes/gradebooks/' + scope.gradebookId)
           .then(function(gradebook){
             scope.loading = false;
-            console.log('got it:', gradebook.data);
+            console.log('got the gradebook:', gradebook.data);
 
             scope.students =
               gradebook.data.columns
@@ -25,6 +25,17 @@ function($http) {
             scope.loading = false;
           });
 
+        scope.getStudentSource = function(studentId, columnId){
+            var column = scope.gradebook.columns.find(c => c.column.id === columnId);
+            if(column) {
+                var cell = column.cells.find(c => c.resultSourcedId === studentId);
+                if(cell && cell.grade) {
+                  return cell.source;
+                }
+            }
+            return null;
+        }
+
         scope.getStudentGradeForColumn = function(studentId, columnId){
             var column = scope.gradebook.columns.find(c => c.column.id === columnId);
             if(column) {
@@ -35,6 +46,23 @@ function($http) {
             }
             return "(empty)";
         }
+
+        scope.showSource = function(title, source){
+            $uibModal.open({
+              ariaLabelledBy: 'modal-title-top',
+              ariaDescribedBy: 'modal-body-top',
+              templateUrl: 'assets/scripts/gradebook/source.html',
+              size: 'md',
+              controller: ['$scope', '$uibModalInstance', function($scope, $uibModalInstance){
+                $scope.title = title;
+                $scope.source = source;
+                $scope.close = function() {
+                  $uibModalInstance.dismiss();
+                }
+              }]
+            });
+        }
+
     }
   }
 }]);

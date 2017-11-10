@@ -66,13 +66,13 @@ public class LtiController {
 
     private GradebookCell getCellForLineItem(GradebookLineItem lineItem, UnsignedLtiLaunchRequest request) {
         String studentId = request.getLaunchParameters().get("user_id");
-        return gradebookService.getOrCreateGradebookCell(lineItem.getId(), studentId);
+        return gradebookService.getOrCreateGradebookCell(lineItem.getId(), studentId, null);
     }
 
     private GradebookLineItem getLineItemForGradebook(Gradebook gb, UnsignedLtiLaunchRequest request) {
         String resourceId = request.getLaunchParameters().get("resource_link_id");
         String resourceTitle = request.getLaunchParameters().get("resource_title");
-        GradebookLineItem lineItem = gradebookService.getOrCreateGradebookLineItemByResourceId(gb.getId(), resourceId);
+        GradebookLineItem lineItem = gradebookService.getOrCreateGradebookLineItemByResourceId(gb.getId(), resourceId, null);
         lineItem.setTitle(resourceTitle);
         return gradebookService.updateLineItem(lineItem);
     }

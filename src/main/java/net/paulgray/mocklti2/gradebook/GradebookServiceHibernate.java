@@ -63,9 +63,9 @@ public class GradebookServiceHibernate implements GradebookService {
 
     @Override
     @Transactional
-    public GradebookLineItem getOrCreateGradebookLineItemByResourceId(Integer gradebookId, String resourceId) {
+    public GradebookLineItem getOrCreateGradebookLineItemByResourceId(Integer gradebookId, String resourceId, String source) {
         return getGradebookLineItemByResourceId(gradebookId, resourceId)
-                .orElseGet(() -> addLineItem(new GradebookLineItem(gradebookId, resourceId)));
+                .orElseGet(() -> addLineItem(new GradebookLineItem(gradebookId, resourceId, source)));
     }
 
     @Override
@@ -112,8 +112,8 @@ public class GradebookServiceHibernate implements GradebookService {
 
     @Override
     @Transactional
-    public GradebookCell getOrCreateGradebookCell(Integer lineItemId, String resultSourcedId) {
-        return getGradebookCell(lineItemId, resultSourcedId).orElseGet(() -> addCell(new GradebookCell(lineItemId, resultSourcedId, null)));
+    public GradebookCell getOrCreateGradebookCell(Integer lineItemId, String resultSourcedId, String source) {
+        return getGradebookCell(lineItemId, resultSourcedId).orElseGet(() -> addCell(new GradebookCell(lineItemId, resultSourcedId, null, source)));
     }
 
     @Override

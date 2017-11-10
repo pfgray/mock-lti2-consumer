@@ -1,5 +1,6 @@
 package net.paulgray.mocklti2;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jdk8.Jdk8Module;
 import com.fasterxml.jackson.module.scala.DefaultScalaModule;
 import com.fasterxml.jackson.module.scala.DefaultScalaModule$;
@@ -26,6 +27,11 @@ import java.math.BigDecimal;
 public class MockLti2App {
     public static void main(String[] args) throws Exception {
         SpringApplication.run(MockLti2App.class, args);
+    }
+
+    public static ObjectMapper standardMapper() {
+        ObjectMapper mapper = new ObjectMapper();
+        return mapper.registerModules(new Jdk8Module(), new DefaultScalaModule());
     }
 
     @Bean

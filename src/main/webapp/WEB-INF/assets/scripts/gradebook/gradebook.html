@@ -8,13 +8,15 @@
                 <tr>
                     <th>Student</th>
                     <th ng-repeat="column in gradebook.columns">
-                        {{column.column.title}}
+                        <a ng-if="column.column.source != null" ng-click="showSource(column.column.title, column.column.source)" style="cursor: pointer;">{{column.column.title}}</a>
+                        <span ng-if="column.column.source == null">{{column.column.title}}</span>
                     </th>
                 </tr>
                 <tr ng-repeat="studentId in students">
                     <td>{{studentId}}</td>
                     <td ng-repeat="column in gradebook.columns">
-                        {{getStudentGradeForColumn(studentId, column.column.id)}}
+                        <a ng-if="getStudentSource(studentId, column.column.id) != null" ng-click="showSource('', getStudentSource(studentId, column.column.id))" style="cursor: pointer;">{{getStudentGradeForColumn(studentId, column.column.id)}}</a>
+                        <span ng-if="getStudentSource(studentId, column.column.id) == null">{{getStudentGradeForColumn(studentId, column.column.id)}}</span>
                     </td>
                 </tr>
             </table>

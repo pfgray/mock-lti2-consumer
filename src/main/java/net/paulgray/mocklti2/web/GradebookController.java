@@ -1,5 +1,7 @@
 package net.paulgray.mocklti2.web;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+import net.paulgray.mocklti2.MockLti2App;
 import net.paulgray.mocklti2.gradebook.Gradebook;
 import net.paulgray.mocklti2.gradebook.GradebookCell;
 import net.paulgray.mocklti2.gradebook.GradebookLineItem;
@@ -10,6 +12,7 @@ import org.apache.commons.io.IOUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -63,13 +66,25 @@ public class GradebookController {
     }
 
     @RequestMapping(value = "/outcomes/v2.0/gradebook/{contextId}/lineitems", method = RequestMethod.POST)
-    public ResponseEntity<LineItem> createLineItems(@PathVariable String contextId, @RequestBody LineItem lineItem, HttpServletRequest req) {
+    public ResponseEntity<LineItem> createLineItems(@PathVariable String contextId, HttpServletRequest req) {
+
+        ObjectMapper mapper = MockLti2App.standardMapper();
+        String body = null;
+        LineItem lineItem = null;
+        try {
+            body = IOUtils.toString(req.getInputStream());
+            lineItem = mapper.readValue(body, LineItem.class);
+        } catch (Exception e) {
+            log.warn("Not able to read line item source:", e.getMessage());
+            e.printStackTrace();
+        }
+
         Gradebook gb = gradebookService.getOrCreateGradebook(contextId);
 
         String title = lineItem.getLabel().get("@value").textValue();
         String activityId = lineItem.getActivity().get("@id").textValue();
 
-        GradebookLineItem newLineItem = gradebookService.getOrCreateGradebookLineItemByResourceId(gb.getId(), UUID.randomUUID().toString());
+        GradebookLineItem newLineItem = gradebookService.getOrCreateGradebookLineItemByResourceId(gb.getId(), UUID.randomUUID().toString(), body);
 
         newLineItem.setTitle(title);
         newLineItem.setActivityId(activityId);
@@ -87,20 +102,40 @@ public class GradebookController {
     }
 
     @RequestMapping(value = "outcomes/v2.0/gradebook/{contextId}/lineitems/{lineItemId}", method = {RequestMethod.POST})
-    public ResponseEntity<Result> createResults(@PathVariable String contextId, @PathVariable String lineItemId, @RequestBody Result result) throws Exception {
+    public ResponseEntity<Result> createResults(
+            @PathVariable String contextId,
+            @PathVariable String lineItemId,
+            HttpServletRequest req
+    ) throws Exception {
+
         Gradebook gb = gradebookService.getOrCreateGradebook(contextId);
 
-        GradebookLineItem lineItem = gradebookService.getOrCreateGradebookLineItemByResourceId(gb.getId(), lineItemId);
-        String userId = result.getStudent().getUserid().getValue();
+        Optional<GradebookLineItem> lineItem = gradebookService.getGradebookLineItemByResourceId(gb.getId(), lineItemId);
 
-        log.info("Got result for student: <" + userId + "> and score: " + result.getTotalScore());
+        if(lineItem.isPresent()){
+            ObjectMapper mapper = MockLti2App.standardMapper();
+            String body = null;
+            Result result = null;
+            try {
+                body = IOUtils.toString(req.getInputStream());
+                result = mapper.readValue(body, Result.class);
+            } catch (Exception e) {
+                log.warn("Not able to read line item source:", e.getMessage());
+                e.printStackTrace();
+            }
 
-        GradebookCell cell = gradebookService.getOrCreateGradebookCell(lineItem.getId(), userId);
+            String userId = result.getStudent().getUserid().getValue();
+            log.info("Got result for student: <" + userId + "> and score: " + result.getTotalScore());
+            GradebookCell cell = gradebookService.getOrCreateGradebookCell(lineItem.get().getId(), userId, body);
+            cell.setGrade(result.getTotalScore().getValue());
+            gradebookService.updateGradebookCell(cell);
 
-        cell.setGrade(result.getTotalScore().getValue());
-        gradebookService.updateGradebookCell(cell);
+            return new ResponseEntity<>(result, HttpStatus.OK);
+        } else {
+            log.info("Could not save gradebook cell, since the line item referenced was not found ");
 
-        return new ResponseEntity<>(result, HttpStatus.OK);
+            return new ResponseEntity<Result>((Result) null, HttpStatus.NOT_FOUND);
+        }
     }
 
     @RequestMapping(value = "/outcomes/v1.1/gradebook", method = RequestMethod.POST)
@@ -108,7 +143,9 @@ public class GradebookController {
 
         //log.info("Got Lti Outcomes 1 message: \n" + IOUtils.toString(request.getInputStream()));
 
-        Optional<Outcomes1Request> outcomes1Request = readOutcomes1Request(request.getInputStream());
+        String body = IOUtils.toString(request.getInputStream());
+
+        Optional<Outcomes1Request> outcomes1Request = readOutcomes1Request(body);
 
         outcomes1Request.ifPresent(out -> {
             System.out.println("Got Outcomes request: \n" +
@@ -120,10 +157,10 @@ public class GradebookController {
             Gradebook gb = gradebookService.getOrCreateGradebook(out.contextId);
 
             GradebookLineItem lineItem =
-                gradebookService.getOrCreateGradebookLineItemByResourceId(gb.getId(), out.resourceId);
+                gradebookService.getOrCreateGradebookLineItemByResourceId(gb.getId(), out.resourceId, null);
 
             GradebookCell cell =
-                gradebookService.getOrCreateGradebookCell(lineItem.getId(), out.studentId);
+                gradebookService.getOrCreateGradebookCell(lineItem.getId(), out.studentId, body);
 
             //update the student's grade
             cell.setGrade(out.grade);
@@ -134,7 +171,7 @@ public class GradebookController {
         return new ResponseEntity("", HttpStatus.ACCEPTED);
     }
 
-    public Optional<Outcomes1Request> readOutcomes1Request(InputStream is){
+    public Optional<Outcomes1Request> readOutcomes1Request(String is){
         DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
         factory.setValidating(true);
         factory.setIgnoringElementContentWhitespace(true);
