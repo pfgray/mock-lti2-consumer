@@ -1,6 +1,7 @@
 spring.jpa:
   hibernate.ddl-auto: validate
 logging.level:
-  org.hibernate.tool.hbm2ddl: DEBUG
-  org.hibernate.SQL: DEBUG
-  org.hibernate.type: TRACE
+  org.hibernate.tool.hbm2ddl: INFO
+  org.hibernate.SQL: INFO
+  org.hibernate.type: INFO
+  org.hibernate.engine: ERROR

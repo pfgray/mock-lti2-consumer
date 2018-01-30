@@ -9,6 +9,8 @@ import net.paulgray.mocklti2.gradebook.GradebookService;
 import net.paulgray.mocklti2.web.entities.LineItem;
 import net.paulgray.mocklti2.web.entities.Result;
 import org.apache.commons.io.IOUtils;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -43,7 +45,7 @@ public class GradebookController {
 
     //TODO: make sure these requests are signed, lol
 
-    private final Logger log = LoggerFactory.getLogger(this.getClass());
+    private final Log log = LogFactory.getLog(this.getClass());
 
     @Autowired
     GradebookService gradebookService;
@@ -75,7 +77,7 @@ public class GradebookController {
             body = IOUtils.toString(req.getInputStream());
             lineItem = mapper.readValue(body, LineItem.class);
         } catch (Exception e) {
-            log.warn("Not able to read line item source:", e.getMessage());
+            log.warn("Not able to read line item source:", e);
             e.printStackTrace();
         }
 
@@ -120,15 +122,17 @@ public class GradebookController {
                 body = IOUtils.toString(req.getInputStream());
                 result = mapper.readValue(body, Result.class);
             } catch (Exception e) {
-                log.warn("Not able to read line item source:", e.getMessage());
+                log.warn("Not able to read line item source:", e);
                 e.printStackTrace();
             }
 
             String userId = result.getStudent().getUserid().getValue();
-            log.info("Got result for student: <" + userId + "> and score: " + result.getTotalScore());
+            log.info("Got result for student: <" + userId + "> and score: " + result.getTotalScore().getValue());
+
+            log.info("Now attempting to insert grade into gradebook: " + contextId + " into column: " + lineItemId);
             GradebookCell cell = gradebookService.getOrCreateGradebookCell(lineItem.get().getId(), userId, body);
             cell.setGrade(result.getTotalScore().getValue());
-            gradebookService.updateGradebookCell(cell);
+            GradebookCell updatedCell = gradebookService.updateGradebookCell(cell);
 
             return new ResponseEntity<>(result, HttpStatus.OK);
         } else {
@@ -141,14 +145,14 @@ public class GradebookController {
     @RequestMapping(value = "/outcomes/v1.1/gradebook", method = RequestMethod.POST)
     public ResponseEntity<String> handleOutcomes1(HttpServletRequest request) throws Exception {
 
-        //log.info("Got Lti Outcomes 1 message: \n" + IOUtils.toString(request.getInputStream()));
+        log.info("Got Lti Outcomes 1 message: \n" + IOUtils.toString(request.getInputStream()));
 
         String body = IOUtils.toString(request.getInputStream());
 
         Optional<Outcomes1Request> outcomes1Request = readOutcomes1Request(body);
 
         outcomes1Request.ifPresent(out -> {
-            System.out.println("Got Outcomes request: \n" +
+            log.info("Got Outcomes request: \n" +
                     "  Student: " + out.studentId + "\n" +
                     "  Course: " + out.contextId + "\n" +
                     "  Resource: " + out.resourceId
@@ -173,13 +177,13 @@ public class GradebookController {
 
     public Optional<Outcomes1Request> readOutcomes1Request(String is){
         DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
-        factory.setValidating(true);
+        //factory.setValidating(true);
         factory.setIgnoringElementContentWhitespace(true);
         try {
             DocumentBuilder builder = factory.newDocumentBuilder();
             Document doc = builder.parse(is);
             NodeList sourceList = doc.getElementsByTagName("sourcedId");
-            log.info("got: ", sourceList.getLength());
+            log.info("got: " + sourceList.getLength());
             Node sourceNode = sourceList.item(0);
 
             log.info("sourceNode: " + sourceNode.getTextContent());

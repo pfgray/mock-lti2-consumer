@@ -6,8 +6,6 @@ import net.paulgray.mocklti2.gradebook.GradebookLineItem;
 import net.paulgray.mocklti2.gradebook.GradebookService;
 import org.imsglobal.lti.launch.LtiSigner;
 import org.imsglobal.lti.launch.LtiSigningException;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -15,9 +13,10 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 
-import java.util.Map;
-import java.util.Optional;
+import java.util.*;
 
 /**
  * Created by paul on 3/27/16.
@@ -25,7 +24,7 @@ import java.util.Optional;
 @Controller
 public class LtiController {
 
-    private final Logger log = LoggerFactory.getLogger(this.getClass());
+    private final Log log = LogFactory.getLog(this.getClass());
 
     @Autowired
     GradebookService gradebookService;
@@ -45,6 +44,9 @@ public class LtiController {
 
         // get or create cell
         GradebookCell cell = getCellForLineItem(lineItem, request);
+
+        // uncomment this to generate test gradebook data
+        // generateRandomColumns(gb);
 
         final String lisResultSourcedId = gb.getContext() + ":~:" + lineItem.getResourceLinkId() + ":~:" + request.getLaunchParameters().get("user_id");
 
@@ -80,6 +82,33 @@ public class LtiController {
     public Gradebook getGradebookForReq(UnsignedLtiLaunchRequest request){
         String contextId = request.getLaunchParameters().get("context_id");
         return gradebookService.getOrCreateGradebook(contextId);
+    }
+
+    private List<GradebookLineItem> generateRandomColumns(Gradebook gb) {
+        List<GradebookLineItem> assignments = new LinkedList<>();
+        for (int i = 1; i<31; i++) {
+            GradebookLineItem assignment = gradebookService.getOrCreateGradebookLineItemByResourceId(gb.getId(), "assignment_" + i, null);
+            assignment.setTitle("Assignment #" + i);
+            gradebookService.updateLineItem(assignment);
+            assignments.add(assignment);
+            generateRandomCellsForLineItems(assignment);
+        }
+        return assignments;
+    }
+
+    private void generateRandomCellsForLineItems(GradebookLineItem lineItem) {
+        for (int i = 1; i<11; i++) {
+            Random r = new Random();
+            int Low = 0;
+            int High = 200;
+            int result = r.nextInt(High-Low) + Low;
+
+            GradebookCell cell = gradebookService.getOrCreateGradebookCell(lineItem.getId(), "student" + i, null);
+            if(result < 101) {
+                cell.setGrade(Integer.toString(result));
+            }
+            gradebookService.updateGradebookCell(cell);
+        }
     }
 
 }

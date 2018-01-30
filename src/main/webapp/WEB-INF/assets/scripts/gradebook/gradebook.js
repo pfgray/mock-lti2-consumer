@@ -17,7 +17,7 @@ function($http, $uibModal) {
             scope.students =
               gradebook.data.columns
                 .flatMap(col => col.cells)
-                .map(cell => cell.resultSourcedId)
+                .map(cell => cell.studentId)
                 .unique(id => id);
 
             scope.gradebook = gradebook.data;
@@ -28,7 +28,7 @@ function($http, $uibModal) {
         scope.getStudentSource = function(studentId, columnId){
             var column = scope.gradebook.columns.find(c => c.column.id === columnId);
             if(column) {
-                var cell = column.cells.find(c => c.resultSourcedId === studentId);
+                var cell = column.cells.find(c => c.studentId === studentId);
                 if(cell && cell.grade) {
                   return cell.source;
                 }
@@ -37,14 +37,30 @@ function($http, $uibModal) {
         }
 
         scope.getStudentGradeForColumn = function(studentId, columnId){
+            console.log('Getting Student grade for: ', studentId, columnId);
+            console.log('in: ', scope.gradebook.columns);
             var column = scope.gradebook.columns.find(c => c.column.id === columnId);
             if(column) {
-              var cell = column.cells.find(c => c.resultSourcedId === studentId);
+              console.log('found column: ', column, 'now looking in:', column.cells);
+              var cell = column.cells.find(c => c.studentId === studentId);
               if(cell && cell.grade) {
                 return cell.grade;
               }
             }
-            return "(empty)";
+            return "";
+        }
+
+        scope.getStudentGradeStyle = function(studentId, columnId) {
+          var grade = scope.getStudentGradeForColumn(studentId, columnId);
+          if(grade == ""){
+            return "";
+          } else if(grade <= 59){
+            return "cell-danger";
+          } else if(grade <= 79) {
+            return "cell-warning";
+          } else {
+            return "cell-success";
+          }
         }
 
         scope.showSource = function(title, source){

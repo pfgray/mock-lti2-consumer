@@ -48,9 +48,10 @@ create table gradebook_lineitems (
 create table gradebook_cells (
     id               integer not null generated always as identity (start with 1, increment by 1),
     gradebook_lineitem_id     integer not null,
-    result_sourcedid varchar(500) not null,
+    student_id                varchar(500) not null,
     grade            varchar(500),
     source           varchar(32672),
     primary key (id),
+    unique(student_id, gradebook_lineitem_id),
     foreign key (gradebook_lineitem_id) references gradebook_lineitems (id) on delete cascade
 );

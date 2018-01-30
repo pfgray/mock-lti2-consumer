@@ -248,3 +248,106 @@ input[type=checkbox] {
 label.inline > * {
   vertical-align: middle;
 }
+
+.headers th {
+  height: 140px;
+  border-top: none;
+  border-bottom: 1px solid #ddd;
+  width: 50px;
+  vertical-align: inherit;
+}
+
+.header {
+  height: 100px;
+}
+
+.gb-header {
+  /*transform: rotate(315deg);*/
+  width: 150px;
+  white-space: nowrap;
+  overflow-x: hidden;
+  text-overflow: ellipsis;
+  /*position:absolute;*/
+  border-bottom: 1px solid #ddd;
+  padding: 0px;
+}
+
+.students {
+  height: 100px;
+}
+
+.students .student-container {
+  width: 2.5em;
+  position: relative;
+}
+
+.students .student {
+  position: absolute;
+  width: 150px;
+  /*transform: rotate(-90deg);*/
+  transform:
+    translate(-10px, 25px)
+    rotate(315deg);
+
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.columns {
+  overflow: hidden;
+  white-space: nowrap;
+  overflow-x: auto;
+  padding-top: 100px;
+  padding-bottom: 1em;
+  width:200px;
+  flex: 0 0 200px;
+}
+.columns .column {
+  height: 2.5em;
+  display: flex;
+  align-items: center;
+  margin: 0 1em;
+}
+.cell-column .cell {
+  height: 2.5em;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 2.5em;
+  border: 1px solid #ddd;
+}
+
+.cell.cell-success {
+  border-color: #c3e6cb;
+  color: #155724;
+  background-color: #d4edda;
+}
+.cell.cell-warning {
+  color: #856404;
+  border-color: #ffeeba;
+  background-color: #fff3cd;
+}
+.cell.cell-danger {
+  color: #721c24;
+  border-color: #f5c6cb;
+  background-color: #f8d7da;
+}
+
+.students {
+  display: flex;
+  flex-direction: row;
+}
+
+.cell-columns {
+  display: flex;
+  flex-direction: row;
+}
+
+.gradebook {
+  display: flex;
+  flex-direction: row;
+}
+.body {
+  /*flex: 1;*/
+}

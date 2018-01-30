@@ -15,8 +15,8 @@ public class GradebookCell {
     private Integer id;
     @Column(name = "gradebook_lineitem_id")
     private Integer gradebookLineItemId;
-    @Column(name = "result_sourcedid")
-    private String resultSourcedId;
+    @Column(name = "student_id")
+    private String studentId;
     @Column(name = "grade")
     private String grade;
     @Column(name = "source")
@@ -26,9 +26,9 @@ public class GradebookCell {
     public GradebookCell() {
     }
 
-    public GradebookCell(Integer gradebookLineItemId, String resultSourcedId, String grade, String source) {
+    public GradebookCell(Integer gradebookLineItemId, String studentId, String grade, String source) {
         this.gradebookLineItemId = gradebookLineItemId;
-        this.resultSourcedId = resultSourcedId;
+        this.studentId = studentId;
         this.grade = grade;
         this.source = source;
     }
@@ -49,12 +49,12 @@ public class GradebookCell {
         this.gradebookLineItemId = gradebookLineItemId;
     }
 
-    public String getResultSourcedId() {
-        return resultSourcedId;
+    public String getStudentId() {
+        return studentId;
     }
 
-    public void setResultSourcedId(String resultSourcedId) {
-        this.resultSourcedId = resultSourcedId;
+    public void setStudentId(String studentId) {
+        this.studentId = studentId;
     }
 
     public String getGrade() {

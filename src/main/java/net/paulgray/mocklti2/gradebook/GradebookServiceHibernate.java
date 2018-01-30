@@ -1,6 +1,5 @@
 package net.paulgray.mocklti2.gradebook;
 
-import net.paulgray.mocklti2.tools.LtiTool;
 import org.hibernate.Criteria;
 import org.hibernate.SessionFactory;
 import org.hibernate.criterion.Restrictions;
@@ -103,17 +102,17 @@ public class GradebookServiceHibernate implements GradebookService {
 
     @Override
     @Transactional
-    public Optional<GradebookCell> getGradebookCell(Integer lineItemId, String resultSourcedId) {
+    public Optional<GradebookCell> getGradebookCell(Integer lineItemId, String studentId) {
         Criteria crit = sessionFactory.getCurrentSession().createCriteria(GradebookCell.class);
         crit.add(Restrictions.eq("gradebookLineItemId", lineItemId));
-        crit.add(Restrictions.eq("resultSourcedId", resultSourcedId));
+        crit.add(Restrictions.eq("studentId", studentId));
         return Optional.ofNullable((GradebookCell) crit.uniqueResult());
     }
 
     @Override
     @Transactional
-    public GradebookCell getOrCreateGradebookCell(Integer lineItemId, String resultSourcedId, String source) {
-        return getGradebookCell(lineItemId, resultSourcedId).orElseGet(() -> addCell(new GradebookCell(lineItemId, resultSourcedId, null, source)));
+    public GradebookCell getOrCreateGradebookCell(Integer lineItemId, String studentId, String source) {
+        return getGradebookCell(lineItemId, studentId).orElseGet(() -> addCell(new GradebookCell(lineItemId, studentId, null, source)));
     }
 
     @Override

@@ -3,23 +3,26 @@
         <i class="fa fa-circle-o-notch fa-spin fa-3x fa-fw"></i>
     </div>
     <div ng-if="!loading">
-        <div ng-if="gradebook" class="gradebook-container">
-            <table class="table">
-                <tr>
-                    <th>Student</th>
-                    <th ng-repeat="column in gradebook.columns">
-                        <a ng-if="column.column.source != null" ng-click="showSource(column.column.title, column.column.source)" style="cursor: pointer;">{{column.column.title}}</a>
-                        <span ng-if="column.column.source == null">{{column.column.title}}</span>
-                    </th>
-                </tr>
-                <tr ng-repeat="studentId in students">
-                    <td>{{studentId}}</td>
-                    <td ng-repeat="column in gradebook.columns">
-                        <a ng-if="getStudentSource(studentId, column.column.id) != null" ng-click="showSource('', getStudentSource(studentId, column.column.id))" style="cursor: pointer;">{{getStudentGradeForColumn(studentId, column.column.id)}}</a>
-                        <span ng-if="getStudentSource(studentId, column.column.id) == null">{{getStudentGradeForColumn(studentId, column.column.id)}}</span>
-                    </td>
-                </tr>
-            </table>
+        <div ng-if="gradebook" class="gradebook">
+            <div class="columns">
+                <div ng-repeat="column in gradebook.columns" class="column">
+                    {{column.column.title}}
+                </div>
+            </div><div class="body">
+                <div class="students">
+                    <div ng-repeat="studentId in students" class="student-container">
+                        <div class="student">{{studentId}}</div>
+                    </div>
+                </div>
+                <div class="cell-columns">
+                    <div ng-repeat="studentId in students" class="cell-column">
+                        <div ng-repeat="column in gradebook.columns" class="cell {{getStudentGradeStyle(studentId, column.column.id)}}">
+                            <a ng-if="getStudentSource(studentId, column.column.id) != null" ng-click="showSource('', getStudentSource(studentId, column.column.id))" style="cursor: pointer;">{{getStudentGradeForColumn(studentId, column.column.id)}}</a>
+                            <span ng-if="getStudentSource(studentId, column.column.id) == null">{{getStudentGradeForColumn(studentId, column.column.id)}}</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
         <div ng-if="!gradebook" class="jumbotron focused-display">
             <h1><i class="fa fa-calendar" aria-hidden="true"></i></h1>
