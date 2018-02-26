@@ -4,8 +4,8 @@ import net.paulgray.mocklti2.gradebook.Gradebook;
 import net.paulgray.mocklti2.gradebook.GradebookCell;
 import net.paulgray.mocklti2.gradebook.GradebookLineItem;
 import net.paulgray.mocklti2.gradebook.GradebookService;
-import org.imsglobal.lti.launch.LtiSigner;
-import org.imsglobal.lti.launch.LtiSigningException;
+import net.paulgray.lti.launch.LtiSigner;
+import net.paulgray.lti.launch.LtiSigningException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -55,8 +55,12 @@ public class LtiController {
         //  get gradebook
         request.getLaunchParameters().put("lis_result_sourcedid", lisResultSourcedId);
 
+        Map<String, String> unsigned = request.getLaunchParameters();
+
+        unsigned.put("oauth_signature_method", "HMAC-SHA256");
+
         Map<String, String> params = ltiSigner.signParameters(
-            request.getLaunchParameters(),
+            unsigned,
             request.getKey(),
             request.getSecret(),
             request.getUrl(),

@@ -7,6 +7,8 @@ function($http, ltiLaunchService, SampleUsers, SampleCourses, sampleToolsService
     link: function(scope, element, attrs) {
       scope.launch = {};
 
+      scope.signatureMethods = ['HMAC-SHA1', 'HMAC-SHA256'];
+
       scope.sampleTools = sampleToolsService.getTools();
       scope.sampleUsers = SampleUsers;
       scope.sampleContexts = SampleCourses;
@@ -17,9 +19,10 @@ function($http, ltiLaunchService, SampleUsers, SampleCourses, sampleToolsService
       scope.launch.user = SampleUsers[0];
       scope.launch.context = SampleCourses[0];
 
+      scope.launch.signature_method = scope.signatureMethods[0];
+
       scope.launch.config = {};
       scope.launch.config.custom_params = '';
-      scope.launch.config.ext_params = '';
 
       scope.urlAndKey = function(tool){
         return tool.url + ' / ' + tool.key;
@@ -51,11 +54,7 @@ function($http, ltiLaunchService, SampleUsers, SampleCourses, sampleToolsService
 
         var params = scope.launch.config.custom_params
           .split('\n')
-          .reduce(mergeParams('custom_'), params);
-
-        var params = scope.launch.config.ext_params
-          .split('\n')
-          .reduce(mergeParams('ext_'), params);
+          .reduce(mergeParams(''), params);
 
         if(scope.outcomesOnepOne) {
           params.lis_outcome_service_url = window.web_origin + "/outcomes/v1.1/gradebook";
@@ -74,6 +73,8 @@ function($http, ltiLaunchService, SampleUsers, SampleCourses, sampleToolsService
         if(scope.gradebookServices){
           // todo: 
         }
+
+        params.oauth_signature_method = scope.launch.signature_method;
 
         params['lti_message_type'] = 'basic-lti-launch-request';
         params['lti_version'] = 'LTI-1p0';

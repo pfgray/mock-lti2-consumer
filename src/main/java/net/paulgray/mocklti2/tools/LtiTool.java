@@ -5,11 +5,10 @@
  */
 package net.paulgray.mocklti2.tools;
 
-import javax.persistence.*;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
-import org.codehaus.jackson.annotate.JsonIgnore;
-import org.codehaus.jackson.annotate.JsonProperty;
-import org.imsglobal.lti2.objects.provider.ToolProxy;
+import javax.persistence.*;
 
 import java.util.List;
 

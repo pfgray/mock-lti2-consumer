@@ -51,16 +51,16 @@
 
     <!-- lti setup: -->
     <aop:aspectj-autoproxy/>
-    <bean id="myAspect" class="org.imsglobal.aspect.LtiLaunchVerifier">
+    <bean id="myAspect" class="net.paulgray.aspect.LtiLaunchVerifier">
         <constructor-arg>
             <bean class="net.paulgray.mocklti2.tools.MockLti2ConsumerService"/>
         </constructor-arg>
         <constructor-arg>
-            <bean class="org.imsglobal.lti.launch.LtiOauthVerifier"/>
+            <bean class="net.paulgray.lti.launch.LtiOauthVerifier"/>
         </constructor-arg>
     </bean>
 
-    <bean id="ltiSigner" class="org.imsglobal.lti.launch.LtiOauthSigner">
+    <bean id="ltiSigner" class="net.paulgray.lti.launch.LtiOauthSigner">
     </bean>
     
 </beans>

@@ -78,15 +78,20 @@
         </div>
 
         <!-- Custom Params -->
-        <div class="step">
-            <div class="row">
-                <div class="col-md-6">
+        <div class="row">
+            <div class="col-md-6">
+                <div class="step">
                     <h5>Custom Parameters</h5>
-                    <textarea rows="3" ng-model="launch.config.custom_params" placeholder="Separate values with an '=', like userclass=king. Put each parameter on its own line." class="form-control params"/>
+                    <textarea rows="3" ng-model="launch.config.custom_params" placeholder="Separate values with an '=', like userclass=king. Put each parameter on its own line. keys will not be modified, so you may need to add the 'custom_' prefix as necessary." class="form-control params"/>
                 </div>
-                <div class="col-md-6">
-                    <h5>Extension Parameters</h5>
-                    <textarea rows="3" ng-model="launch.config.ext_params" placeholder="Separate values with an '=', like userclass=king. Put each parameter on its own line." class="form-control params"/>
+            </div>
+            <div class="col-md-6">
+                <div class="step">
+                    <h5>Signature Mechanism</h5>
+                    <select
+                      ng-model="launch.signature_method"
+                      ng-options="sig for sig in signatureMethods">
+                    </select>
                 </div>
             </div>
         </div>

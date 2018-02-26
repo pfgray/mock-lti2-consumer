@@ -1,18 +1,6 @@
 package net.paulgray.mocklti2.gradebook;
 
-import net.paulgray.mocklti2.tools.LtiToolProxy;
-import org.codehaus.jackson.annotate.JsonIgnore;
-import org.codehaus.jackson.annotate.JsonProperty;
-
 import javax.persistence.*;
-import java.util.List;
-import javax.persistence.*;
-
-import org.codehaus.jackson.annotate.JsonIgnore;
-import org.codehaus.jackson.annotate.JsonProperty;
-import org.imsglobal.lti2.objects.provider.ToolProxy;
-
-import java.util.List;
 
 /**
  *

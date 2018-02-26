@@ -1,6 +1,6 @@
 package net.paulgray.mocklti2.tools;
 
-import org.imsglobal.aspect.LtiKeySecretService;
+import net.paulgray.aspect.LtiKeySecretService;
 
 /**
  * Created by pgray on 8/30/14.
