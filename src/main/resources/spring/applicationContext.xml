@@ -48,7 +48,6 @@
         <jdbc:script location="sql/tools.sql"/>
     </jdbc:embedded-database>
 
-
     <!-- lti setup: -->
     <aop:aspectj-autoproxy/>
     <bean id="myAspect" class="net.paulgray.aspect.LtiLaunchVerifier">
@@ -56,11 +55,11 @@
             <bean class="net.paulgray.mocklti2.tools.MockLti2ConsumerService"/>
         </constructor-arg>
         <constructor-arg>
-            <bean class="net.paulgray.lti.launch.LtiOauthVerifier"/>
+            <bean class="net.paulgray.lti.launch.LtiOauth10aVerifier"/>
         </constructor-arg>
     </bean>
 
-    <bean id="ltiSigner" class="net.paulgray.lti.launch.LtiOauthSigner">
+    <bean id="ltiSigner" class="net.paulgray.lti.launch.LtiOauth10aSigner">
     </bean>
     
 </beans>

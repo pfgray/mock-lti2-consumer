@@ -8,10 +8,10 @@ package net.paulgray.mocklti2.web;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
+import net.paulgray.lti.launch.LtiOauth10aSigner;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.impl.client.DefaultHttpClient;
-import net.paulgray.lti.launch.LtiOauthSigner;
 import net.paulgray.lti.launch.LtiSigner;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -51,7 +51,7 @@ public class Lti2ConsumerController {
         @RequestParam("secret") String secret
     ) throws Exception {
 
-        LtiSigner signer = new LtiOauthSigner();
+        LtiSigner signer = new LtiOauth10aSigner();
 
         HttpGet request = new HttpGet(membershipUrl);
 

@@ -5,3 +5,4 @@ logging.level:
   org.hibernate.SQL: INFO
   org.hibernate.type: INFO
   org.hibernate.engine: ERROR
+  org.apache.tomcat.util.scan: FATAL

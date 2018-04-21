@@ -60,7 +60,7 @@ public class LtiController {
         unsigned.put("oauth_signature_method", "HMAC-SHA256");
 
         Map<String, String> params = ltiSigner.signParameters(
-            unsigned,
+            unsigned.entrySet(),
             request.getKey(),
             request.getSecret(),
             request.getUrl(),
