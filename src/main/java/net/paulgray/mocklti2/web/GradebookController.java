@@ -172,7 +172,7 @@ public class GradebookController {
 
         });
 
-        return new ResponseEntity("", HttpStatus.ACCEPTED);
+        return new ResponseEntity("", HttpStatus.OK);
     }
 
     public Optional<Outcomes1Request> readOutcomes1Request(String is){
