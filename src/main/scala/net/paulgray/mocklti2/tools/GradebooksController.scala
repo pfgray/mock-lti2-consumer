@@ -21,7 +21,7 @@ class GradebooksController {
     @RequestParam(value = "limit", defaultValue = "10") limit: Int,
     @RequestParam(value = "offset", defaultValue = "0") offset: Int
   ): ResponseEntity[PagedResults[Gradebook]] = {
-    new ResponseEntity(gradebooksService.getPagedGradebooks(Page(offset, limit)), HttpStatus.OK)
+    new ResponseEntity(gradebooksService.getPagedGradebooks(Page(Offset(offset), limit)), HttpStatus.OK)
   }
 
   @RequestMapping(value = Array("/api/gradebooks/{gradebookId}"), method = Array(RequestMethod.DELETE))

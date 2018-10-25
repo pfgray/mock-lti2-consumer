@@ -24,10 +24,17 @@ class HibernateGradebooksService extends GradebooksService {
   @Transactional
   override def getPagedGradebooks(page: Page): PagedResults[Gradebook] = {
     val crit = sessionFactory.getCurrentSession.createCriteria(classOf[Gradebook])
-    crit.setFirstResult(page.offset)
-    crit.setMaxResults(page.limit)
-    val gbs = crit.list().asInstanceOf[java.util.List[Gradebook]].asScala
+    crit.setPage(page)
+    val gbs = crit.list().asInstanceOf[java.util.List[Gradebook]].asScala.toList
     PagedResults(page, crit.count(), gbs)
+  }
+
+  @Transactional
+  override def getColumns(courseId: String, page: Page): PagedResults[GradebookLineItem] = {
+    sessionFactory.getCurrentSession.createCriteria(classOf[GradebookLineItem])
+      .setFetchMode("gradebook", FetchMode.JOIN)
+      .add(Restrictions.eq("gradebook.context", courseId))
+      .toResults[GradebookLineItem](page)
   }
 
   @Transactional
@@ -37,11 +44,29 @@ class HibernateGradebooksService extends GradebooksService {
   }
 
   implicit class CriteriaOps(c: Criteria) {
+
+    final val PageSize: Int = 10
+
     def count(): Long = {
       c.setFirstResult(0)
       c.setMaxResults(0)
       c.setProjection(Projections.rowCount)
       c.uniqueResult().asInstanceOf[java.lang.Long]
     }
+
+    def setPage(page: Page): Criteria = {
+      page.selector match {
+        case Offset(i) => c.setFirstResult(i)
+        case PageNumber(n) => c.setFirstResult(n * page.limit)
+      }
+      c.setMaxResults(page.limit)
+    }
+
+    def toResults[T](page: Page): PagedResults[T] = {
+      val items = c.setPage(page).list().asInstanceOf[java.util.List[T]].asScala.toList
+      val total = c.count()
+      PagedResults(page, total, items)
+    }
   }
+
 }
