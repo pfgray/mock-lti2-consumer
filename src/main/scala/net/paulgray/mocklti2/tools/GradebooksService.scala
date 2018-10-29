@@ -1,6 +1,6 @@
 package net.paulgray.mocklti2.tools
 
-import net.paulgray.mocklti2.gradebook.{Gradebook, GradebookLineItem}
+import net.paulgray.mocklti2.gradebook.{Gradebook, GradebookCell, GradebookLineItem}
 import net.paulgray.mocklti2.tools.GradebooksService.{Page, PagedResults}
 
 /**
@@ -8,9 +8,15 @@ import net.paulgray.mocklti2.tools.GradebooksService.{Page, PagedResults}
  */
 trait GradebooksService {
 
+  def getGradebook(contextId: String): Option[Gradebook]
+
   def getPagedGradebooks(page: Page): PagedResults[Gradebook]
 
-  def getColumns(context: String, page: Page): PagedResults[GradebookLineItem]
+  def getPagedCells(page: Page, lineItemId: Integer): PagedResults[GradebookCell]
+
+  def createOrUpdateCell(gradebookCell: GradebookCell): Unit
+
+  def getColumns(gradebook: Gradebook, page: Page): PagedResults[GradebookLineItem]
 
   def deleteGradebook(id: Integer): Unit
 

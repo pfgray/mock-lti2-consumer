@@ -1,0 +1,206 @@
+package net.paulgray.mocklti2.tools
+
+import java.time.Instant
+import java.util.{Optional, UUID}
+import javax.transaction.Transactional
+
+import com.fasterxml.jackson.annotation.ObjectIdGenerators.UUIDGenerator
+import com.fasterxml.jackson.databind.ObjectMapper
+import jdk.management.resource.ResourceId
+import net.paulgray.mocklti2.gradebook.{Gradebook, GradebookCell, GradebookLineItem, GradebookService}
+import net.paulgray.mocklti2.tools.GradebooksService.{Page, PageNumber, PagedResults}
+import net.paulgray.mocklti2.tools.AgsGradebookController.{ActivityProgress, CreateLineItemRequest, UpdateScoreRequest}
+import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.http.{HttpStatus, ResponseEntity}
+import org.springframework.stereotype.Controller
+import org.springframework.web.bind.annotation._
+
+import scala.compat.java8.OptionConverters._
+import scala.util.Try
+
+@Controller
+class AgsGradebookController {
+
+  import HttpStatus._
+  import net.paulgray.mocklti2.tools.AgsGradebookController.AnyOps
+
+  @Autowired
+  var gradebookService: GradebookService = null
+
+  @Autowired
+  var gbService: GradebooksService = null
+
+  @Autowired
+  var ob: ObjectMapper = null
+
+  @Transactional
+  @RequestMapping(value = Array("/api/ags/{contextId}/lineitems"), method = Array(RequestMethod.GET))
+  def getLineItems(
+    @PathVariable("contextId") contextId: String,
+    @RequestParam(value = "limit", defaultValue = "10") limit: Int,
+    @RequestParam(value = "page", defaultValue = "0") pageNumber: Int,
+    @RequestParam(value = "lti_link_id") ltiLinkId: Optional[String],
+    @RequestParam(value = "tag") tag: Optional[String],
+    @RequestParam(value = "resource_id") resourceId: Optional[String]
+  ): ResponseEntity[_] =
+    gbOrNotFound(contextId) { gb =>
+      val columns = gbService.getColumns(gb, Page(PageNumber(pageNumber), limit))
+      new ResponseEntity(columns, HttpStatus.OK)
+    }
+
+  @Transactional
+  @RequestMapping(value = Array("/api/ags/{contextId}/lineitems"), method = Array(RequestMethod.POST))
+  def createLineItem(
+    @PathVariable("contextId") contextId: String,
+    @RequestBody lineItem: CreateLineItemRequest
+  ): ResponseEntity[_] =
+    gbOrNotFound(contextId) { gb =>
+      val li = gradebookService.getOrCreateGradebookLineItemByResourceLinkId(gb.getId, UUID.randomUUID().toString, ob.writeValueAsString(lineItem))
+      li.setResourceId(lineItem.resourceId)
+      li.setTitle(lineItem.label)
+      li.setScoreMaximum(lineItem.scoreMaximum)
+      li.setTag(lineItem.tag.orNull)
+      new ResponseEntity(li, HttpStatus.OK)
+    }
+
+  @Transactional
+  @RequestMapping(value = Array("/api/ags/{contextId}/lineitems/{lineItemId}"), method = Array(RequestMethod.GET))
+  def getLineItem(
+    @PathVariable("contextId") contextId: String,
+    @PathVariable("lineItemId") lineItemId: String
+  ): ResponseEntity[_] =
+    gbOrNotFound(contextId) { gb =>
+      liOrError(gb.getId, lineItemId) { li =>
+        new ResponseEntity(li, HttpStatus.OK)
+      }
+    }
+
+  @Transactional
+  @RequestMapping(value = Array("/api/ags/{contextId}/lineitems/{lineItemId}"), method = Array(RequestMethod.PUT))
+  def updateLineItem(
+    @PathVariable("contextId") contextId: String,
+    @PathVariable("lineItemId") lineItemId: String,
+    @RequestBody lineItem: CreateLineItemRequest
+  ): ResponseEntity[_] =
+    gbOrNotFound(contextId) { gb =>
+      liOrError(gb.getId, lineItemId) { li =>
+        li.setScoreMaximum(lineItem.scoreMaximum)
+        li.setTitle(lineItem.label)
+        li.setResourceId(lineItem.resourceId)
+        li.setTag(lineItem.tag.orNull)
+        li.setSource(ob.writeValueAsString(lineItem))
+        gradebookService.updateLineItem(li)
+        new ResponseEntity(li, HttpStatus.OK)
+      }
+    }
+
+  @Transactional
+  @RequestMapping(value = Array("/api/ags/{contextId}/lineitems/{lineItemId}"), method = Array(RequestMethod.DELETE))
+  def deleteLineItem(
+    @PathVariable("contextId") contextId: String,
+    @PathVariable("lineItemId") lineItemId: String,
+    @RequestBody lineItem: CreateLineItemRequest
+  ): ResponseEntity[_] =
+    gbOrNotFound(contextId) { gb =>
+      liOrError(gb.getId, lineItemId) { li =>
+        gradebookService.deleteLineItem(li)
+        new ResponseEntity("", HttpStatus.NO_CONTENT)
+      }
+    }
+
+  @Transactional
+  @RequestMapping(value = Array("/api/ags/{contextId}/lineitems/{lineItemId}/results"), method = Array(RequestMethod.GET))
+  def getResults(
+    @PathVariable("contextId") contextId: String,
+    @PathVariable("lineItemId") lineItemId: String,
+    @RequestParam(value = "limit", defaultValue = "10") limit: Int,
+    @RequestParam(value = "page", defaultValue = "0") pageNumber: Int
+  ): ResponseEntity[_] =
+    gbOrNotFound(contextId) { gb =>
+      liOrError(gb.getId, lineItemId) { li =>
+        // TODO: map these to "results"
+        gbService.getPagedCells(Page(PageNumber(pageNumber), limit), li.getId).resp(HttpStatus.OK)
+      }
+    }
+
+  @Transactional
+  @RequestMapping(value = Array("/api/ags/{contextId}/lineitems/{lineItemId}/scores"), method = Array(RequestMethod.POST))
+  def updateScore(
+    @PathVariable("contextId") contextId: String,
+    @PathVariable("lineItemId") lineItemId: String,
+    @RequestParam(value = "limit", defaultValue = "10") limit: Int,
+    @RequestParam(value = "page", defaultValue = "0") pageNumber: Int,
+    @RequestBody lineItem: UpdateScoreRequest
+  ): ResponseEntity[_] =
+    gbOrNotFound(contextId) { gb =>
+      liOrError(gb.getId, lineItemId) { li =>
+        val grade = s"${lineItem.scoreGiven}/${lineItem.scoreMaximum}:${lineItem.activityProgress}:${lineItem.gradingProgress}"
+        val cell = new GradebookCell(li.getId, lineItem.userId, grade, ob.writeValueAsString(lineItem))
+        gbService.createOrUpdateCell(cell)
+        cell.resp(HttpStatus.OK)
+      }
+    }
+
+  def gbOrNotFound(contextId: String)(f: Gradebook => ResponseEntity[_]): ResponseEntity[_] =
+    gbService.getGradebook(contextId).fold[ResponseEntity[_]](
+      new ResponseEntity(s"Gradebook for context with id: $contextId not found.", HttpStatus.NOT_FOUND)
+    )(f)
+
+  def liOrError(gradebookId: Integer, lineItemId: String)(f: GradebookLineItem => ResponseEntity[_]): ResponseEntity[_] =
+    Try(Integer.valueOf(lineItemId)).toOption.fold[ResponseEntity[_]](s"Line item with id: $lineItemId is not an integer...".resp(NOT_ACCEPTABLE)) { lineItemId =>
+      gradebookService.getGradebookLineItemById(gradebookId, lineItemId).asScala.fold[ResponseEntity[_]](s"Line item with id: $lineItemId not found".resp(NOT_FOUND)) {
+        f(_)
+      }
+    }
+
+}
+
+object AgsGradebookController {
+
+  sealed trait GradingProgress
+  case object NotReady extends GradingProgress
+  case object Failed extends GradingProgress
+  case object Pending extends GradingProgress
+  case object PendingManual extends GradingProgress
+  case object FullyGraded extends GradingProgress
+
+  sealed trait ActivityProgress
+  case object Initialized extends ActivityProgress
+  case object Started extends ActivityProgress
+  case object InProgress extends ActivityProgress
+  case object Submitted extends ActivityProgress
+  case object Completed extends ActivityProgress
+
+  case class UpdateScoreRequest(
+    userId: String,
+    scoreGiven: java.math.BigDecimal,
+    scoreMaximum: java.math.BigDecimal,
+    comment: String,
+    timestamp: Instant,
+    activityProgress: ActivityProgress,
+    gradingProgress: GradingProgress
+  )
+
+  case class CreateLineItemRequest(
+    scoreMaximum: java.math.BigDecimal,
+    label: String,
+    tag: Option[String],
+    resourceId: String
+  )
+
+  case class LineItem(
+    id: String,
+    scoreMaximum: BigDecimal,
+    label: String,
+    tag: Option[String],
+    resourceId: String,
+    resourceLinkId: String
+  )
+
+  implicit class AnyOps[T](t: T) {
+    def resp(h: HttpStatus): ResponseEntity[T] = {
+      new ResponseEntity[T](t, h)
+    }
+  }
+
+}

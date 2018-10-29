@@ -1,12 +1,14 @@
 package net.paulgray.mocklti2.tools
 
+import java.util.Optional
 import javax.transaction.Transactional
 
-import net.paulgray.mocklti2.gradebook.Gradebook
-import net.paulgray.mocklti2.tools.GradebooksService.{Page, PagedResults}
-import org.hibernate.criterion.Projections
+import net.paulgray.mocklti2.gradebook.{Gradebook, GradebookCell, GradebookLineItem}
+import net.paulgray.mocklti2.tools.GradebooksService.{Offset, Page, PageNumber, PagedResults}
+import net.paulgray.mocklti2.web.entities.Result
+import org.hibernate.criterion.{Projections, Restrictions}
 import org.hibernate.transform.{DistinctResultTransformer, ResultTransformer}
-import org.hibernate.{Criteria, SessionFactory}
+import org.hibernate.{Criteria, FetchMode, Query, SessionFactory}
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
 
@@ -21,6 +23,12 @@ class HibernateGradebooksService extends GradebooksService {
   @Autowired
   var sessionFactory: SessionFactory = null
 
+  override def getGradebook(contextId: String): Option[Gradebook] = {
+    Option(sessionFactory.getCurrentSession.createCriteria(classOf[Gradebook])
+      .add(Restrictions.eq("context", contextId))
+      .uniqueResult()).map(_.asInstanceOf[Gradebook])
+  }
+
   @Transactional
   override def getPagedGradebooks(page: Page): PagedResults[Gradebook] = {
     val crit = sessionFactory.getCurrentSession.createCriteria(classOf[Gradebook])
@@ -30,12 +38,20 @@ class HibernateGradebooksService extends GradebooksService {
   }
 
   @Transactional
-  override def getColumns(courseId: String, page: Page): PagedResults[GradebookLineItem] = {
+  override def getPagedCells(page: Page, lineItemId: Integer): PagedResults[GradebookCell] =
+    sessionFactory.getCurrentSession.createCriteria(classOf[GradebookCell])
+      .add(Restrictions.eq("gradebookLineItemId", lineItemId))
+      .toResults[GradebookCell](page)
+
+  @Transactional
+  override def createOrUpdateCell(gradebookCell: GradebookCell): Unit =
+    sessionFactory.getCurrentSession.save(gradebookCell)
+
+  @Transactional
+  override def getColumns(gradebook: Gradebook, page: Page): PagedResults[GradebookLineItem] =
     sessionFactory.getCurrentSession.createCriteria(classOf[GradebookLineItem])
-      .setFetchMode("gradebook", FetchMode.JOIN)
-      .add(Restrictions.eq("gradebook.context", courseId))
+      .add(Restrictions.in("gradebookId", List(gradebook.getId).asJava))
       .toResults[GradebookLineItem](page)
-  }
 
   @Transactional
   override def deleteGradebook(id: Integer): Unit = {
@@ -65,6 +81,23 @@ class HibernateGradebooksService extends GradebooksService {
     def toResults[T](page: Page): PagedResults[T] = {
       val items = c.setPage(page).list().asInstanceOf[java.util.List[T]].asScala.toList
       val total = c.count()
+      PagedResults(page, total, items)
+    }
+  }
+
+  implicit class QueryOps(q: Query) {
+
+    def setPage(page: Page): Query = {
+      page.selector match {
+        case Offset(i) => q.setFirstResult(i)
+        case PageNumber(n) => q.setFirstResult(n * page.limit)
+      }
+      q.setMaxResults(page.limit)
+    }
+
+    def toResults[T](page: Page, countQuery: Query): PagedResults[T] = {
+      val items = q.setPage(page).list().asInstanceOf[java.util.List[T]].asScala.toList
+      val total = countQuery.uniqueResult().asInstanceOf[java.lang.Long]
       PagedResults(page, total, items)
     }
   }

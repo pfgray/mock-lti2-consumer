@@ -76,7 +76,7 @@ public class LtiController {
     private GradebookLineItem getLineItemForGradebook(Gradebook gb, UnsignedLtiLaunchRequest request) {
         String resourceId = request.getLaunchParameters().get("resource_link_id");
         String resourceTitle = request.getLaunchParameters().get("resource_link_title");
-        GradebookLineItem lineItem = gradebookService.getOrCreateGradebookLineItemByResourceId(gb.getId(), resourceId, null);
+        GradebookLineItem lineItem = gradebookService.getOrCreateGradebookLineItemByResourceLinkId(gb.getId(), resourceId, null);
         lineItem.setTitle(resourceTitle);
         return gradebookService.updateLineItem(lineItem);
     }
@@ -89,7 +89,7 @@ public class LtiController {
     private List<GradebookLineItem> generateRandomColumns(Gradebook gb) {
         List<GradebookLineItem> assignments = new LinkedList<>();
         for (int i = 1; i<31; i++) {
-            GradebookLineItem assignment = gradebookService.getOrCreateGradebookLineItemByResourceId(gb.getId(), "assignment_" + i, null);
+            GradebookLineItem assignment = gradebookService.getOrCreateGradebookLineItemByResourceLinkId(gb.getId(), "assignment_" + i, null);
             assignment.setTitle("Assignment #" + i);
             gradebookService.updateLineItem(assignment);
             assignments.add(assignment);

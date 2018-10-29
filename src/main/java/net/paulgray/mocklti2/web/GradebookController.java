@@ -11,15 +11,11 @@ import net.paulgray.mocklti2.web.entities.Result;
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.w3c.dom.Document;
@@ -33,7 +29,6 @@ import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 import java.io.IOException;
-import java.io.InputStream;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -86,7 +81,7 @@ public class GradebookController {
         String title = lineItem.getLabel().get("@value").textValue();
         String activityId = lineItem.getActivity().get("@id").textValue();
 
-        GradebookLineItem newLineItem = gradebookService.getOrCreateGradebookLineItemByResourceId(gb.getId(), UUID.randomUUID().toString(), body);
+        GradebookLineItem newLineItem = gradebookService.getOrCreateGradebookLineItemByResourceLinkId(gb.getId(), UUID.randomUUID().toString(), body);
 
         newLineItem.setTitle(title);
         newLineItem.setActivityId(activityId);
@@ -161,7 +156,7 @@ public class GradebookController {
             Gradebook gb = gradebookService.getOrCreateGradebook(out.contextId);
 
             GradebookLineItem lineItem =
-                gradebookService.getOrCreateGradebookLineItemByResourceId(gb.getId(), out.resourceId, null);
+                gradebookService.getOrCreateGradebookLineItemByResourceLinkId(gb.getId(), out.resourceId, null);
 
             GradebookCell cell =
                 gradebookService.getOrCreateGradebookCell(lineItem.getId(), out.studentId, body);

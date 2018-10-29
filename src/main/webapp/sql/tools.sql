@@ -41,6 +41,9 @@ create table gradebook_lineitems (
     source           varchar(32672),
     title            varchar(500),
     activity_id      varchar(500),
+    resource_id      varchar(256),
+    tag              varchar(256),
+    score_maximum    numeric,
     primary key (id),
     foreign key (gradebook_id) references gradebooks (id) on delete cascade
 );
