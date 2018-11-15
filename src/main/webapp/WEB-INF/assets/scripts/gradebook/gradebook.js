@@ -72,6 +72,9 @@ function($http, $uibModal) {
               controller: ['$scope', '$uibModalInstance', function($scope, $uibModalInstance){
                 $scope.title = title;
                 $scope.source = source;
+                $scope.format = function(obj){
+                  return JSON.stringify(JSON.parse(obj), null, "  ");
+                }
                 $scope.close = function() {
                   $uibModalInstance.dismiss();
                 }

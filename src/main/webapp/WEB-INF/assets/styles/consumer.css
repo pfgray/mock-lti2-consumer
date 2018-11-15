@@ -316,6 +316,13 @@ label.inline > * {
   justify-content: center;
   width: 2.5em;
   border: 1px solid #ddd;
+  overflow: hidden;
+}
+
+.cell a {
+  width: 100%;
+  text-overflow: ellipsis;
+  overflow: hidden;
 }
 
 .cell.cell-success {

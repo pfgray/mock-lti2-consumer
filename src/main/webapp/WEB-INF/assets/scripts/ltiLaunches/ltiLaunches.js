@@ -63,14 +63,14 @@ function($http, ltiLaunchService, SampleUsers, SampleCourses, sampleToolsService
         if(scope.outcomesTwo) {
           params.custom_lineitems_url = window.web_origin + "/outcomes/v2.0/gradebook/" + params.context_id + "/lineitems";
         }
+        if(scope.gradebookServices) {
+          params.custom_lineitems_url = window.web_origin + "/api/ags/" + params.context_id + "/lineitems";
+        }
 
         if(scope.membershipServices){
           params.custom_context_memberships_url = window.web_origin + "/contexts/" + params.context_id + "/memberships";
         }
         if(scope.contentItem){
-          // todo: 
-        }
-        if(scope.gradebookServices){
           // todo: 
         }
 

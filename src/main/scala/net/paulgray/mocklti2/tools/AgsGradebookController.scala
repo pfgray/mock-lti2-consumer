@@ -2,6 +2,7 @@ package net.paulgray.mocklti2.tools
 
 import java.time.Instant
 import java.util.{Optional, UUID}
+import javax.servlet.http.HttpServletRequest
 import javax.transaction.Transactional
 
 import com.fasterxml.jackson.annotation.ObjectIdGenerators.UUIDGenerator
@@ -9,7 +10,8 @@ import com.fasterxml.jackson.databind.ObjectMapper
 import jdk.management.resource.ResourceId
 import net.paulgray.mocklti2.gradebook.{Gradebook, GradebookCell, GradebookLineItem, GradebookService}
 import net.paulgray.mocklti2.tools.GradebooksService.{Page, PageNumber, PagedResults}
-import net.paulgray.mocklti2.tools.AgsGradebookController.{ActivityProgress, CreateLineItemRequest, UpdateScoreRequest}
+import net.paulgray.mocklti2.tools.AgsGradebookController.{ActivityProgress, CreateLineItemRequest, LineItem, UpdateScoreRequest}
+import net.paulgray.mocklti2.web.HttpUtils
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.{HttpStatus, ResponseEntity}
 import org.springframework.stereotype.Controller
@@ -51,6 +53,7 @@ class AgsGradebookController {
   @Transactional
   @RequestMapping(value = Array("/api/ags/{contextId}/lineitems"), method = Array(RequestMethod.POST))
   def createLineItem(
+    req: HttpServletRequest,
     @PathVariable("contextId") contextId: String,
     @RequestBody lineItem: CreateLineItemRequest
   ): ResponseEntity[_] =
@@ -60,24 +63,26 @@ class AgsGradebookController {
       li.setTitle(lineItem.label)
       li.setScoreMaximum(lineItem.scoreMaximum)
       li.setTag(lineItem.tag.orNull)
-      new ResponseEntity(li, HttpStatus.OK)
+      new ResponseEntity(LineItem(li, contextId, HttpUtils.getOrigin(req).get()), HttpStatus.OK)
     }
 
   @Transactional
   @RequestMapping(value = Array("/api/ags/{contextId}/lineitems/{lineItemId}"), method = Array(RequestMethod.GET))
   def getLineItem(
+    req: HttpServletRequest,
     @PathVariable("contextId") contextId: String,
     @PathVariable("lineItemId") lineItemId: String
   ): ResponseEntity[_] =
     gbOrNotFound(contextId) { gb =>
       liOrError(gb.getId, lineItemId) { li =>
-        new ResponseEntity(li, HttpStatus.OK)
+        new ResponseEntity(LineItem(li, contextId, HttpUtils.getOrigin(req).get()), HttpStatus.OK)
       }
     }
 
   @Transactional
   @RequestMapping(value = Array("/api/ags/{contextId}/lineitems/{lineItemId}"), method = Array(RequestMethod.PUT))
   def updateLineItem(
+    req: HttpServletRequest,
     @PathVariable("contextId") contextId: String,
     @PathVariable("lineItemId") lineItemId: String,
     @RequestBody lineItem: CreateLineItemRequest
@@ -90,7 +95,7 @@ class AgsGradebookController {
         li.setTag(lineItem.tag.orNull)
         li.setSource(ob.writeValueAsString(lineItem))
         gradebookService.updateLineItem(li)
-        new ResponseEntity(li, HttpStatus.OK)
+        new ResponseEntity(LineItem(li, contextId, HttpUtils.getOrigin(req).get()), HttpStatus.OK)
       }
     }
 
@@ -177,8 +182,8 @@ object AgsGradebookController {
     scoreMaximum: java.math.BigDecimal,
     comment: String,
     timestamp: Instant,
-    activityProgress: ActivityProgress,
-    gradingProgress: GradingProgress
+    activityProgress: String,
+    gradingProgress: String
   )
 
   case class CreateLineItemRequest(
@@ -196,6 +201,13 @@ object AgsGradebookController {
     resourceId: String,
     resourceLinkId: String
   )
+
+  object LineItem {
+    def apply(gbLi: GradebookLineItem, contextId: String, origin: String) = {
+      val id = s"${origin}/api/ags/${contextId}/lineitems/${gbLi.getId}"
+      new LineItem(id, gbLi.getScoreMaximum, gbLi.getTitle, Option(gbLi.getTag), gbLi.getResourceId, gbLi.getResourceLinkId)
+    }
+  }
 
   implicit class AnyOps[T](t: T) {
     def resp(h: HttpStatus): ResponseEntity[T] = {
