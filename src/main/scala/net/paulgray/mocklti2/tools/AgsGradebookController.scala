@@ -1,13 +1,12 @@
 package net.paulgray.mocklti2.tools
 
 import java.time.Instant
-import java.util.{Optional, UUID}
+import java.util.{Date, Optional, UUID}
 import javax.servlet.http.HttpServletRequest
 import javax.transaction.Transactional
 
-import com.fasterxml.jackson.annotation.ObjectIdGenerators.UUIDGenerator
+import com.fasterxml.jackson.annotation.JsonFormat
 import com.fasterxml.jackson.databind.ObjectMapper
-import jdk.management.resource.ResourceId
 import net.paulgray.mocklti2.gradebook.{Gradebook, GradebookCell, GradebookLineItem, GradebookService}
 import net.paulgray.mocklti2.tools.GradebooksService.{Page, PageNumber, PagedResults}
 import net.paulgray.mocklti2.tools.AgsGradebookController.{ActivityProgress, CreateLineItemRequest, LineItem, UpdateScoreRequest}
@@ -135,14 +134,14 @@ class AgsGradebookController {
     @PathVariable("lineItemId") lineItemId: String,
     @RequestParam(value = "limit", defaultValue = "10") limit: Int,
     @RequestParam(value = "page", defaultValue = "0") pageNumber: Int,
-    @RequestBody lineItem: UpdateScoreRequest
+    @RequestBody score: UpdateScoreRequest
   ): ResponseEntity[_] =
     gbOrNotFound(contextId) { gb =>
       liOrError(gb.getId, lineItemId) { li =>
-        val grade = s"${lineItem.scoreGiven}/${lineItem.scoreMaximum}:${lineItem.activityProgress}:${lineItem.gradingProgress}"
-        val cell = new GradebookCell(li.getId, lineItem.userId, grade, ob.writeValueAsString(lineItem))
+        val grade = s"${score.scoreGiven}/${score.scoreMaximum}:${score.activityProgress}:${score.gradingProgress}"
+        val cell = new GradebookCell(li.getId, score.userId, grade, ob.writeValueAsString(score))
         gbService.createOrUpdateCell(cell)
-        cell.resp(HttpStatus.OK)
+        score.resp(HttpStatus.OK)
       }
     }
 
@@ -181,7 +180,8 @@ object AgsGradebookController {
     scoreGiven: java.math.BigDecimal,
     scoreMaximum: java.math.BigDecimal,
     comment: String,
-    timestamp: Instant,
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ss.SSSXXX")
+    timestamp: Date,
     activityProgress: String,
     gradingProgress: String
   )
