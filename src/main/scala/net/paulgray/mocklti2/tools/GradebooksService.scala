@@ -18,6 +18,8 @@ trait GradebooksService {
 
   def getColumns(gradebook: Gradebook, page: Page): PagedResults[GradebookLineItem]
 
+  def getCell(lineItemId: Integer, studentId: String): Option[GradebookCell]
+
   def deleteGradebook(id: Integer): Unit
 
 }

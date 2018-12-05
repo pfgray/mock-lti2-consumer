@@ -8,3 +8,7 @@ release.properties
 nb-configuration.xml
 *.iml
 node_modules/
+.settings
+.classpath
+.factorypath
+.project

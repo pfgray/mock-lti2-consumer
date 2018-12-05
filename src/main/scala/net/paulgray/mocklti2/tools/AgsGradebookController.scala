@@ -138,9 +138,21 @@ class AgsGradebookController {
   ): ResponseEntity[_] =
     gbOrNotFound(contextId) { gb =>
       liOrError(gb.getId, lineItemId) { li =>
+        //if(score.scoreGiven.compareTo(new java.math.BigDecimal(100)) == 0) {
+        //  throw new RuntimeException("lolz")
+        //}
+        val existing = gbService.getCell(li.getId, score.userId)
         val grade = s"${score.scoreGiven}/${score.scoreMaximum}:${score.activityProgress}:${score.gradingProgress}"
-        val cell = new GradebookCell(li.getId, score.userId, grade, ob.writeValueAsString(score))
-        gbService.createOrUpdateCell(cell)
+        val source = ob.writeValueAsString(score)
+        val toSave = existing match {
+          case Some(g) =>
+            g.setSource(source)
+            g.setGrade(grade)
+            g
+          case None =>
+            new GradebookCell(li.getId, score.userId, grade, ob.writeValueAsString(score))
+        }
+        gbService.createOrUpdateCell(toSave)
         score.resp(HttpStatus.OK)
       }
     }
@@ -156,6 +168,11 @@ class AgsGradebookController {
         f(_)
       }
     }
+
+//  def gradeOrError(gradebookId: Integer, lineItemId: String, studentId: String)(f: GradebookCell => ResponseEntity[_]): ResponseEntity[_] =
+//    .getGradebookCell(gradebookId, lineItemId).asScala.fold[ResponseEntity[_]](s"Line item with id: $lineItemId not found".resp(NOT_FOUND)) {
+//      f(_)
+//    }
 
 }
 

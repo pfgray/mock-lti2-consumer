@@ -44,8 +44,15 @@ class HibernateGradebooksService extends GradebooksService {
       .toResults[GradebookCell](page)
 
   @Transactional
+  override def getCell(lineItemId: Integer, studentId: String): Option[GradebookCell] =
+    sessionFactory.getCurrentSession.createCriteria(classOf[GradebookCell])
+      .add(Restrictions.eq("gradebookLineItemId", lineItemId))
+      .add(Restrictions.eq("studentId", studentId))
+      .toResult[GradebookCell]
+
+  @Transactional
   override def createOrUpdateCell(gradebookCell: GradebookCell): Unit =
-    sessionFactory.getCurrentSession.save(gradebookCell)
+    sessionFactory.getCurrentSession.saveOrUpdate(gradebookCell)
 
   @Transactional
   override def getColumns(gradebook: Gradebook, page: Page): PagedResults[GradebookLineItem] =
@@ -82,6 +89,10 @@ class HibernateGradebooksService extends GradebooksService {
       val items = c.setPage(page).list().asInstanceOf[java.util.List[T]].asScala.toList
       val total = c.count()
       PagedResults(page, total, items)
+    }
+
+    def toResult[T]: Option[T] = {
+      Option(c.uniqueResult()).map(_.asInstanceOf[T])
     }
   }
 
