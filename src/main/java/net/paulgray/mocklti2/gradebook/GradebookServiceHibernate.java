@@ -61,10 +61,18 @@ public class GradebookServiceHibernate implements GradebookService {
     }
 
     @Override
+    public Optional<GradebookLineItem> getGradebookLineItemById(Integer gradebookId, Integer lineItemId) {
+        Criteria crit = sessionFactory.getCurrentSession().createCriteria(GradebookLineItem.class);
+        crit.add(Restrictions.eq("gradebookId", gradebookId));
+        crit.add(Restrictions.eq("id", lineItemId));
+        return Optional.ofNullable((GradebookLineItem) crit.uniqueResult());
+    }
+
+    @Override
     @Transactional
-    public GradebookLineItem getOrCreateGradebookLineItemByResourceId(Integer gradebookId, String resourceId, String source) {
-        return getGradebookLineItemByResourceId(gradebookId, resourceId)
-                .orElseGet(() -> addLineItem(new GradebookLineItem(gradebookId, resourceId, source)));
+    public GradebookLineItem getOrCreateGradebookLineItemByResourceLinkId(Integer gradebookId, String resourceLinkId, String source) {
+        return getGradebookLineItemByResourceId(gradebookId, resourceLinkId)
+                .orElseGet(() -> addLineItem(new GradebookLineItem(gradebookId, resourceLinkId, source)));
     }
 
     @Override
@@ -75,6 +83,12 @@ public class GradebookServiceHibernate implements GradebookService {
         Criteria crit = sessionFactory.getCurrentSession().createCriteria(GradebookLineItem.class);
         crit.add(Restrictions.eq("id", lineItem.getId()));
         return (GradebookLineItem) crit.uniqueResult();
+    }
+
+    @Override
+    @Transactional
+    public void deleteLineItem(GradebookLineItem lineItem) {
+        sessionFactory.getCurrentSession().delete(lineItem);
     }
 
     @Override

@@ -26,6 +26,14 @@ public class GradebookCell {
     public GradebookCell() {
     }
 
+    public GradebookCell(Integer id, Integer gradebookLineItemId, String studentId, String grade, String source) {
+        this.id = id;
+        this.gradebookLineItemId = gradebookLineItemId;
+        this.studentId = studentId;
+        this.grade = grade;
+        this.source = source;
+    }
+
     public GradebookCell(Integer gradebookLineItemId, String studentId, String grade, String source) {
         this.gradebookLineItemId = gradebookLineItemId;
         this.studentId = studentId;

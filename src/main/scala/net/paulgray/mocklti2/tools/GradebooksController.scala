@@ -1,7 +1,7 @@
 package net.paulgray.mocklti2.tools
 
 import net.paulgray.mocklti2.gradebook.{Gradebook, GradebookService}
-import net.paulgray.mocklti2.tools.GradebooksService.{Page, PagedResults}
+import net.paulgray.mocklti2.tools.GradebooksService.{Offset, Page, PagedResults}
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.{HttpStatus, ResponseEntity}
 import org.springframework.stereotype.Controller
@@ -21,7 +21,7 @@ class GradebooksController {
     @RequestParam(value = "limit", defaultValue = "10") limit: Int,
     @RequestParam(value = "offset", defaultValue = "0") offset: Int
   ): ResponseEntity[PagedResults[Gradebook]] = {
-    new ResponseEntity(gradebooksService.getPagedGradebooks(Page(offset, limit)), HttpStatus.OK)
+    new ResponseEntity(gradebooksService.getPagedGradebooks(Page(Offset(offset), limit)), HttpStatus.OK)
   }
 
   @RequestMapping(value = Array("/api/gradebooks/{gradebookId}"), method = Array(RequestMethod.DELETE))

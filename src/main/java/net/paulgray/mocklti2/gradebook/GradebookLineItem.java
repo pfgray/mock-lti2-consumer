@@ -1,6 +1,7 @@
 package net.paulgray.mocklti2.gradebook;
 
 import javax.persistence.*;
+import java.math.BigDecimal;
 
 /**
  * Created by paul on 10/24/16.
@@ -29,6 +30,15 @@ public class GradebookLineItem {
     @Column(name = "activity_id")
     private String activityId;
 
+    @Column(name = "resource_id")
+    private String resourceId;
+
+    @Column(name = "tag")
+    private String tag;
+
+    @Column(name = "score_maximum")
+    private BigDecimal scoreMaximum;
+
     public GradebookLineItem() {
     }
 
@@ -46,6 +56,18 @@ public class GradebookLineItem {
         this.title = title;
         this.activityId = activityId;
         this.source = source;
+    }
+
+    public GradebookLineItem(Integer id, Integer gradebookId, String resourceLinkId, String title, String source, String activityId, String resourceId, String tag, BigDecimal scoreMaximum) {
+        this.id = id;
+        this.gradebookId = gradebookId;
+        this.resourceLinkId = resourceLinkId;
+        this.title = title;
+        this.source = source;
+        this.activityId = activityId;
+        this.resourceId = resourceId;
+        this.tag = tag;
+        this.scoreMaximum = scoreMaximum;
     }
 
     public String getResourceLinkId() {
@@ -94,5 +116,29 @@ public class GradebookLineItem {
 
     public void setSource(String source) {
         this.source = source;
+    }
+
+    public String getResourceId() {
+        return resourceId;
+    }
+
+    public void setResourceId(String resourceId) {
+        this.resourceId = resourceId;
+    }
+
+    public String getTag() {
+        return tag;
+    }
+
+    public void setTag(String tag) {
+        this.tag = tag;
+    }
+
+    public BigDecimal getScoreMaximum() {
+        return scoreMaximum;
+    }
+
+    public void setScoreMaximum(BigDecimal scoreMaximum) {
+        this.scoreMaximum = scoreMaximum;
     }
 }

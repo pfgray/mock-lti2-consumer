@@ -7,6 +7,9 @@
 package net.paulgray.mocklti2.config;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.datatype.jdk8.Jdk8Module;
+import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
+import com.fasterxml.jackson.module.scala.DefaultScalaModule;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -41,7 +44,7 @@ public class ViewConfig  extends WebMvcConfigurerAdapter {
 
     @Override
     public void configureMessageConverters(List<HttpMessageConverter<?>> converters) {
-        converters.add(new MappingJackson2HttpMessageConverter(om));
+        converters.add(new MappingJackson2HttpMessageConverter(om.registerModules(new Jdk8Module(), new DefaultScalaModule(), new JavaTimeModule())));
     }
     
 }

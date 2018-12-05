@@ -19,9 +19,13 @@ public interface GradebookService {
 
     Optional<GradebookLineItem> getGradebookLineItemByResourceId(Integer gradebookId, String resourceId);
 
-    GradebookLineItem getOrCreateGradebookLineItemByResourceId(Integer gradebookId, String resourceId, String source);
+    Optional<GradebookLineItem> getGradebookLineItemById(Integer gradebookId, Integer lineItemId);
+
+    GradebookLineItem getOrCreateGradebookLineItemByResourceLinkId(Integer gradebookId, String resourceLinkId, String source);
 
     GradebookLineItem updateLineItem(GradebookLineItem lineItem);
+
+    void deleteLineItem(GradebookLineItem lineItem);
 
     GradebookLineItem addLineItem(GradebookLineItem lineItem);
 
