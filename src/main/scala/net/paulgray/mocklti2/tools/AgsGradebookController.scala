@@ -153,7 +153,7 @@ class AgsGradebookController {
             new GradebookCell(li.getId, score.userId, grade, ob.writeValueAsString(score))
         }
         gbService.createOrUpdateCell(toSave)
-        score.resp(HttpStatus.OK)
+        new ResponseEntity(HttpStatus.NO_CONTENT)
       }
     }
 
