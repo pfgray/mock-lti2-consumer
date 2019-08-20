@@ -2,11 +2,12 @@ package net.paulgray.mocklti2.tools
 
 import java.time.Instant
 import java.util.{Date, Optional, UUID}
+
 import javax.servlet.http.HttpServletRequest
 import javax.transaction.Transactional
-
 import com.fasterxml.jackson.annotation.JsonFormat
 import com.fasterxml.jackson.databind.ObjectMapper
+import net.paulgray.mocklti2.MockLti2App
 import net.paulgray.mocklti2.gradebook.{Gradebook, GradebookCell, GradebookLineItem, GradebookService}
 import net.paulgray.mocklti2.tools.GradebooksService.{Page, PageNumber, PagedResults}
 import net.paulgray.mocklti2.tools.AgsGradebookController.{ActivityProgress, CreateLineItemRequest, LineItem, UpdateScoreRequest}
@@ -53,17 +54,26 @@ class AgsGradebookController {
   @RequestMapping(value = Array("/api/ags/{contextId}/lineitems"), method = Array(RequestMethod.POST))
   def createLineItem(
     req: HttpServletRequest,
-    @PathVariable("contextId") contextId: String,
-    @RequestBody lineItem: CreateLineItemRequest
-  ): ResponseEntity[_] =
+    @PathVariable("contextId") contextId: String
+  ): ResponseEntity[_] = {
+    val body = CreateColumnRequest.fromRequest(MockLti2App.standardMapper, req)
     gbOrNotFound(contextId) { gb =>
-      val li = gradebookService.getOrCreateGradebookLineItemByResourceLinkId(gb.getId, UUID.randomUUID().toString, ob.writeValueAsString(lineItem))
-      li.setResourceId(lineItem.resourceId)
-      li.setTitle(lineItem.label)
-      li.setScoreMaximum(lineItem.scoreMaximum)
-      li.setTag(lineItem.tag.orNull)
-      new ResponseEntity(LineItem(li, contextId, HttpUtils.getOrigin(req).get()), HttpStatus.OK)
+      val resourceId = UUID.randomUUID().toString
+      val li = gradebookService.getOrCreateGradebookLineItemByResourceLinkId(gb.getId, resourceId, body.source)
+      li.setTitle(body.title)
+      li.setScoreMaximum(Option(body.scoreMaximum).getOrElse(new java.math.BigDecimal(0)))
+      body.lineItem match {
+        case Left(createLineItemRequest) =>
+          new ResponseEntity(LineItem(li, contextId, HttpUtils.getOrigin(req).get()), HttpStatus.OK)
+        case Right(lineItem) =>
+          val origin = HttpUtils.getOrigin(req).orElse("")
+          val resultsUrl = origin + "/outcomes/v2.0/gradebook/" + contextId + "/lineitems/" + resourceId
+          lineItem.setResultsUrl(Optional.of(resultsUrl))
+          new ResponseEntity(lineItem, HttpStatus.OK)
+      }
+
     }
+  }
 
   @Transactional
   @RequestMapping(value = Array("/api/ags/{contextId}/lineitems/{lineItemId}"), method = Array(RequestMethod.GET))
@@ -90,8 +100,6 @@ class AgsGradebookController {
       liOrError(gb.getId, lineItemId) { li =>
         li.setScoreMaximum(lineItem.scoreMaximum)
         li.setTitle(lineItem.label)
-        li.setResourceId(lineItem.resourceId)
-        li.setTag(lineItem.tag.orNull)
         li.setSource(ob.writeValueAsString(lineItem))
         gradebookService.updateLineItem(li)
         new ResponseEntity(LineItem(li, contextId, HttpUtils.getOrigin(req).get()), HttpStatus.OK)
@@ -142,7 +150,7 @@ class AgsGradebookController {
         //  throw new RuntimeException("lolz")
         //}
         val existing = gbService.getCell(li.getId, score.userId)
-        val grade = s"${score.scoreGiven}/${score.scoreMaximum}:${score.activityProgress}:${score.gradingProgress}"
+        val grade = score.scoreGiven.toString// s"${score.scoreGiven}/${score.scoreMaximum}:${score.activityProgress}:${score.gradingProgress}"
         val source = ob.writeValueAsString(score)
         val toSave = existing match {
           case Some(g) =>
@@ -168,11 +176,6 @@ class AgsGradebookController {
         f(_)
       }
     }
-
-//  def gradeOrError(gradebookId: Integer, lineItemId: String, studentId: String)(f: GradebookCell => ResponseEntity[_]): ResponseEntity[_] =
-//    .getGradebookCell(gradebookId, lineItemId).asScala.fold[ResponseEntity[_]](s"Line item with id: $lineItemId not found".resp(NOT_FOUND)) {
-//      f(_)
-//    }
 
 }
 
@@ -222,7 +225,7 @@ object AgsGradebookController {
   object LineItem {
     def apply(gbLi: GradebookLineItem, contextId: String, origin: String) = {
       val id = s"${origin}/api/ags/${contextId}/lineitems/${gbLi.getId}"
-      new LineItem(id, gbLi.getScoreMaximum, gbLi.getTitle, Option(gbLi.getTag), gbLi.getResourceId, gbLi.getResourceLinkId)
+      new LineItem(id, gbLi.getScoreMaximum, gbLi.getTitle, None, gbLi.getResourceLinkId, gbLi.getResourceLinkId)
     }
   }
 

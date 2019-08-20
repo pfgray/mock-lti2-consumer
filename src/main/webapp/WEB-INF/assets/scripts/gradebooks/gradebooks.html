@@ -6,13 +6,15 @@
                 <table class="table">
                     <thead>
                         <tr>
-                            <th></th>
-                            <th>Context</th>
+                            <th style="width: 50px"></th>
+                            <th style="width: 250px">Created</th>
+                            <th>Context Name</th>
                         </tr>
                     </thead>
                     <tbody>
                         <tr ng-repeat="gb in gradebooks">
                             <td><i class="delete fa fa-trash-o" ng-click="deleteGradebook(gb.id)"/></td>
+                            <td>{{formatDate(gb.created)}}</td>
                             <td><a ui-sref="gradebook({gradebookId: gb.context})">{{gb.context}}</a></td>
                         </tr>
                     </tbody>

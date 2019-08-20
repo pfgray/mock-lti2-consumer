@@ -6,7 +6,8 @@
         <div ng-if="gradebook" class="gradebook">
             <div class="columns">
                 <div ng-repeat="column in gradebook.columns" class="column">
-                    {{column.column.title}}
+                    <a href="#" ng-click="showSource(column.column.title, column.column.source)" ng-if="column.column.source">{{column.column.title}}</a>
+                    <span ng-if="!column.column.source">{{column.column.title}}</span>
                 </div>
             </div><div class="body">
                 <div class="students">
@@ -17,8 +18,8 @@
                 <div class="cell-columns">
                     <div ng-repeat="studentId in students" class="cell-column">
                         <div ng-repeat="column in gradebook.columns" class="cell {{getStudentGradeStyle(studentId, column.column.id)}}">
-                            <a ng-if="getStudentSource(studentId, column.column.id) != null" ng-click="showSource('', getStudentSource(studentId, column.column.id))" style="cursor: pointer;">{{getStudentGradeForColumn(studentId, column.column.id)}}</a>
-                            <span ng-if="getStudentSource(studentId, column.column.id) == null">{{getStudentGradeForColumn(studentId, column.column.id)}}</span>
+                            <a ng-if="getStudentSource(studentId, column.column.id) != null" ng-click="showSource(getStudentGradeForColumn(studentId, column.column.id) + ' / ' + column.column.scoreMaximum, getStudentSource(studentId, column.column.id))" style="cursor: pointer;">{{round(getStudentGradeForColumn(studentId, column.column.id))}}</a>
+                            <span ng-if="getStudentSource(studentId, column.column.id) == null">{{round(getStudentGradeForColumn(studentId, column.column.id))}}</span>
                         </div>
                     </div>
                 </div>

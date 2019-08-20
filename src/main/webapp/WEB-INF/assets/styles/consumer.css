@@ -323,6 +323,7 @@ label.inline > * {
   width: 100%;
   text-overflow: ellipsis;
   overflow: hidden;
+  text-align: center;
 }
 
 .cell.cell-success {

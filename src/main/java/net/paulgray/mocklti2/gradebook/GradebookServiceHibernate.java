@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -142,6 +143,7 @@ public class GradebookServiceHibernate implements GradebookService {
     @Override
     @Transactional
     public GradebookCell updateGradebookCell(GradebookCell cell) {
+        cell.setLastUpdated(new Date());
         sessionFactory.getCurrentSession().saveOrUpdate(cell);
 
         Criteria crit = sessionFactory.getCurrentSession().createCriteria(GradebookCell.class);

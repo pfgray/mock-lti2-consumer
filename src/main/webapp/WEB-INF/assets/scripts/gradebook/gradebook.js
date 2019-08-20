@@ -12,7 +12,6 @@ function($http, $uibModal) {
         $http.get('/outcomes/gradebooks/' + scope.gradebookId)
           .then(function(gradebook){
             scope.loading = false;
-            console.log('got the gradebook:', gradebook.data);
 
             scope.students =
               gradebook.data.columns
@@ -36,12 +35,17 @@ function($http, $uibModal) {
             return null;
         }
 
+        scope.round = function(num) {
+          if(num === "") {
+            return ""
+          } else {
+            return Math.round(num)
+          }
+        }
+
         scope.getStudentGradeForColumn = function(studentId, columnId){
-            console.log('Getting Student grade for: ', studentId, columnId);
-            console.log('in: ', scope.gradebook.columns);
             var column = scope.gradebook.columns.find(c => c.column.id === columnId);
             if(column) {
-              console.log('found column: ', column, 'now looking in:', column.cells);
               var cell = column.cells.find(c => c.studentId === studentId);
               if(cell && cell.grade) {
                 return cell.grade;

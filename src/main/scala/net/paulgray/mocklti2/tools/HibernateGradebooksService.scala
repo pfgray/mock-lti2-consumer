@@ -1,12 +1,12 @@
 package net.paulgray.mocklti2.tools
 
 import java.util.Optional
-import javax.transaction.Transactional
 
+import javax.transaction.Transactional
 import net.paulgray.mocklti2.gradebook.{Gradebook, GradebookCell, GradebookLineItem}
 import net.paulgray.mocklti2.tools.GradebooksService.{Offset, Page, PageNumber, PagedResults}
 import net.paulgray.mocklti2.web.entities.Result
-import org.hibernate.criterion.{Projections, Restrictions}
+import org.hibernate.criterion.{CriteriaSpecification, Order, Projections, Restrictions}
 import org.hibernate.transform.{DistinctResultTransformer, ResultTransformer}
 import org.hibernate.{Criteria, FetchMode, Query, SessionFactory}
 import org.springframework.beans.factory.annotation.Autowired
@@ -33,8 +33,12 @@ class HibernateGradebooksService extends GradebooksService {
   override def getPagedGradebooks(page: Page): PagedResults[Gradebook] = {
     val crit = sessionFactory.getCurrentSession.createCriteria(classOf[Gradebook])
     crit.setPage(page)
+    val count = crit.count()
+    crit.setProjection(null)
+    crit.setResultTransformer(CriteriaSpecification.ROOT_ENTITY)
+    crit.addOrder(Order.desc("created"))
     val gbs = crit.list().asInstanceOf[java.util.List[Gradebook]].asScala.toList
-    PagedResults(page, crit.count(), gbs)
+    PagedResults(page, count, gbs)
   }
 
   @Transactional

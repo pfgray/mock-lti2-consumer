@@ -18,6 +18,11 @@ function($http) {
         console.log('page: ');
         var offset = (scope.page - 1) * PAGE_SIZE;
 
+        scope.formatDate = function(dateStr) {
+          var date = new Date(dateStr)
+          return date.toLocaleTimeString() + ' ' + date.toDateString()
+        }
+
         scope.deleteGradebook = function(id) {
           $http({
             url: '/api/gradebooks/' + id,

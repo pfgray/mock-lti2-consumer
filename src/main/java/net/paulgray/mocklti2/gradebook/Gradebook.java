@@ -1,6 +1,7 @@
 package net.paulgray.mocklti2.gradebook;
 
 import javax.persistence.*;
+import java.util.Date;
 
 /**
  *
@@ -16,6 +17,10 @@ public class Gradebook {
     private Integer id;
     @Column(name = "context")
     private String context;
+    @Column(name = "created")
+    private Date created;
+    @Column(name = "last_updated")
+    private Date lastUpdated;
 
     public Gradebook() {
     }
@@ -26,6 +31,8 @@ public class Gradebook {
 
     public Gradebook(String context) {
         this.context = context;
+        this.created = new Date();
+        this.lastUpdated = new Date();
     }
 
     public Integer getId() {
@@ -42,5 +49,21 @@ public class Gradebook {
 
     public void setContext(String context) {
         this.context = context;
+    }
+
+    public Date getCreated() {
+        return created;
+    }
+
+    public void setCreated(Date created) {
+        this.created = created;
+    }
+
+    public Date getLastUpdated() {
+        return lastUpdated;
+    }
+
+    public void setLastUpdated(Date lastUpdated) {
+        this.lastUpdated = lastUpdated;
     }
 }

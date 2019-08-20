@@ -1,6 +1,7 @@
 package net.paulgray.mocklti2.gradebook;
 
 import javax.persistence.*;
+import java.util.Date;
 
 /**
  * Created by paul on 10/23/16.
@@ -21,17 +22,12 @@ public class GradebookCell {
     private String grade;
     @Column(name = "source")
     private String source;
-
+    @Column(name = "created")
+    private Date created;
+    @Column(name = "last_updated")
+    private Date lastUpdated;
 
     public GradebookCell() {
-    }
-
-    public GradebookCell(Integer id, Integer gradebookLineItemId, String studentId, String grade, String source) {
-        this.id = id;
-        this.gradebookLineItemId = gradebookLineItemId;
-        this.studentId = studentId;
-        this.grade = grade;
-        this.source = source;
     }
 
     public GradebookCell(Integer gradebookLineItemId, String studentId, String grade, String source) {
@@ -39,6 +35,8 @@ public class GradebookCell {
         this.studentId = studentId;
         this.grade = grade;
         this.source = source;
+        this.created = new Date();
+        this.lastUpdated = new Date();
     }
 
     public Integer getId() {
@@ -79,5 +77,21 @@ public class GradebookCell {
 
     public void setSource(String source) {
         this.source = source;
+    }
+
+    public Date getCreated() {
+        return created;
+    }
+
+    public void setCreated(Date created) {
+        this.created = created;
+    }
+
+    public Date getLastUpdated() {
+        return lastUpdated;
+    }
+
+    public void setLastUpdated(Date lastUpdated) {
+        this.lastUpdated = lastUpdated;
     }
 }

@@ -84,7 +84,6 @@ public class GradebookController {
         GradebookLineItem newLineItem = gradebookService.getOrCreateGradebookLineItemByResourceLinkId(gb.getId(), UUID.randomUUID().toString(), body);
 
         newLineItem.setTitle(title);
-        newLineItem.setActivityId(activityId);
 
         gradebookService.updateLineItem(newLineItem);
 
