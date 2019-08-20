@@ -24,6 +24,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import javax.servlet.http.HttpServletRequest;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Properties;
 
 /**
  *
@@ -41,6 +42,13 @@ public class Lti2ConsumerController {
     @RequestMapping(value = {"/", "/tools/**", "/gradebooks/**"})
     public String getWelcome(HttpServletRequest request, ModelMap model) {
         model.addAttribute("origin", HttpUtils.getOrigin(request).orElse(""));
+        final Properties properties = new Properties();
+        try {
+            properties.load(this.getClass().getClassLoader().getResourceAsStream("app.properties"));
+            model.addAttribute("version", properties.get("version"));
+        } catch(Exception e) {
+            return "welcome";
+        }
         return "welcome";
     }
 
