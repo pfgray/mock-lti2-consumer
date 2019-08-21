@@ -20,7 +20,7 @@ public class GradebookCell {
     private String studentId;
     @Column(name = "grade")
     private String grade;
-    @Column(name = "source")
+    @Column(name = "source", columnDefinition = "TEXT")
     private String source;
     @Column(name = "created")
     private Date created;

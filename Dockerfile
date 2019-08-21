@@ -9,4 +9,4 @@ RUN mvn clean install spring-boot:repackage
 #run tomcat
 WORKDIR /root/mock-lti2-consumer
 EXPOSE 8080
-CMD ["java", "-jar", "target/mock-lti2-consumer-1.0.0.jar"]
+CMD ["java", "-jar", "target/mock-lti2-consumer.jar"]
