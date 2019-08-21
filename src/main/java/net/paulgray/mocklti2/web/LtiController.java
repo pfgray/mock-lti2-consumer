@@ -49,7 +49,6 @@ public class LtiController {
         // generateRandomColumns(gb);
 
         final String lisResultSourcedId = gb.getContext() + ":~:" + lineItem.getResourceLinkId() + ":~:" + request.getLaunchParameters().get("user_id");
-
         log.info("Created gradebook info: " + lisResultSourcedId);
 
         //  get gradebook

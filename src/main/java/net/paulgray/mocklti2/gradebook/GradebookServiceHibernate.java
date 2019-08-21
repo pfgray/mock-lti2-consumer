@@ -111,7 +111,7 @@ public class GradebookServiceHibernate implements GradebookService {
 
         return columnIds.stream().collect(Collectors.toMap(
                 c -> c,
-                c -> cells.stream().filter(cell -> cell.getGradebookLineItemId() == c).collect(Collectors.toList())
+                c -> cells.stream().filter(cell -> cell.getGradebookLineItemId().equals(c)).collect(Collectors.toList())
         ));
     }
 

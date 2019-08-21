@@ -49,26 +49,6 @@ public class GradebookLineItem {
         this.lastUpdated = new Date();
     }
 
-    public GradebookLineItem(Integer gradebookId, String resourceLinkId, String title, String activityId, String source) {
-        this.gradebookId = gradebookId;
-        this.resourceLinkId = resourceLinkId;
-        this.title = title;
-        this.source = source;
-        this.created = new Date();
-        this.lastUpdated = new Date();
-    }
-
-    public GradebookLineItem(Integer id, Integer gradebookId, String resourceLinkId, String title, String source, String activityId, String resourceId, String tag, BigDecimal scoreMaximum) {
-        this.id = id;
-        this.gradebookId = gradebookId;
-        this.resourceLinkId = resourceLinkId;
-        this.title = title;
-        this.source = source;
-        this.scoreMaximum = scoreMaximum;
-        this.created = new Date();
-        this.lastUpdated = new Date();
-    }
-
     public String getResourceLinkId() {
         return resourceLinkId;
     }

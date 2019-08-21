@@ -29,7 +29,6 @@ app.config(function($stateProvider, $urlRouterProvider) {
         url: "/gradebooks/:gradebookId",
         templateUrl: "assets/templates/partial-gradebook.html",
         controller: ['$scope', '$stateParams', function($scope, $stateParams){
-            console.log('wut:', $scope, $stateParams)
             $scope.gradebookId = $stateParams.gradebookId
         }]
     });
