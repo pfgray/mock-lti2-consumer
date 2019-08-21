@@ -1,5 +1,6 @@
 package net.paulgray.mocklti2.web;
 
+import net.paulgray.lti.launch.LtiOauth10aSigner;
 import net.paulgray.mocklti2.gradebook.Gradebook;
 import net.paulgray.mocklti2.gradebook.GradebookCell;
 import net.paulgray.mocklti2.gradebook.GradebookLineItem;
@@ -29,8 +30,7 @@ public class LtiController {
     @Autowired
     GradebookService gradebookService;
 
-    @Autowired
-    LtiSigner ltiSigner;
+    LtiSigner ltiSigner = new LtiOauth10aSigner();
 
     @RequestMapping(value = "/api/signedLaunch", method = RequestMethod.POST)
     public ResponseEntity<Map<String, String>> getSignedLaunch(

@@ -1,8 +1,19 @@
-spring.jpa:
-  hibernate.ddl-auto: validate
 logging.level:
   org.hibernate.tool.hbm2ddl: INFO
   org.hibernate.SQL: INFO
   org.hibernate.type: INFO
   org.hibernate.engine: ERROR
   org.apache.tomcat.util.scan: FATAL
+
+spring.datasource.url: "jdbc:postgresql://localhost:5438/lti"
+spring.datasource.username: admin
+spring.datasource.password: supersecret
+
+spring.jpa:
+  hibernate:
+    show-sql: true
+    ddl-auto: update
+  properties.hibernate:
+    format_sql: true
+    dialect: org.hibernate.dialect.PostgreSQLDialect
+    current_session_context_class: org.springframework.orm.hibernate4.SpringSessionContext

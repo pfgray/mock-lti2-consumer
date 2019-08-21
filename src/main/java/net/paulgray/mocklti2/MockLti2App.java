@@ -5,6 +5,10 @@ import com.fasterxml.jackson.datatype.jdk8.Jdk8Module;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import com.fasterxml.jackson.module.scala.DefaultScalaModule;
 import com.fasterxml.jackson.module.scala.DefaultScalaModule$;
+import org.hibernate.Session;
+import org.hibernate.SessionFactory;
+import org.hibernate.jpa.HibernateEntityManagerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.*;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -15,6 +19,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.ImportResource;
 import org.springframework.http.converter.json.Jackson2ObjectMapperBuilder;
 
+import javax.persistence.EntityManager;
 import java.math.BigDecimal;
 
 /**
@@ -22,7 +27,6 @@ import java.math.BigDecimal;
  */
 @Configuration
 @ComponentScan//("net.paulgray.mocklti2.*")
-@ImportResource("spring/applicationContext.xml")
 @EnableAutoConfiguration
 @SpringBootApplication
 public class MockLti2App {
@@ -41,4 +45,10 @@ public class MockLti2App {
             mapperBuilder.modules(new Jdk8Module(), new DefaultScalaModule(), new JavaTimeModule());
         };
     }
+
+    @Bean
+    public SessionFactory sessionFactory(HibernateEntityManagerFactory hemf){
+        return hemf.getSessionFactory();
+    }
+
 }

@@ -25,7 +25,7 @@ public class GradebookLineItem {
     @Column(name = "title")
     private String title;
 
-    @Column(name = "source")
+    @Column(name = "source", columnDefinition = "TEXT")
     private String source;
 
     @Column(name = "score_maximum")
