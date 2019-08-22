@@ -22,6 +22,7 @@ import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
+import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
 
 import javax.servlet.http.HttpServletRequest;
@@ -29,6 +30,7 @@ import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 import java.io.IOException;
+import java.io.StringReader;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -139,9 +141,9 @@ public class GradebookController {
     @RequestMapping(value = "/outcomes/v1.1/gradebook", method = RequestMethod.POST)
     public ResponseEntity<String> handleOutcomes1(HttpServletRequest request) throws Exception {
 
-        log.info("Got Lti Outcomes 1 message: \n" + IOUtils.toString(request.getInputStream()));
-
         String body = IOUtils.toString(request.getInputStream());
+
+        log.info("Got Lti Outcomes 1 message: \n" + body);
 
         Optional<Outcomes1Request> outcomes1Request = readOutcomes1Request(body);
 
@@ -175,7 +177,7 @@ public class GradebookController {
         factory.setIgnoringElementContentWhitespace(true);
         try {
             DocumentBuilder builder = factory.newDocumentBuilder();
-            Document doc = builder.parse(is);
+            Document doc = builder.parse(new InputSource(new StringReader(is)));
             NodeList sourceList = doc.getElementsByTagName("sourcedId");
             log.info("got: " + sourceList.getLength());
             Node sourceNode = sourceList.item(0);
@@ -195,6 +197,7 @@ public class GradebookController {
                     return grade.map(g -> new Outcomes1Request(g, values.get(2), values.get(1), values.get(0)));
                 });
         } catch (ParserConfigurationException|SAXException|IOException e) {
+            e.printStackTrace();
             return Optional.empty();
         }
     }

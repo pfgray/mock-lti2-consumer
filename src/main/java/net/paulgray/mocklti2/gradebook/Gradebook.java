@@ -15,7 +15,7 @@ public class Gradebook {
     @Column(name = "id")
     @GeneratedValue(strategy=GenerationType.IDENTITY)
     private Integer id;
-    @Column(name = "context")
+    @Column(name = "context", unique = true)
     private String context;
     @Column(name = "created")
     private Date created;
