@@ -1,0 +1,23 @@
+version: "3"
+services:
+  consumer:
+    build: .
+    ports:
+      - "10000:8080"
+    depends_on:
+      - postgres
+    networks:
+      - main
+  postgres:
+    image: "postgres:9.2"
+    ports:
+      - "5432"
+    networks:
+      - main
+    environment:
+      - POSTGRES_USER=admin
+      - POSTGRES_PASSWORD=supersecret
+      - POSTGRES_DB=lti
+
+networks:
+  main:

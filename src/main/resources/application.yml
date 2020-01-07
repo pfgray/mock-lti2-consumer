@@ -5,7 +5,7 @@ logging.level:
   org.hibernate.engine: ERROR
   org.apache.tomcat.util.scan: FATAL
 
-spring.datasource.url: "jdbc:postgresql://localhost:5438/lti"
+spring.datasource.url: "jdbc:postgresql://postgres:5432/lti"
 spring.datasource.username: admin
 spring.datasource.password: supersecret
 
