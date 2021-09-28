@@ -151,4 +151,13 @@ public class GradebookServiceHibernate implements GradebookService {
         return (GradebookCell) crit.uniqueResult();
     }
 
+    @Override
+    @Transactional
+    public void deleteCell(Integer lineItemId, String studentId) {
+        Optional<GradebookCell> cell = getGradebookCell(lineItemId, studentId);
+        cell.ifPresent(
+            c -> sessionFactory.getCurrentSession().delete(c)
+        );
+    }
+
 }

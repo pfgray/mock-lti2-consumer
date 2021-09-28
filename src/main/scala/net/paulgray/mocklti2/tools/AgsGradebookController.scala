@@ -2,7 +2,6 @@ package net.paulgray.mocklti2.tools
 
 import java.time.Instant
 import java.util.{Date, Optional, UUID}
-
 import javax.servlet.http.HttpServletRequest
 import javax.transaction.Transactional
 import com.fasterxml.jackson.annotation.JsonFormat
@@ -12,6 +11,7 @@ import net.paulgray.mocklti2.gradebook.{Gradebook, GradebookCell, GradebookLineI
 import net.paulgray.mocklti2.tools.GradebooksService.{Page, PageNumber, PagedResults}
 import net.paulgray.mocklti2.tools.AgsGradebookController.{ActivityProgress, CreateLineItemRequest, LineItem, UpdateScoreRequest}
 import net.paulgray.mocklti2.web.HttpUtils
+import org.apache.commons.logging.{Log, LogFactory}
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.{HttpStatus, ResponseEntity}
 import org.springframework.stereotype.Controller
@@ -25,6 +25,8 @@ class AgsGradebookController {
 
   import HttpStatus._
   import net.paulgray.mocklti2.tools.AgsGradebookController.AnyOps
+
+  private val log = LogFactory.getLog(this.getClass)
 
   @Autowired
   var gradebookService: GradebookService = null
@@ -146,21 +148,27 @@ class AgsGradebookController {
   ): ResponseEntity[_] =
     gbOrNotFound(contextId) { gb =>
       liOrError(gb.getId, lineItemId) { li =>
-        //if(score.scoreGiven.compareTo(new java.math.BigDecimal(100)) == 0) {
-        //  throw new RuntimeException("lolz")
-        //}
-        val existing = gbService.getCell(li.getId, score.userId)
-        val grade = score.scoreGiven.toString// s"${score.scoreGiven}/${score.scoreMaximum}:${score.activityProgress}:${score.gradingProgress}"
-        val source = ob.writeValueAsString(score)
-        val toSave = existing match {
-          case Some(g) =>
-            g.setSource(source)
-            g.setGrade(grade)
-            g
+        log.info(s"Got AGS Score for student: ${score.userId} with score: ${score.scoreGiven}")
+        score.scoreGiven match {
+          case Some(s) =>
+            val existing = gbService.getCell(li.getId, score.userId)
+            val grade = s.toString// s"${score.scoreGiven}/${score.scoreMaximum}:${score.activityProgress}:${score.gradingProgress}"
+            val source = ob.writeValueAsString(score)
+            val toSave = existing match {
+              case Some(g) =>
+                g.setSource(source)
+                g.setGrade(grade)
+                g
+              case None =>
+                new GradebookCell(li.getId, score.userId, grade, ob.writeValueAsString(score))
+            }
+            log.info(s"Attempting to insert grade into gradebook: $contextId into column: $lineItemId")
+            gbService.createOrUpdateCell(toSave)
+
           case None =>
-            new GradebookCell(li.getId, score.userId, grade, ob.writeValueAsString(score))
+            log.info(s"Attempting to delete grade from gradebook: $contextId for column: $lineItemId");
+            gbService.deleteCell(li.getId, score.userId)
         }
-        gbService.createOrUpdateCell(toSave)
         score.resp(HttpStatus.OK)
       }
     }
@@ -197,7 +205,7 @@ object AgsGradebookController {
 
   case class UpdateScoreRequest(
     userId: String,
-    scoreGiven: java.math.BigDecimal,
+    scoreGiven: Option[java.math.BigDecimal],
     scoreMaximum: java.math.BigDecimal,
     comment: String,
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ss.SSSXXX")

@@ -8,6 +8,7 @@ import net.paulgray.mocklti2.gradebook.GradebookLineItem;
 import net.paulgray.mocklti2.gradebook.GradebookService;
 import net.paulgray.mocklti2.web.entities.LineItem;
 import net.paulgray.mocklti2.web.entities.Result;
+import net.paulgray.mocklti2.web.entities.Value;
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -123,12 +124,18 @@ public class GradebookController {
             }
 
             String userId = result.getStudent().getUserid().getValue();
-            log.info("Got result for student: <" + userId + "> and score: " + result.getTotalScore().getValue());
+            Optional<String> score = Optional.ofNullable(result.getTotalScore()).map(Value::getValue);
+            log.info("Got Outcome for student: " + userId + " with score: " + score);
 
-            log.info("Now attempting to insert grade into gradebook: " + contextId + " into column: " + lineItemId);
-            GradebookCell cell = gradebookService.getOrCreateGradebookCell(lineItem.get().getId(), userId, body);
-            cell.setGrade(result.getTotalScore().getValue());
-            GradebookCell updatedCell = gradebookService.updateGradebookCell(cell);
+            if (score.isPresent()) {
+                log.info("Attempting to insert grade into gradebook: " + contextId + " into column: " + lineItemId);
+                GradebookCell cell = gradebookService.getOrCreateGradebookCell(lineItem.get().getId(), userId, body);
+                cell.setGrade(result.getTotalScore().getValue());
+                gradebookService.updateGradebookCell(cell);
+            } else {
+                log.info("Attempting to delete grade from gradebook: " + contextId + " for column: " + lineItemId);
+                gradebookService.deleteCell(lineItem.get().getId(), userId);
+            }
 
             return new ResponseEntity<>(result, HttpStatus.OK);
         } else {
