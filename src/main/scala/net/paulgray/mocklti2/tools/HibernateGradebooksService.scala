@@ -58,6 +58,12 @@ class HibernateGradebooksService extends GradebooksService {
   override def createOrUpdateCell(gradebookCell: GradebookCell): Unit =
     sessionFactory.getCurrentSession.saveOrUpdate(gradebookCell)
 
+  override def deleteCell(lineItemId: Integer, studentId: String): Unit = {
+    getCell(lineItemId, studentId).foreach(c => {
+      sessionFactory.getCurrentSession.delete(c)
+    })
+  }
+
   @Transactional
   override def getColumns(gradebook: Gradebook, page: Page): PagedResults[GradebookLineItem] =
     sessionFactory.getCurrentSession.createCriteria(classOf[GradebookLineItem])

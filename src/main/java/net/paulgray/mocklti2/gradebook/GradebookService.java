@@ -23,10 +23,11 @@ public interface GradebookService {
     void deleteLineItem(GradebookLineItem lineItem);
 
     Map<Integer, List<GradebookCell>> getGradebookCells(List<Integer> columnIds);
-    Optional<GradebookCell> getGradebookCell(Integer lineItemId, String resultSourcedId);
+    Optional<GradebookCell> getGradebookCell(Integer lineItemId, String studentId);
 
     GradebookCell addCell(GradebookCell cell);
-    GradebookCell getOrCreateGradebookCell(Integer lineItemId, String resultSourcedId, String source);
+    GradebookCell getOrCreateGradebookCell(Integer lineItemId, String studentId, String source);
     GradebookCell updateGradebookCell(GradebookCell gradebookCell);
+    void deleteCell(Integer lineItemId, String studentId);
 
 }

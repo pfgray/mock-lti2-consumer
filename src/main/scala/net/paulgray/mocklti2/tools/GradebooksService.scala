@@ -20,6 +20,8 @@ trait GradebooksService {
 
   def getCell(lineItemId: Integer, studentId: String): Option[GradebookCell]
 
+  def deleteCell(lineItemId: Integer, studentId: String): Unit
+
   def deleteGradebook(id: Integer): Unit
 
 }
